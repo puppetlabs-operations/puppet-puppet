@@ -1,0 +1,10 @@
+#
+#managed basic puppet server config
+#
+
+[puppetmasterd]
+templatedir=/var/lib/puppet/templates
+modulepath = /var/lib/puppet/modules/modules:/var/lib/puppet/modules/sitemodules
+manifest = /var/lib/puppet/manifests/site.pp
+manifestdir = /var/lib/puppet/manifests
+certname = puppet
