@@ -1,44 +1,20 @@
-# configures puppet clients
 class puppet {
-  $confd = "/etc/puppet" 
-  file    {
-    "${puppet::confd}/conf.d":
-      ensure => directory,
-      purge => true;
-    "puppet.init":
-      path    => "/etc/init.d/puppet",
-      source  => "puppet:///puppet/$operatingsystem/puppet.init",
-      mode    => "755",
-      owner   => "root",
-      group   => "root";
-    }
-
-  # A simple exec that rebuilds puppet.conf file if any of the fragments change and restarts the service.
-
-  exec { "rebuild-puppetconf":
-    command => "/bin/cat ${puppet::confd}/conf.d/* > ${puppet::confd}/puppet.conf",
-    refreshonly => true,
-    subscribe => File["${puppet::confd}/conf.d"],
-    notify => Service["puppet"]
+  package{'puppet':
+    ensure => installed,
   }
-
-  # Simple management on the file itself.
-
-  file { "${puppet::confd}/puppet.conf":  mode => 644, require => Exec[rebuild-puppetconf] }
-
-  # Simple management of the file puppet client config stuff.
-
-  file { "${puppet::confd}/conf.d/client": 
-    source  => "puppet:///puppet/client",  
-    mode    => "644",
-    owner   => "root",
-    group   => "root",
-    notify => Exec[rebuild-puppetconf],
+  # I wont start puppet as a cron job, I trust our code :)
+  service{'puppet':
+    ensure    => running,
+    enable    => true,
+    hasstatus => true,
   }
-  service { "puppet":
-    enable      => true,
-    ensure      => running,
-    require     => File["puppet.init"],
-    hasstatus   => true,
+  file{'/etc/puppet/puppet.conf':
+    owner   => root,
+    group   => root,
+    mode    => 0644,
+    content => template('puppet/puppet.conf.erb'),
+    notify  => Service['puppet'],
+    require => Package['puppet'],
   }
+  # /etc/sysconfig/puppetmaster - what is this??
 }
