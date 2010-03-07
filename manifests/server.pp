@@ -13,9 +13,9 @@ class puppet::server inherits puppet {
     mode   => 644,
     source => 'puppet:///modules/puppet/namespaceauth.conf',
   }
-  File['/etc/puppet/puppet.conf'] {
-    content => template('puppet/puppet.conf.erb'),
-    notify  +> Service['puppetmaster'],
-  }
+#  File['/etc/puppet/puppet.conf'] {
+#    content => template('puppet/puppet.conf.erb'),
+#    notify  +> Service['puppetmaster'],
+#  }
   # /etc/sysconfig/puppetmaster - what is this??
 }

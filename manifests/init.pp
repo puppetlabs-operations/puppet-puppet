@@ -8,13 +8,13 @@ class puppet {
     enable    => true,
     hasstatus => true,
   }
-  file{'/etc/puppet/puppet.conf':
-    owner   => root,
-    group   => root,
-    mode    => 0644,
-    content => template('puppet/puppet.conf.erb'),
-    notify  => Service['puppet'],
-    require => Package['puppet'],
-  }
+#  file{'/etc/puppet/puppet.conf':
+#    owner   => root,
+#    group   => root,
+#    mode    => 0644,
+#    content => template('puppet/puppet.conf.erb'),
+#    notify  => Service['puppet'],
+#    require => Package['puppet'],
+#  }
   # /etc/sysconfig/puppetmaster - what is this??
 }
