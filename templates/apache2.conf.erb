@@ -1,0 +1,47 @@
+# this is totally hardcoded for both the ruby and puppet version
+LoadModule passenger_module /usr/lib/ruby/gems/1.8/gems/passenger-2.2.11/ext/apache2/mod_passenger.so
+PassengerRoot /usr/lib/ruby/gems/1.8/gems/passenger-2.2.11
+PassengerRuby /usr/bin/ruby
+
+# you probably want to tune these settings
+PassengerHighPerformance on
+PassengerMaxPoolSize 12
+PassengerPoolIdleTime 1500
+# PassengerMaxRequests 1000
+PassengerStatThrottleRate 120
+RackAutoDetect Off
+RailsAutoDetect Off
+
+Listen <%= port %>
+
+<VirtualHost *:<%= port %>>
+        SSLEngine on
+        SSLProtocol -ALL +SSLv3 +TLSv1
+        SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
+#
+# I need to figure out how this works with multiple puppet maseters
+#
+#
+        SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= certname %>.pem
+        SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= certname %>.pem
+        SSLCertificateChainFile /var/lib/puppet/ssl/certs/ca.pem
+        SSLCACertificateFile    /var/lib/puppet/ssl/certs/ca.pem
+#        SSLCertificateChainFile /etc/puppet/ssl/ca/ca_crt.pem
+#        SSLCACertificateFile    /etc/puppet/ssl/ca/ca_crt.pem
+        # If Apache complains about invalid signatures on the CRL, you can try disabling
+        # CRL checking by commenting the next line, but this is not recommended.
+#        SSLCARevocationFile     /etc/puppet/ssl/ca/ca_crl.pem
+        SSLVerifyClient optional
+        SSLVerifyDepth  1
+        SSLOptions +StdEnvVars
+
+        DocumentRoot <%= docroot %>
+        RackBaseURI /
+        <Directory <%= webdir %>>
+                Options None
+                AllowOverride None
+                Order allow,deny
+                allow from all
+        </Directory>
+</VirtualHost>
+
