@@ -2,6 +2,8 @@ class puppet::server::passenger inherits puppet::server {
   include ::passenger
   require apache::ssl
   include puppet::server::rack
+  include ::passenger::params
+  $passenger_version=$::passenger::params::version
   Service['puppetmaster']{
     enable => false,
     ensure => stopped,

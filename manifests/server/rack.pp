@@ -1,12 +1,13 @@
 class puppet::server::rack {
   include ::rack
   include puppet::server
-  File{mode=>'0755', owner=>'root', group=>'root'}
-  file { ["/etc/puppet/rack", "/etc/puppet/rack/public"]:
+  # this will be 755 for dir
+  File{mode=>'0644', owner=>'puppet', group=>'puppet'}
+  file { ['/etc/puppet/rack', '/etc/puppet/rack/public']:
     ensure => directory,
     require => Package['puppet-server'],
   }
-  file { "/etc/puppet/rack/config.ru":
-    source => "puppet:///modules/puppet/config.ru",
+  file { '/etc/puppet/rack/config.ru':
+    source => 'puppet:///modules/puppet/config.ru',
   } 
 }
