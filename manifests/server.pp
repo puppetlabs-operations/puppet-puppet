@@ -12,16 +12,12 @@
 #
 class puppet::server {
   include puppet
+  include puppet::passenger
 
   package { $puppet::params::puppetmaster_package:
     ensure => present,
   }
   
-  service{ $puppet::params::puppemasterd_service:
-    ensure    => running,
-    enable    => true,
-    hasstatus => true,
-  }
   file{'/etc/puppet/namespaceauth.conf':
     owner  => root,
     group  => root,

@@ -12,12 +12,13 @@
 # Sample Usage:
 #
 class puppet {
+  include ruby
   include puppet::params
 
   package{'puppet':
     ensure => installed,
   }
-  service{'puppet':
+  service{ $puppet::params::puppetd_service:
     ensure    => running,
     enable    => true,
     hasstatus => true,
