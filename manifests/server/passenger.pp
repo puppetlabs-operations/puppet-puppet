@@ -1,6 +1,7 @@
-class puppet::server::passenger inherits puppet::server {
+class puppet::server::passenger {
   include ::passenger
   require apache::ssl
+  include puppet
   include puppet::server::rack
   include ::passenger::params
   $passenger_version=$::passenger::params::version

@@ -1,8 +1,23 @@
-class puppet::server inherits puppet {
-  package{'puppet-server':
-    ensure => installed,
+# Class: puppet::server
+#
+# This class installs and configures a Puppet master
+#
+# Parameters:
+#
+# Actions:
+#
+# Requires:
+#
+# Sample Usage:
+#
+class puppet::server {
+  include puppet
+
+  package { $puppet::params::puppetmaster_package:
+    ensure => present,
   }
-  service{'puppetmaster':
+  
+  service{ $puppet::params::puppemasterd_service:
     ensure    => running,
     enable    => true,
     hasstatus => true,
@@ -13,9 +28,4 @@ class puppet::server inherits puppet {
     mode   => 644,
     source => 'puppet:///modules/puppet/namespaceauth.conf',
   }
-#  File['/etc/puppet/puppet.conf'] {
-#    content => template('puppet/puppet.conf.erb'),
-#    notify  +> Service['puppetmaster'],
-#  }
-  # /etc/sysconfig/puppetmaster - what is this??
 }
