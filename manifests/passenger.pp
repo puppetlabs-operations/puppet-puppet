@@ -19,6 +19,7 @@ class puppet::passenger {
   include ::rack
 
   $passenger_version=$passenger::params::version
+  $gem_path=$passenger::params::gem_path
   
   file { ['/etc/puppet/rack', '/etc/puppet/rack/public', '/etc/puppet/rack/tmp']:
     owner => 'puppet',
@@ -37,6 +38,6 @@ class puppet::passenger {
     priority => '10',
     docroot => '/etc/puppet/rack/public/',
     ssl => true,
-    template => 'puppet/apache2.conf.erb',
+    template => 'puppet/puppet-passenger.conf.erb',
   }
 }

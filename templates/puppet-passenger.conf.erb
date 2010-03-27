@@ -1,7 +1,7 @@
 # this is totally hardcoded for both the ruby and puppet version
-LoadModule passenger_module /usr/lib/ruby/gems/1.8/gems/passenger-<%= passenger_version %>/ext/apache2/mod_passenger.so
-PassengerRoot /usr/lib/ruby/gems/1.8/gems/passenger-<%= passenger_version %>
-PassengerRuby /usr/bin/ruby1.8
+LoadModule passenger_module <%= gem_path %>passenger-<%= passenger_version %>/ext/apache2/mod_passenger.so
+PassengerRoot <%= gem_path %>passenger-<%= passenger_version %>
+PassengerRuby /usr/bin/ruby
 
 # you probably want to tune these settings
 PassengerHighPerformance on

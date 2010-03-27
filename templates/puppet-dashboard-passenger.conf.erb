@@ -1,0 +1,27 @@
+# this is totally hardcoded for both the ruby and puppet version
+LoadModule passenger_module <%= gem_path %>passenger-<%= passenger_version %>/ext/apache2/mod_passenger.so
+PassengerRoot <%= gem_path %>passenger-<%= passenger_version %>
+PassengerRuby /usr/bin/ruby
+
+# you probably want to tune these settings
+PassengerHighPerformance on
+PassengerMaxPoolSize 12
+PassengerPoolIdleTime 1500
+# PassengerMaxRequests 1000
+PassengerStatThrottleRate 120
+RailsAutoDetect On
+
+<VirtualHost *:<%= port %>>
+        ServerName <%= name %>
+        DocumentRoot <%= docroot %>
+        <Directory <%= docroot %>>
+                Options None
+                AllowOverride None
+                Order allow,deny
+                allow from all
+        </Directory>
+  ErrorLog /var/log/apache2/<%= name %>_error.log
+  LogLevel warn
+  CustomLog /var/log/apache2/<%= name %>_access.log combined
+  ServerSignature On
+</VirtualHost>
