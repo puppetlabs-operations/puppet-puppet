@@ -11,12 +11,11 @@
 # Sample Usage:
 #
 class puppet::storedconfiguration {
-   tag('storedconfiguration')
 
    $rails_version = '2.3.5'
    require rails
    require mysql::server
-   require puppet
+   require puppet::server
  
    package { $puppet::params::puppet_storedconfig_packages:
      ensure => installed,

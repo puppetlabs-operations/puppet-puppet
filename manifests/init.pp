@@ -24,21 +24,16 @@ class puppet {
     content => template('puppet/puppet.conf.erb'),
   }
 
-  #
-  # This a hack for debian because the init script checks
-  # /etc/defaults/puppet for $START. Not sure how we want to approach fixing this.
-  # Can't be modeled with params.  Redhat has a default directory but no puppet file.
-  #
-  file {'/etc/default/puppet':
+  file { $puppet::params::puppetd_defaults:
     mode => '0644',
     owner => 'root',
     group => 'root',
-    source => 'puppet:///modules/puppet/etc_default_puppet',
+    source => "puppet:///modules/puppet/$puppet::params::puppetd_defaults",
   }
   service{ $puppet::params::puppetd_service:
     ensure => running,
     enable => true,
     hasstatus => true,
-    require => [ File['/etc/default/puppet'], File['/etc/puppet/puppet.conf'] ],
+    require => [ File[$puppet::params::puppetd_service], File['/etc/puppet/puppet.conf'] ],
   }
 }

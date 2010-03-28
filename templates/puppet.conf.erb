@@ -27,11 +27,10 @@
     # extension indicating the cache format is added automatically.
     # The default value is '$confdir/localconfig'.
     localconfig = $vardir/localconfig
-    certname=puppet
     server=puppet
+
 [puppetmasterd]
-  certname=puppet
-  <% if classes.include?("puppet::storedconfiguration") %>
+  <% if classes.include?('puppet::storedconfiguration') %>
   storeconfigs = true
   dbadapter = mysql
   dbuser = puppet
@@ -40,15 +39,16 @@
   dbsocket = /var/run/mysqld/mysqld.sock
   <% end %>
 
-  <% classes.each do |klass| -%>
-  The class <%= klass %> is defined
-  <% end -%>
+<% tags.each do |tag| -%>
+The tag <%= tag %> is part of the current scope
+<% end -%>
 
-  <% all_tags.each do |tag| -%>
-  The tag <%= tag %> is defined
-  <% end -%>
+<% all_tags.each do |tag| -%>
+The tag <%= tag %> is defined
+<% end -%>
 
-  <% tags.each do |tag| -%>
-  The tag <%= tag %> is part of the current scope
-  <% end -%>
+<% classes.each do |klass| -%>
+The class <%= klass %> is defined
+<% end -%>
+
 

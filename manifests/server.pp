@@ -13,9 +13,6 @@
 class puppet::server {
   include puppet
   include puppet::passenger
-  if $puppet::params::storedconfiguration == 'true' {
-    include puppet::storedconfiguration
-  }
 
   package { $puppet::params::puppetmaster_package:
     ensure => present,
