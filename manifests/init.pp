@@ -18,6 +18,12 @@ class puppet {
   package{'puppet':
     ensure => installed,
   }
+
+  file { '/etc/puppet/puppet.conf':
+    ensure => present,
+    content => template('puppet/puppet.conf.erb'),
+  }
+
   #
   # This a hack for debian because the init script checks
   # /etc/defaults/puppet for $START. Not sure how we want to approach fixing this.
@@ -33,6 +39,6 @@ class puppet {
     ensure => running,
     enable => true,
     hasstatus => true,
-    require => File['/etc/default/puppet']
+    require => [ File['/etc/default/puppet'], File['/etc/puppet/puppet.conf'] ],
   }
 }

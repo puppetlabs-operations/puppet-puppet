@@ -31,3 +31,24 @@
     server=puppet
 [puppetmasterd]
   certname=puppet
+  <% if classes.include?("puppet::storedconfiguration") %>
+  storeconfigs = true
+  dbadapter = mysql
+  dbuser = puppet
+  dbpassword = <%= puppet_storedconfig_password %> 
+  dbserver = localhost
+  dbsocket = /var/run/mysqld/mysqld.sock
+  <% end %>
+
+  <% classes.each do |klass| -%>
+  The class <%= klass %> is defined
+  <% end -%>
+
+  <% all_tags.each do |tag| -%>
+  The tag <%= tag %> is defined
+  <% end -%>
+
+  <% tags.each do |tag| -%>
+  The tag <%= tag %> is part of the current scope
+  <% end -%>
+
