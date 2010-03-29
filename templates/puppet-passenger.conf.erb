@@ -18,19 +18,10 @@ Listen <%= port %>
         SSLEngine on
         SSLProtocol -ALL +SSLv3 +TLSv1
         SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
-#
-# I need to figure out how this works with multiple puppet maseters
-#
-#
         SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= certname %>.pem
         SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= certname %>.pem
         SSLCertificateChainFile /var/lib/puppet/ssl/certs/ca.pem
         SSLCACertificateFile    /var/lib/puppet/ssl/certs/ca.pem
-#        SSLCertificateChainFile /etc/puppet/ssl/ca/ca_crt.pem
-#        SSLCACertificateFile    /etc/puppet/ssl/ca/ca_crt.pem
-        # If Apache complains about invalid signatures on the CRL, you can try disabling
-        # CRL checking by commenting the next line, but this is not recommended.
-#        SSLCARevocationFile     /etc/puppet/ssl/ca/ca_crl.pem
         SSLVerifyClient optional
         SSLVerifyDepth  1
         SSLOptions +StdEnvVars
@@ -43,5 +34,11 @@ Listen <%= port %>
                 Order allow,deny
                 allow from all
         </Directory>
+       
+        ErrorLog /var/log/apache2/<%= name %>_error.log
+        LogLevel warn
+        CustomLog /var/log/apache2/<%= name %>_access.log combined
+        ServerSignature On
+
 </VirtualHost>
 

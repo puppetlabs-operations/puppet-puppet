@@ -12,8 +12,6 @@
 #
 class puppet::params {
 
- $storedconfiguration = 'true'
-
  case $operatingsystem {
     'centos': {
       $puppetmaster_package='puppet-server'

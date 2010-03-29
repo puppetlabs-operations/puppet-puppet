@@ -19,11 +19,6 @@ class puppet {
     ensure => installed,
   }
 
-  file { '/etc/puppet/puppet.conf':
-    ensure => present,
-    content => template('puppet/puppet.conf.erb'),
-  }
-
   file { $puppet::params::puppetd_defaults:
     mode => '0644',
     owner => 'root',
@@ -34,6 +29,5 @@ class puppet {
     ensure => running,
     enable => true,
     hasstatus => true,
-    require => [ File[$puppet::params::puppetd_service], File['/etc/puppet/puppet.conf'] ],
   }
 }

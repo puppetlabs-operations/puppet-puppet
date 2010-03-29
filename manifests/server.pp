@@ -13,10 +13,17 @@
 class puppet::server {
   include puppet
   include puppet::passenger
+  include puppet::storedconfiguration
 
   package { $puppet::params::puppetmaster_package:
     ensure => present,
   }
+
+  file { '/etc/puppet/puppet.conf':
+    ensure => present,
+    content => template('puppet/puppet.conf.erb'),
+  }
+
   file { '/etc/puppet/namespaceauth.conf':
     owner => root,
     group => root,

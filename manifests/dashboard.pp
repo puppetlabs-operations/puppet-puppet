@@ -34,7 +34,7 @@ class puppet::dashboard {
     require => Package['puppet-dashboard'],
   }
 
-  apache::vhost { 'demo.puppetlabs.com':
+  apache::vhost { $dashboard_site:
     port => '80',
     priority => '50',
     docroot => '/usr/share/puppet-dashboard/public/',

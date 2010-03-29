@@ -1,7 +1,7 @@
 Facter.add("certname") do
-  masterpath = '/usr/sbin/puppetmasterd'
+  path = '/usr/bin/puppet'
   setcode do
-    %x{#{masterpath} --configprint certname}.chomp if File.exists?(masterpath)
+    %x{#{path} --configprint certname}.chomp if File.exists?(path)
   end
 end
 
