@@ -34,6 +34,13 @@ class puppet::dashboard {
     require => Package['puppet-dashboard'],
   }
 
+  cron { 'dashboard_report_import':
+    command => 'cd /usr/share/puppet-dashboard; RAILS_ENV=production rake reports:import',
+    user => 'root',
+    minute => '*/30', 
+    require => Package['puppet-dashboard'],
+  }
+
   apache::vhost { $dashboard_site:
     port => '80',
     priority => '50',

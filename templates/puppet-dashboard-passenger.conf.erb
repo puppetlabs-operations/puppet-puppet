@@ -16,7 +16,7 @@ RailsAutoDetect On
         DocumentRoot <%= docroot %>
         <Directory <%= docroot %>>
                 Options None
-                AllowOverride None
+                AllowOverride AuthConfig
                 Order allow,deny
                 allow from all
         </Directory>
