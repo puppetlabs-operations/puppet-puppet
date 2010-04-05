@@ -29,11 +29,6 @@ class puppet::dashboard {
     require => Package['puppet-dashboard'],
   }  
 
-  file { '/usr/share/puppet-dashboard/lib/puppet/puppet_dashboard.rb':
-    ensure => $puppet::params::puppet_dashboard_report,
-    require => Package['puppet-dashboard'],
-  }
-
   cron { 'dashboard_report_import':
     command => 'cd /usr/share/puppet-dashboard; RAILS_ENV=production rake reports:import',
     user => 'root',
