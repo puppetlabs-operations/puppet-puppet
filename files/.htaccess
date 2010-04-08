@@ -1,0 +1,5 @@
+ AuthName "restricted stuff"
+  AuthType Basic
+  AuthUserFile /etc/puppet/dashboard.htpasswd
+  require valid-user
+

@@ -15,7 +15,7 @@ class puppet {
   include ruby
   include puppet::params
 
-  package{'puppet':
+  package { 'puppet':
     ensure => installed,
   }
 
@@ -25,7 +25,7 @@ class puppet {
     group => 'root',
     source => "puppet:///modules/puppet/$puppet::params::puppetd_defaults",
   }
-  service{ $puppet::params::puppetd_service:
+  service { $puppet::params::puppetd_service:
     ensure => running,
     enable => true,
     hasstatus => true,

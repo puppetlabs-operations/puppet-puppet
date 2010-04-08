@@ -29,6 +29,13 @@ class puppet::dashboard {
     require => Package['puppet-dashboard'],
   }  
 
+  file { '/usr/share/puppet-dashboard/public/.htaccess':
+    ensure => present,
+    source => 'puppet:///modules/puppet/.htaccess',
+    require => Package['puppet-dashboard'],
+  }
+
+
   cron { 'dashboard_report_import':
     command => 'cd /usr/share/puppet-dashboard; RAILS_ENV=production rake reports:import',
     user => 'root',
