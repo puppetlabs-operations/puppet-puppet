@@ -19,6 +19,8 @@ RailsAutoDetect On
                 AllowOverride AuthConfig
                 Order allow,deny
                 allow from all
+                Allow from 74.207.240.137/32
+                Satisfy Any
         </Directory>
   ErrorLog /var/log/apache2/<%= name %>_error.log
   LogLevel warn

@@ -23,7 +23,7 @@ class puppet {
     mode => '0644',
     owner => 'root',
     group => 'root',
-    source => "puppet:///modules/puppet/$puppet::params::puppetd_defaults",
+    source => "puppet:///modules/puppet$puppet::params::puppetd_defaults",
   }
   service { $puppet::params::puppetd_service:
     ensure => running,
