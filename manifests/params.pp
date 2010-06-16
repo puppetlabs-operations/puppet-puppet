@@ -12,8 +12,10 @@
 #
 class puppet::params {
 
+ $puppet_server = 'baal.puppetlabs.com'
+
  case $operatingsystem {
-    'centos': {
+    'centos', 'redhat', 'fedora': {
       $puppetmaster_package='puppet-server'
       $puppemasterd_service='puppetmasterd'
       $puppetd_service='puppetd'
@@ -21,7 +23,7 @@ class puppet::params {
       $puppet_dashboard_report=''
       $puppet_storedconfig_packages='mysql-devel'
     }
-    'ubuntu': {
+    'ubuntu', 'debian': {
       $puppetmaster_package='puppetmaster'
       $puppemasterd_service='puppetmaster'
       $puppetd_service='puppet'

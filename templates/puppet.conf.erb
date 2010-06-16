@@ -1,6 +1,5 @@
 [main]
-server=puppet.puppetlabs.com
-modulepath=/etc/puppet/modules/dist:/etc/puppet/modules/site
+server=<%= puppet_server %>
 logdir=/var/log/puppet
 vardir=/var/lib/puppet
 ssldir=/var/lib/puppet/ssl
@@ -14,14 +13,3 @@ postrun_command=/etc/puppet/etckeeper-commit-post
 [puppetd]
 report = true
 
-[puppetmasterd]
-ssl_client_header = SSL_CLIENT_S_DN
-ssl_client_verify_header = SSL_CLIENT_VERIFY
-report = true
-reports = store, puppet_dashboard
-storeconfigs = true
-dbadapter = mysql
-dbuser = puppet
-dbpassword = <%= puppet_storedconfig_password %> 
-dbserver = localhost
-dbsocket = /var/run/mysqld/mysqld.sock

@@ -15,6 +15,8 @@ class puppet {
   include ruby
   include puppet::params
 
+  $puppet_server = $puppet::params::puppet_server
+
   package { 'puppet':
     ensure => installed,
   }
@@ -30,4 +32,11 @@ class puppet {
     enable => true,
     hasstatus => true,
   }
+
+  file { '/etc/puppet/puppet.conf':
+    content => template('puppet/puppet.conf.erb'),
+    notify => Service[$puppet::params::puppetd_service],
+    require => Package['puppet'],
+  }
+
 }

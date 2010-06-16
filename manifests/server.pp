@@ -21,7 +21,7 @@ class puppet::server {
 
   file { '/etc/puppet/puppet.conf':
     ensure => present,
-    content => template('puppet/puppet.conf.erb'),
+    content => template('puppet/puppet-server.conf.erb'),
   }
 
   file { '/etc/puppet/namespaceauth.conf':

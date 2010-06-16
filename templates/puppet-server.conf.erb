@@ -1,0 +1,27 @@
+[main]
+server=<%= puppet_server %>
+modulepath=/etc/puppet/modules/dist:/etc/puppet/modules/site
+logdir=/var/log/puppet
+vardir=/var/lib/puppet
+ssldir=/var/lib/puppet/ssl
+rundir=/var/run/puppet
+factpath=$vardir/lib/facter
+pluginsync=true
+templatedir=$confdir/templates
+prerun_command=/etc/puppet/etckeeper-commit-pre
+postrun_command=/etc/puppet/etckeeper-commit-post
+
+[puppetd]
+report = true
+
+[puppetmasterd]
+ssl_client_header = SSL_CLIENT_S_DN
+ssl_client_verify_header = SSL_CLIENT_VERIFY
+report = true
+reports = store, puppet_dashboard
+storeconfigs = true
+dbadapter = mysql
+dbuser = puppet
+dbpassword = <%= puppet_storedconfig_password %> 
+dbserver = localhost
+dbsocket = /var/run/mysqld/mysqld.sock
