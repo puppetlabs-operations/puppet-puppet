@@ -16,6 +16,8 @@ class puppet::storedconfiguration {
    require rails
    require mysql::server
    require puppet::server
+
+   $puppet_storedconfig_password = $puppet::params::puppet_storedconfig_password
  
    package { $puppet::params::puppet_storedconfig_packages:
      ensure => installed,

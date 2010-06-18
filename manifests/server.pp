@@ -15,13 +15,11 @@ class puppet::server {
   include puppet::passenger
   include puppet::storedconfiguration
 
+  $puppet_server = $puppet::params::puppet_server
+  $puppet_storedconfig_password = $puppet::params::puppet_storedconfig_password
+
   package { $puppet::params::puppetmaster_package:
     ensure => present,
-  }
-
-  file { '/etc/puppet/puppet.conf':
-    ensure => present,
-    content => template('puppet/puppet-server.conf.erb'),
   }
 
   file { '/etc/puppet/namespaceauth.conf':

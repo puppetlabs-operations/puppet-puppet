@@ -16,6 +16,7 @@ class puppet {
   include puppet::params
 
   $puppet_server = $puppet::params::puppet_server
+  $puppet_storedconfig_password = $puppet::params::puppet_storedconfig_password
 
   package { 'puppet':
     ensure => installed,
@@ -34,7 +35,10 @@ class puppet {
   }
 
   file { '/etc/puppet/puppet.conf':
-    content => template('puppet/puppet.conf.erb'),
+    content => $fqdn ? {
+      $puppet_server => template('puppet/puppet-server.conf.erb'),
+      default => template('puppet/puppet.conf.erb'),
+    },
     notify => Service[$puppet::params::puppetd_service],
     require => Package['puppet'],
   }
