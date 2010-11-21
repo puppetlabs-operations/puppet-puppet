@@ -17,6 +17,7 @@ class puppet {
 
   $puppet_server = $puppet::params::puppet_server
   $puppet_storedconfig_password = $puppet::params::puppet_storedconfig_password
+  $puppetd_service = $puppet::params::puppetd_service
 
   package { 'puppet':
     ensure => installed,
@@ -26,12 +27,14 @@ class puppet {
     mode => '0644',
     owner => 'root',
     group => 'root',
-    source => "puppet:///modules/puppet$puppet::params::puppetd_defaults",
+    source => "puppet:///modules/puppet/${puppet::params::puppetd_defaults}",
   }
-  service { $puppet::params::puppetd_service:
-    ensure => running,
-    enable => true,
-    hasstatus => true,
+  service { "puppetd":
+	  name       => "$puppetd_service",
+    ensure     => running,
+    enable     => true,
+    hasstatus  => true,
+		hasrestart => true,
   }
 
   file { '/etc/puppet/puppet.conf':
@@ -39,8 +42,9 @@ class puppet {
       $puppet_server => template('puppet/puppet-server.conf.erb'),
       default => template('puppet/puppet.conf.erb'),
     },
-    notify => Service[$puppet::params::puppetd_service],
+    notify => Service["puppetd"],
     require => Package['puppet'],
   }
 
 }
+

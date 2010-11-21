@@ -19,7 +19,7 @@ class puppet::params {
     'centos', 'redhat', 'fedora': {
       $puppetmaster_package='puppet-server'
       $puppemasterd_service='puppetmasterd'
-      $puppetd_service='puppetd'
+      $puppetd_service='puppet'
       $puppetd_defaults='/etc/sysconfig/puppet'
       $puppet_dashboard_report=''
       $puppet_storedconfig_packages='mysql-devel'
