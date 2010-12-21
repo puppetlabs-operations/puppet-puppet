@@ -11,10 +11,10 @@ templatedir=$confdir/templates
 prerun_command=/etc/puppet/etckeeper-commit-pre
 postrun_command=/etc/puppet/etckeeper-commit-post
 
-[puppetd]
+[agent]
 report = true
 
-[puppetmasterd]
+[master]
 ssl_client_header = SSL_CLIENT_S_DN
 ssl_client_verify_header = SSL_CLIENT_VERIFY
 report = true
