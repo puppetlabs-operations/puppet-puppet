@@ -49,5 +49,13 @@ class puppet::dashboard {
     docroot => '/usr/share/puppet-dashboard/public',
     template => 'puppet/puppet-dashboard-passenger.conf.erb',
   }
+
+	file {
+		"/etc/logrotate.d/puppet-dashboard":
+			content => template("puppet/puppet-dashboard.logrotate.erb"),
+			owner => root,
+			group => root,
+			mode => 644;
+	}
 }
 
