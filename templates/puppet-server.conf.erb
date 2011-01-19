@@ -11,9 +11,9 @@ templatedir=$confdir/templates
 prerun_command=/etc/puppet/etckeeper-commit-pre
 postrun_command=/etc/puppet/etckeeper-commit-post
 
-[foo]
-manifest=/etc/puppet/foo/site.pp
-modulepath=/etc/puppet/foo/dist:/etc/puppet/foo/site
+[zach]
+manifest=/home/zach/src/puppetlabs-modules/site.pp
+modulepath=/home/zach/src/puppetlabs-modules/dist:/home/zach/src/puppetlabs-modules/site
 
 [agent]
 report = true
