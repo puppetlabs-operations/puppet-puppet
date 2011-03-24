@@ -28,7 +28,7 @@ class puppet::server {
     mode => 644,
     source => 'puppet:///modules/puppet/namespaceauth.conf',
   }
-  
+
   service {'puppetmaster': 
     ensure => stopped, 
     enable => false, 
@@ -37,3 +37,4 @@ class puppet::server {
     before => Service['httpd'] 
   }
 }
+

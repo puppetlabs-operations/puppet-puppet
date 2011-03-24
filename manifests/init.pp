@@ -30,11 +30,11 @@ class puppet {
     source => "puppet:///modules/puppet/${puppet::params::puppetd_defaults}",
   }
   service { "puppetd":
-	  name       => "$puppetd_service",
+    name       => "$puppetd_service",
     ensure     => running,
     enable     => true,
     hasstatus  => true,
-		hasrestart => true,
+    hasrestart => true,
   }
 
   file { '/etc/puppet/puppet.conf':
