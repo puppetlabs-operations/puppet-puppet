@@ -10,6 +10,7 @@
 #
 # Sample Usage:
 #
+
 class puppet::server {
   include puppet
   include puppet::passenger
@@ -23,18 +24,18 @@ class puppet::server {
   }
 
   file { '/etc/puppet/namespaceauth.conf':
-    owner => root,
-    group => root,
-    mode => 644,
+    owner  => root,
+    group  => root,
+    mode   => 644,
     source => 'puppet:///modules/puppet/namespaceauth.conf',
   }
 
   service {'puppetmaster': 
-    ensure => stopped, 
-    enable => false, 
+    ensure    => stopped, 
+    enable    => false, 
     hasstatus => true,
-    require => File['/etc/puppet/puppet.conf'],
-    before => Service['httpd'] 
+    require   => File['/etc/puppet/puppet.conf'],
+    before    => Service['httpd'] 
   }
 }
 
