@@ -23,7 +23,7 @@ class puppet::dashboard {
     ensure => present,
   }
 
-  file { '/usr/share/puppet-dashboard/config/database.yml':
+  file { '/etc/puppet-dashboard/database.yml':
     ensure => present,
     content => template('puppet/database.yml.erb'),
     require => Package['puppet-dashboard'],
@@ -50,12 +50,12 @@ class puppet::dashboard {
     template => 'puppet/puppet-dashboard-passenger.conf.erb',
   }
 
-	file {
-		"/etc/logrotate.d/puppet-dashboard":
-			content => template("puppet/puppet-dashboard.logrotate.erb"),
-			owner => root,
-			group => root,
-			mode => 644;
-	}
+  file {
+    "/etc/logrotate.d/puppet-dashboard":
+      content => template("puppet/puppet-dashboard.logrotate.erb"),
+      owner => root,
+      group => root,
+      mode => 644;
+  }
 }
 
