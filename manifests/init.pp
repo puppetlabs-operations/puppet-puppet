@@ -5,7 +5,7 @@
 # Parameters:
 #
 # Actions:
-#   - Install Puppet
+# - Install Puppet
 #
 # Requires:
 #
