@@ -1,24 +1,4 @@
-# Class: puppet::storedconfiguration
-#
-# This class installs and configures Puppet's stored configuration capability
-#
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
-class puppet::storedconfiguration {
-
-   $rails_version = '2.3.5'
-   require rails
-   require mysql::server
-   require puppet::server
-
-   $puppet_storedconfig_password = $puppet::params::puppet_storedconfig_password
-
+class puppet::storeconfig::mysql {
    package { $puppet::params::puppet_storedconfig_packages:
      ensure => installed,
    }
@@ -43,5 +23,6 @@ class puppet::storedconfiguration {
      privileges => [all],
      require => [ Database['puppet'], Database_user['puppet@localhost'] ],
    }
+
 
 }

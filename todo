@@ -1,0 +1,5 @@
+# install activerecord
+# install ruby sqlite and mysql libs
+# install passenger
+
+All these should be pacakges, not gems eh?

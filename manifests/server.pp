@@ -3,6 +3,7 @@
 # This class installs and configures a Puppet master
 #
 # Parameters:
+# * modulepath
 #
 # Actions:
 #
@@ -10,14 +11,31 @@
 #
 # Sample Usage:
 #
+class puppet::server (
+    $modulepath = "/etc/puppet/modules",
+    $storeconfigs = 'true',
+    $dbadapter = 'sqlite3',
+    $dbuser = '',
+    $dbpassword = '',
+    $dbserver = '',
+    $dbsocket = '',
+    $certname = $fqdn
 
-class puppet::server {
-  include puppet
+  ){
+
+  #include puppet
   include puppet::passenger
-  include puppet::storedconfiguration
 
-  $puppet_server = $puppet::params::puppet_server
-  $puppet_storedconfig_password = $puppet::params::puppet_storedconfig_password
+  if $storeconfigs == 'true' {
+    #include puppet::storedconfiguration
+    class { "puppet::storeconfig":
+      dbadapter  => $dbadapter,
+      dbuser     => $dbuser,
+      dbpassword => $dbpassword,
+      dbserver   => $dbserver,
+      dbsocket   => $socket
+    }
+  }
 
   package { $puppet::params::puppetmaster_package:
     ensure => present,
@@ -27,15 +45,21 @@ class puppet::server {
     owner  => root,
     group  => root,
     mode   => 644,
-    source => 'puppet:///modules/puppet/namespaceauth.conf',
+    source => 'puppet:///modules/puppet/namespaceauth.conf';
   }
 
-  service {'puppetmaster': 
-    ensure    => stopped, 
-    enable    => false, 
+  concat::fragment { 'puppet.conf-header':
+    target  => "/etc/puppet/puppet.conf",
+    content => template("puppet/puppet.conf-master.erb");
+  }
+
+  service {'puppetmaster':
+    ensure    => stopped,
+    enable    => false,
     hasstatus => true,
     require   => File['/etc/puppet/puppet.conf'],
-    before    => Service['httpd'] 
+    before    => Service['httpd'];
   }
+
 }
 
