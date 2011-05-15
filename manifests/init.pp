@@ -15,20 +15,27 @@ class puppet ($server){
   include ruby
   include puppet::params
 
-  $puppet_server = $server
+  $puppet_server   = $server
   $puppet_storedconfig_password = $puppet::params::puppet_storedconfig_password
   $puppetd_service = $puppet::params::puppetd_service
+  $puppet_conf     = $puppet::params::puppet_conf
+  $puppet_logdir   = $puppet::params::puppet_logdir
+  $puppet_vardir   = $puppet::params::puppet_vardir
+  $puppet_ssldir   = $puppet::params::puppet_ssldir
 
   package { 'puppet':
     ensure => installed,
   }
 
-  file { $puppet::params::puppetd_defaults:
-    mode => '0644',
-    owner => 'root',
-    group => 'root',
-    source => "puppet:///modules/puppet/${puppet::params::puppetd_defaults}",
+  if $operatingsystem == "Linux" {
+    file { $puppet::params::puppetd_defaults:
+      mode   => '0644',
+      owner  => 'root',
+      group  => 'root',
+      source => "puppet:///modules/puppet/${puppet::params::puppetd_defaults}",
+    }
   }
+
   service { "puppetd":
     name       => "$puppetd_service",
     ensure     => running,
@@ -48,11 +55,11 @@ class puppet ($server){
 
   concat::fragment { 'puppet.conf-common':
     order   => '00',
-    target  => "/etc/puppet/puppet.conf",
+    target  => "$puppet::params::puppet_conf",
     content => template("puppet/puppet.conf-common.erb");
   }
 
-  concat { "/etc/puppet/puppet.conf":
+  concat { "$puppet::params::puppet_conf":
     mode    => '0644',
     notify  => Service["puppetd"],
     require => Package['puppet'];
