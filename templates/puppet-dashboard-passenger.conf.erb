@@ -17,11 +17,11 @@ RailsAutoDetect On
 #  RailsBaseURI /
   <Directory <%= docroot %>>
     Options None
+  </Directory>
+  <Location "/">
     Order allow,deny
     Allow from <%= ipaddress %>
     Satisfy any
-  </Directory>
-  <Location "/">
     AuthName "Puppet Labs Dashboard"
     AuthType Basic
     AuthUserFile /etc/apache2/plauth.htpasswd
