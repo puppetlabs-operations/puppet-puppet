@@ -14,21 +14,23 @@ RailsAutoDetect On
 <VirtualHost *:<%= port %>>
   ServerName <%= name %>
   DocumentRoot <%= docroot %>
-  RailsBaseURI /
+#  RailsBaseURI /
   <Directory <%= docroot %>>
-    AuthName "Puppet Labs Dashboard"
-    AuthType Basic
-    AuthUserFile /etc/apache2/plauth.htpasswd
-    require valid-user
     Options None
-    #AllowOverride AuthConfig
     Order allow,deny
     Allow from <%= ipaddress %>
     Satisfy any
   </Directory>
+  <Location "/">
+    AuthName "Puppet Labs Dashboard"
+    AuthType Basic
+    AuthUserFile /etc/apache2/plauth.htpasswd
+    require valid-user
+    #AllowOverride AuthConfig
+  </Location>
   ErrorLog /var/log/apache2/<%= name %>_error.log
   LogLevel warn
   CustomLog /var/log/apache2/<%= name %>_access.log combined
-  ServerSignature On
+  ServerSignature Off
 </VirtualHost>
 
