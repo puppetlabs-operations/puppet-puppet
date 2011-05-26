@@ -12,9 +12,9 @@
 #
 class puppet::storeconfig (
     $dbadapter,
-    $dbuser     = '',
-    $dbpassword = '',
-    $dbserver   = '',
+    $dbuser     = 'puppet',
+    $dbpassword = 'password',
+    $dbserver   = 'localhost',
     $dbsocket   = ''
   ) {
 
@@ -25,7 +25,12 @@ class puppet::storeconfig (
       include puppet::storeconfig::sqlite
     }
     'mysql': {
-      include puppet::storeconfig::mysql
+      class { 
+        "puppet::storeconfig::mysql": 
+          $dbuser => $dbuser,
+          $dbpassword => $dbpassword,
+      }
+
     }
     default: { err("targer dbadapter $dbadapter not implemented") }
   }
