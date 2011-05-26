@@ -40,7 +40,8 @@ class puppet::server (
     $dbpassword = '',
     $dbserver = '',
     $dbsocket = '',
-    $certname = $fqdn
+    $certname = $fqdn,
+    $reporturl = "http://$fqdn/reports"
 
   ){
 
