@@ -70,7 +70,7 @@ class puppet::server (
   }
 
   concat::fragment { 'puppet.conf-header':
-    order   => '00',
+    order   => '05',
     target  => "/etc/puppet/puppet.conf",
     content => template("puppet/puppet.conf-master.erb");
   }

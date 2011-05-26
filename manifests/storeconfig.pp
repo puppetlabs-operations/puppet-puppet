@@ -31,7 +31,7 @@ class puppet::storeconfig (
   }
 
   concat::fragment { 'puppet.conf-header':
-    order   => '01',
+    order   => '06',
     target  => "/etc/puppet/puppet.conf",
     content => template("puppet/puppet.conf-master-storeconfigs.erb");
   }
