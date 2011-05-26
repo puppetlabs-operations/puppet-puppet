@@ -27,10 +27,9 @@ class puppet::storeconfig (
     'mysql': {
       class { 
         "puppet::storeconfig::mysql": 
-          $dbuser => $dbuser,
-          $dbpassword => $dbpassword,
+          dbuser     => $dbuser,
+          dbpassword => $dbpassword,
       }
-
     }
     default: { err("targer dbadapter $dbadapter not implemented") }
   }
