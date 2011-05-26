@@ -4,12 +4,33 @@
 #
 # Parameters:
 # * modulepath
+# * storeconfigs
+# * dbadapter
+# * dbuser
+# * dbpassword
+# * dbserver
+# * dbsocket
+# * certname
 #
 # Actions:
 #
 # Requires:
 #
 # Sample Usage:
+#
+#  $modulepath = [
+#    "/etc/puppet/modules/site",
+#    "/etc/puppet/modules/dist",
+#  ]
+#
+#  class { "puppet::server":
+#    modulepath => inline_template("<%= modulepath.join(':') %>"),
+#    dbadapter  => "mysql",
+#    dbuser     => "puppet",
+#    dbpassword => "password"
+#    dbsocket   => "/var/run/mysqld/mysqld.sock",
+#    reporturl  => "http://dashboard.puppetlabs.com/reports";
+#  }
 #
 class puppet::server (
     $modulepath = "/etc/puppet/modules",
@@ -49,6 +70,7 @@ class puppet::server (
   }
 
   concat::fragment { 'puppet.conf-header':
+    order   => '00',
     target  => "/etc/puppet/puppet.conf",
     content => template("puppet/puppet.conf-master.erb");
   }
