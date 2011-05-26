@@ -33,15 +33,15 @@
 #  }
 #
 class puppet::server (
-    $modulepath = "/etc/puppet/modules",
+    $modulepath   = "/etc/puppet/modules",
     $storeconfigs = 'true',
-    $dbadapter = 'sqlite3',
-    $dbuser = '',
-    $dbpassword = '',
-    $dbserver = '',
-    $dbsocket = '',
-    $certname = $fqdn,
-    $reporturl = "http://$fqdn/reports"
+    $dbadapter    = 'sqlite3',
+    $dbuser       = 'puppet',
+    $dbpassword   = 'password',
+    $dbserver     = 'localhost',
+    $dbsocket     = '/var/run/mysqld/mysqld.sock',
+    $certname     = "$fqdn",
+    $reporturl    = "http://$fqdn/reports"
 
   ){
 
