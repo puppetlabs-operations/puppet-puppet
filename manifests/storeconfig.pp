@@ -12,11 +12,13 @@
 #
 class puppet::storeconfig (
     $dbadapter,
-    $dbuser = '',
+    $dbuser     = '',
     $dbpassword = '',
-    $dbserver = '',
-    $dbsocket = ''
+    $dbserver   = '',
+    $dbsocket   = ''
   ) {
+
+  $storeconfigs = 'true' # called from puppet::server only if storeconfigs is on
 
   case $dbadapter {
     'sqlite3': {
@@ -25,7 +27,13 @@ class puppet::storeconfig (
     'mysql': {
       include puppet::storeconfig::mysql
     }
-    default: { err("targer dbadapter not implemented") }
+    default: { err("targer dbadapter $dbadapter not implemented") }
+  }
+
+  concat::fragment { 'puppet.conf-header':
+    order   => '01',
+    target  => "/etc/puppet/puppet.conf",
+    content => template("puppet/puppet.conf-master-storeconfigs.erb");
   }
 
 }
