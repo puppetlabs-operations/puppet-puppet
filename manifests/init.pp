@@ -14,6 +14,7 @@
 class puppet ($server){
   include ruby
   include puppet::params
+  include concat::setup
 
   $puppet_server   = $server
   $puppet_storedconfig_password = $puppet::params::puppet_storedconfig_password
