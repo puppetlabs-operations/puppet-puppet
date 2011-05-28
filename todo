@@ -1,5 +1,10 @@
-# install activerecord
+# install activerecord for storeconfigs
 # install ruby sqlite and mysql libs
 # install passenger
 
 All these should be pacakges, not gems eh?
+
+mysql-server should get installed earlier
+
+dbpass and dbuser etc should only be used for the adapters that need it
+
