@@ -3,6 +3,8 @@ class puppet::storeconfig::mysql (
     $dbpassword
   ){
 
+  include puppet::params
+
    package { $puppet::params::puppet_storedconfig_packages:
      ensure => installed,
    }
