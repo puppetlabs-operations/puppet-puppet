@@ -22,9 +22,9 @@ RailsAutoDetect On
     Order allow,deny
     Allow from <%= ipaddress %>
     Satisfy any
-    AuthName "Puppet Labs Dashboard"
+    AuthName "Puppet Dashboard"
     AuthType Basic
-    AuthUserFile /etc/apache2/plauth.htpasswd
+    AuthUserFile /etc/apache2/htpasswd
     require valid-user
     #AllowOverride AuthConfig
   </Location>
