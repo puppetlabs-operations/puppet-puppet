@@ -17,24 +17,34 @@
 # Sample Usage:
 #   class { puppet::dashboard: site => 'dashboard.xyz.net; }
 #
-class puppet::dashboard ($site = "fqdn") {
+class puppet::dashboard (
+    $site    = "dashboard.${domain}",
+    $db_user = "dashboard",
+    $db_pw   = 'ch@ng3me'
+  ) {
+
   include ::passenger
   include passenger::params
   include ruby::dev
-  include mysql::server
 
   $passenger_version=$passenger::params::version
   $gem_path=$passenger::params::gem_path
+  $dashboard_site = $site
 
   package { 'puppet-dashboard':
     ensure => present,
   }
 
+  mysql::db { "dashboard_production":
+    db_user => $db_user,
+    db_pw   => $db_pw;
+  }
+
   file { '/etc/puppet-dashboard/database.yml':
-    ensure => present,
+    ensure  => present,
     content => template('puppet/database.yml.erb'),
     require => Package['puppet-dashboard'],
-  }  
+  }
 
   file { [ '/usr/share/puppet-dashboard/public', '/usr/share/puppet-dashboard/public/stylesheets', '/usr/share/puppet-dashboard/public/javascript' ]:
     mode => 0755,
@@ -57,12 +67,14 @@ class puppet::dashboard ($site = "fqdn") {
     template => 'puppet/puppet-dashboard-passenger.conf.erb',
   }
 
-  file {
-    "/etc/logrotate.d/puppet-dashboard":
-      content => template("puppet/puppet-dashboard.logrotate.erb"),
-      owner   => root,
-      group   => root,
-      mode    => 644;
-  }
+
+# managed by the dashboard package
+# zleslie:  file {
+# zleslie:    "/etc/logrotate.d/puppet-dashboard":
+# zleslie:      content => template("puppet/puppet-dashboard.logrotate.erb"),
+# zleslie:      owner   => root,
+# zleslie:      group   => root,
+# zleslie:      mode    => 644;
+# zleslie:  }
 }
 
