@@ -28,7 +28,7 @@ class puppet ($server){
     ensure => installed,
   }
 
-  if $operatingsystem == "Linux" {
+  if $kernel == "Linux" {
     file { $puppet::params::puppetd_defaults:
       mode   => '0644',
       owner  => 'root',
@@ -44,15 +44,6 @@ class puppet ($server){
     hasstatus  => true,
     hasrestart => true,
   }
-
-#  file { '/etc/puppet/puppet.conf':
-#    content => $fqdn ? {
-#      $puppet_server => template('puppet/puppet-server.conf.erb'),
-#      default => template('puppet/puppet.conf.erb'),
-#    },
-#    notify => Service["puppetd"],
-#    require => Package['puppet'],
-#  }
 
   concat::fragment { 'puppet.conf-common':
     order   => '00',
