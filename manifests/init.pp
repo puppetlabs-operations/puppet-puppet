@@ -53,7 +53,6 @@ class puppet ($server){
 
   concat { "$puppet::params::puppet_conf":
     mode    => '0644',
-    notify  => Service["puppetd"],
     require => Package['puppet'];
   }
 
