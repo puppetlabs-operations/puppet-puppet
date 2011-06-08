@@ -5,3 +5,7 @@ ssl_client_verify_header = SSL_CLIENT_VERIFY
 report = true
 reports = store, http
 reporturl = <%= reporturl %>
+# See http://hunnur.com/blog/2010/10/dynamic-git-branch-puppet-environments/
+environment = production
+manifest    = $confdir/environments/$environment/manifests/site.pp
+modulepath  = $confdir/environments/$environment/modules
