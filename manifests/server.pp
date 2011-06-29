@@ -33,6 +33,7 @@
 #  }
 #
 class puppet::server (
+    $backup       = true,
     $modulepath   = "/etc/puppet/modules",
     $storeconfigs = 'true',
     $dbadapter    = 'sqlite3',
@@ -58,6 +59,8 @@ class puppet::server (
       dbsocket   => $socket
     }
   }
+
+  if $backup == true { include puppet::server::backup }
 
   package { $puppet::params::puppetmaster_package:
     ensure => present,
