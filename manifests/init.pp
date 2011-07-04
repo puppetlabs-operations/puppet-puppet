@@ -24,16 +24,29 @@ class puppet ($server){
   $puppet_vardir   = $puppet::params::puppet_vardir
   $puppet_ssldir   = $puppet::params::puppet_ssldir
 
-  package { 'puppet':
-    ensure => installed,
+  if ! $kernel == "Darwin" {
+    package { 'puppet':
+      ensure => installed,
+    }
   }
 
-  if $kernel == "Linux" {
-    file { $puppet::params::puppetd_defaults:
-      mode   => '0644',
-      owner  => 'root',
-      group  => 'root',
-      source => "puppet:///modules/puppet/${puppet::params::puppetd_defaults}",
+  case $kernel {
+    linux: {
+      file { $puppet::params::puppetd_defaults:
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => "puppet:///modules/puppet/${puppet::params::puppetd_defaults}",
+      }
+    }
+    darwin : {
+      file { "com.puppetlabs.puppet.plist":
+        owner   => root,
+        group   => 0,
+        mode    => 0640,
+        source  => "puppet:///modules/puppet/com.puppetlabs.puppet.plist",
+        path    => "/Library/LaunchDaemons/com.puppetlabs.puppet.plist",
+      }
     }
   }
 
@@ -53,7 +66,6 @@ class puppet ($server){
 
   concat { "$puppet::params::puppet_conf":
     mode    => '0644',
-    require => Package['puppet'];
   }
 
 }

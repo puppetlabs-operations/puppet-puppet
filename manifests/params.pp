@@ -48,7 +48,7 @@ class puppet::params {
       $puppet_ssldir='/var/puppet/ssl'
     }
     'darwin': {
-      $puppetd_service='puppet'
+      $puppetd_service='com.puppetlabs.puppet'
       $puppet_conf='/etc/puppet/puppet.conf'
       $puppet_logdir='/var/log/puppet'
       $puppet_vardir='/var/lib/puppet'

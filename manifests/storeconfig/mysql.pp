@@ -5,9 +5,17 @@ class puppet::storeconfig::mysql (
 
   include puppet::params
 
-   package { $puppet::params::puppet_storedconfig_packages:
-     ensure => installed,
-   }
+  if $kernel == "Linux" {
+    package { $puppet::params::puppet_storedconfig_packages:
+      ensure => installed,
+    }
+  }
+
+  concat::fragment { 'puppet.conf-master-storeconfig-mysql':
+    order   => '07',
+    target  => "/etc/puppet/puppet.conf",
+    content => template("puppet/puppet.conf-master-storeconfigs-mysql.erb");
+  }
 
    package { 'mysql':
      ensure   => installed,
