@@ -21,7 +21,6 @@
                 <string>--no-daemonize</string>
                 <string>--logdest</string>
                 <string>console</string>
-                <string>--noop</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
