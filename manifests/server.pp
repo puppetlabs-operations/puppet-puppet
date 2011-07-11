@@ -46,7 +46,7 @@ class puppet::server (
 
   ){
 
-  if ! $kernel == "Darwin" {
+  if $kernel != "Darwin" {
     include puppet::passenger
   }
 
