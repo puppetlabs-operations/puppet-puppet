@@ -63,7 +63,7 @@ class puppet::server (
 
   if $backup == true { include puppet::server::backup }
 
-  if ! $kernel == "Darwin" {
+  if $kernel != "Darwin" {
     package { $puppet::params::puppetmaster_package:
       ensure => present,
     }
