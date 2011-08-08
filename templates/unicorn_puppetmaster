@@ -1,0 +1,85 @@
+#!/bin/bash
+# unicorn-puppet         This init script enables the puppetmaster rackup application
+#                        via unicorn.
+#
+# Authors:               Richard Crowley
+#                        Naresh V.
+#
+#    Modified for Debian usage by Matt Carroll
+#
+#
+
+lockfile=/var/lock/puppetmaster-unicorn
+pidfile=/var/run/puppet/puppetmaster_unicorn.pid
+
+RETVAL=0
+DAEMON=/var/lib/gems/1.8/bin/unicorn
+DAEMON_OPTS="-D -c /etc/puppet/unicorn.conf"
+
+
+start() {
+    sudo -u $USER $DAEMON $DAEMON_OPTS
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] && touch "$lockfile"
+    echo
+    return $RETVAL
+}
+
+stop() {
+    sudo -u $USER kill `cat $pidfile`
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f "$lockfile"
+    return $RETVAL
+}
+
+restart() {
+    stop
+    sleep 1
+    start
+    RETVAL=$?
+    echo
+    [ $RETVAL -ne 0 ] && rm -f "$lockfile"
+    return $RETVAL
+}
+
+condrestart() {
+    status
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] && restart
+}
+
+status() {
+    ps ax | egrep -q "unicorn (worker|master)"
+    RETVAL=$?
+    return $RETVAL
+}
+
+usage() {
+    echo "Usage: $0 {start|stop|restart|status|condrestart}" >&2
+    return 3
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        restart
+        ;;
+    condrestart)
+        condrestart
+        ;;
+    status)
+        status
+        ;;
+    *)
+        usage
+        ;;
+esac
+
+exit $RETVAL
+
