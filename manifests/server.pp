@@ -11,6 +11,7 @@
 # * dbserver
 # * dbsocket
 # * certname
+# * servertype
 #
 # Actions:
 #
@@ -44,7 +45,6 @@ class puppet::server (
     $certname     = "$fqdn",
     $reporturl    = "http://$fqdn/reports",
     $servertype   = "passenger"
-
   ){
 
   case $servertype {
@@ -53,6 +53,10 @@ class puppet::server (
     }
     "unicorn": {
       include puppet::server::unicorn
+    }
+    default: {
+      err("Only \"passenger\" and \"unicorn\" are valid options for servertype")
+      fail("Servertype \"$servertype\" not implemented")
     }
   }
 
