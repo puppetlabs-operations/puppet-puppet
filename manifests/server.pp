@@ -42,12 +42,18 @@ class puppet::server (
     $dbserver     = 'localhost',
     $dbsocket     = '/var/run/mysqld/mysqld.sock',
     $certname     = "$fqdn",
-    $reporturl    = "http://$fqdn/reports"
+    $reporturl    = "http://$fqdn/reports",
+    $servertype   = "passenger"
 
   ){
 
-  if $kernel != "Darwin" {
-    include puppet::passenger
+  case $servertype {
+    "passenger": {
+      include puppet::server::passenger
+    }
+    "unicorn": {
+      include puppet::server::unicorn
+    }
   }
 
   if $storeconfigs == 'true' {
