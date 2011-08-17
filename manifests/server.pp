@@ -79,13 +79,6 @@ class puppet::server (
     }
   }
 
-#  file { '/etc/puppet/namespaceauth.conf':
-#    owner  => root,
-#    group  => root,
-#    mode   => 644,
-#    source => 'puppet:///modules/puppet/namespaceauth.conf';
-#  }
-
   concat::fragment { 'puppet.conf-header':
     order   => '05',
     target  => "/etc/puppet/puppet.conf",

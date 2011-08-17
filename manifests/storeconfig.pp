@@ -20,6 +20,20 @@ class puppet::storeconfig (
 
   $storeconfigs = 'true' # called from puppet::server only if storeconfigs is on
 
+  package { "gem-activerecord":
+    name => $operatingsystem ? {
+      "Debian" => "libactiverecord-ruby",
+      "Darwin" => "rb-activerecord",
+      default  => activerecord,
+    },
+    provider => $operatingsystem ? {
+      "Debian" => apt,
+      "Darwin" => macports,
+      default  => gem,
+    }
+  }
+
+
   case $dbadapter {
     'sqlite3': {
       include puppet::storeconfig::sqlite
