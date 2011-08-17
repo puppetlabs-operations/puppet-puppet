@@ -33,7 +33,6 @@ class puppet::storeconfig (
     }
   }
 
-
   case $dbadapter {
     'sqlite3': {
       include puppet::storeconfig::sqlite

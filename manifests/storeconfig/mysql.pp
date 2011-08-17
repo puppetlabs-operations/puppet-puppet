@@ -17,10 +17,18 @@ class puppet::storeconfig::mysql (
     content => template("puppet/puppet.conf-master-storeconfigs-mysql.erb");
   }
 
-   package { 'mysql':
-     ensure   => installed,
-     provider => 'gem',
-   }
+  package { "gem-mysql":
+    name => $operatingsystem ? {
+      "Debian" => "libmysql-ruby",
+      "Darwin" => "rb-mysql",
+      default  => mysql,
+    },
+    provider => $operatingsystem ? {
+      "Debian" => apt,
+      "Darwin" => macports,
+      default  => gem,
+    }
+  }
 
    database{ 'puppet':
      ensure  => present,
