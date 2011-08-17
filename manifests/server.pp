@@ -97,8 +97,7 @@ class puppet::server (
       ensure    => stopped,
       enable    => false,
       hasstatus => true,
-      require   => File['/etc/puppet/puppet.conf'],
-      before    => Service['httpd'];
+      require   => File['/etc/puppet/puppet.conf'];
     }
   }
 
