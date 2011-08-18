@@ -50,13 +50,13 @@ class puppet::server (
   case $servertype {
     "passenger": {
       include puppet::server::passenger
-      $ssl_client_header        = "HTTP_X_CLIENT_DN"
-      $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
+      $ssl_client_header        = "SSL_CLIENT_S_DN"
+      $ssl_client_verify_header = "SSL_CLIENT_VERIFY"
     }
     "unicorn": {
       include puppet::server::unicorn
-      $ssl_client_header        = "SSL_CLIENT_S_DN"
-      $ssl_client_verify_header = "SSL_CLIENT_VERIFY"
+      $ssl_client_header        = "HTTP_X_CLIENT_DN"
+      $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
     }
     default: {
       err("Only \"passenger\" and \"unicorn\" are valid options for servertype")
@@ -82,8 +82,6 @@ class puppet::server (
       ensure => present,
     }
   }
-
-  notice $ssl_client_verify_header
 
   concat::fragment { 'puppet.conf-header':
     order   => '05',
