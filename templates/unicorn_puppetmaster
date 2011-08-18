@@ -20,19 +20,21 @@
 
 
 lockfile=/var/lock/puppetmaster-unicorn
-pidfile=/var/run/puppet/puppetmaster_unicorn.pid
+PIDFILE=/var/run/puppet/puppetmaster_unicorn.pid
 
 RETVAL=0
 DAEMON=/var/lib/gems/1.8/bin/unicorn
 DAEMON_OPTS="-D -c /etc/puppet/unicorn.conf"
 
+. /lib/lsb/init-functions
 
 start() {
-    sudo -u $USER $DAEMON $DAEMON_OPTS
-    RETVAL=$?
-    [ $RETVAL -eq 0 ] && touch "$lockfile"
-    echo
-    return $RETVAL
+    log_daemon_msg "Starting Unicorn Pupptemaster server" "unicorn_puppetmaster"
+    if start-stop-daemon --start --quiet --oknodo --user $USER --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS; then
+      log_end_msg 0
+    else
+      log_end_msg 1
+    fi
 }
 
 stop() {
