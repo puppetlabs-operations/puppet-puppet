@@ -6,7 +6,7 @@ upstream muppet-upstream {
 
 server {
   listen 8140;
-  include /etc/nginx/conf.d/ssl.conf
+  include /etc/nginx/conf.d/ssl.conf;
   ssl_verify_client on;
   root /usr/share/empty;
   location / {
