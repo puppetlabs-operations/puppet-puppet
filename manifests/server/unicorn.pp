@@ -6,13 +6,12 @@ class puppet::server::unicorn {
       port     => 8140,
       template => "puppet/nginx-unicorn.vhost.conf.erb"
   }
-  nginx::conf {
-    "ssl":
-      template => "puppet/nginx-ssl.conf.erb";
-    "proxy_set_header":
-      template => "puppet/nginx-proxy_set_header.conf.erb";
-  }
-
+#  nginx::conf {
+#    "ssl":
+#      template => "puppet/nginx-ssl.conf.erb";
+#    "proxy_set_header":
+#      template => "puppet/nginx-proxy_set_header.conf.erb";
+#  }
 
   unicorn::app {
     "puppetmaster":

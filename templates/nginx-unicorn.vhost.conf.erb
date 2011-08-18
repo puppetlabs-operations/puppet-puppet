@@ -19,6 +19,7 @@ server {
   ssl_verify_client       optional;
 
   root /usr/share/empty;
+
   location / {
     proxy_pass http://puppetmaster_unicorn;
     #include /etc/nginx/conf.d/proxy_set_header.conf;
