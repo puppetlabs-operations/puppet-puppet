@@ -83,6 +83,8 @@ class puppet::server (
     }
   }
 
+  notice $ssl_client_verify_header
+
   concat::fragment { 'puppet.conf-header':
     order   => '05',
     target  => "/etc/puppet/puppet.conf",
