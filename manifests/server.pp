@@ -89,7 +89,7 @@ class puppet::server (
     service {'puppetmaster':
       ensure    => stopped,
       enable    => false,
-      hasstatus => true,
+      #zleslie hasstatus => true, # this is broken on debian if its disabled, since 0 is still returned when not running
       require   => File['/etc/puppet/puppet.conf'];
     }
   }
