@@ -9,7 +9,7 @@ class puppet::server::unicorn {
   nginx::conf {
     "ssl":
       template => "puppet/nginx-ssl.conf.erb";
-    "nginx-proxy_set_header":
+    "proxy_set_header":
       template => "puppet/nginx-proxy_set_header.conf.erb";
   }
 
