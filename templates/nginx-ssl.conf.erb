@@ -1,0 +1,7 @@
+ssl on;
+ssl_certificate         <%= scope.lookupvar('puppet::puppet_ssldir') %>/certs/<%= fqdn %>.pem;
+ssl_certificate_key     <%= scope.lookupvar('puppet::puppet_ssldir') %>/private_keys/<%= fqdn %>.pem;
+ssl_client_certificate  <%= scope.lookupvar('puppet::puppet_ssldir') %>/ca/ca_crt.pem;
+ssl_ciphers ALL:-ADH:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP;
+#ssl_crl                 /var/lib/puppet/ssl/ca/ca_crl.pem;
+
