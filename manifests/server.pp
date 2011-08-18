@@ -67,7 +67,7 @@ class puppet::server (
       dbuser     => $dbuser,
       dbpassword => $dbpassword,
       dbserver   => $dbserver,
-      dbsocket   => $socket
+      dbsocket   => $dbsocket
     }
   }
 
