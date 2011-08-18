@@ -1,5 +1,7 @@
 class puppet::server::unicorn {
 
+  include nginx::server
+
   unicorn::app {
     "puppetmaster":
       approot    => "/etc/puppet",
