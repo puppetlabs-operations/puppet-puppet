@@ -1,6 +1,12 @@
 class puppet::server::unicorn {
 
   include nginx::server
+  nginx::vhost {
+    "puppetmaster_unicorn":
+      port     => 8140,
+      dest     => "where is this used?",
+      template => "puppet/nginx-unicorn.vhost.conf.erb"
+    }
 
   unicorn::app {
     "puppetmaster":
@@ -27,3 +33,4 @@ class puppet::server::unicorn {
   }
 
 }
+

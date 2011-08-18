@@ -1,0 +1,30 @@
+# nginx configuration for a puppetmaster running in unicorn
+
+upstream muppet-upstream {
+  server unix:/var/run/puppet/puppetmaster_unicorn.sock;
+}
+
+server {
+  listen 8140;
+  include /etc/nginx/conf.d/ssl.conf
+  ssl_verify_client on;
+  root /usr/share/empty;
+  location / {
+    proxy_pass http://muppet-upstream;
+    include /etc/nginx/conf.d/proxy_set_header.conf;
+    proxy_set_header X-Client-Verify SUCCESS;
+  }
+}
+
+server {
+  listen 8141;
+  include /etc/nginx/conf.d/ssl.conf;
+  ssl_verify_client off;
+  root /usr/share/empty;
+  location / {
+    proxy_pass http://muppet-upstream;
+    include /etc/nginx/conf.d/proxy_set_header.conf;
+    proxy_set_header X-Client-Verify FAILURE;
+  }
+}
+
