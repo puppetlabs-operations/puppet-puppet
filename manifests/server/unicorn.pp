@@ -4,9 +4,15 @@ class puppet::server::unicorn {
   nginx::vhost {
     "puppetmaster_unicorn":
       port     => 8140,
-      dest     => "where is this used?",
       template => "puppet/nginx-unicorn.vhost.conf.erb"
-    }
+  }
+  nginx::conf {
+    "ssl":
+      template => "puppet/nginx-ssl.conf.erb";
+    "nginx-proxy_set_header":
+      template => "puppet/nginx-proxy_set_header.conf.erb";
+  }
+
 
   unicorn::app {
     "puppetmaster":
