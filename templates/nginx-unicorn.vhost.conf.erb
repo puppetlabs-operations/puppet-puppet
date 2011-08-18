@@ -1,30 +1,37 @@
 # nginx configuration for a puppetmaster running in unicorn
 
-upstream muppet-upstream {
+upstream puppetmaster_unicorn {
   server unix:/var/run/puppet/puppetmaster_unicorn.sock;
 }
 
 server {
   listen 8140;
-  include /etc/nginx/conf.d/ssl.conf;
-  ssl_verify_client on;
-  root /usr/share/empty;
-  location / {
-    proxy_pass http://muppet-upstream;
-    include /etc/nginx/conf.d/proxy_set_header.conf;
-    proxy_set_header X-Client-Verify SUCCESS;
-  }
-}
 
-server {
-  listen 8141;
-  include /etc/nginx/conf.d/ssl.conf;
-  ssl_verify_client off;
+  ssl on;
+  ssl_certificate         <%= scope.lookupvar('puppet::puppet_ssldir') %>/certs/<%= fqdn %>.pem;
+  ssl_certificate_key     <%= scope.lookupvar('puppet::puppet_ssldir') %>/private_keys/<%= fqdn %>.pem;
+  ssl_client_certificate  <%= scope.lookupvar('puppet::puppet_ssldir') %>/ca/ca_crt.pem;
+  ssl_crl                 <%= scope.lookupvar('puppet::puppet_ssldir') %>/ca/ca_crl.pem;
+  #ssl_ciphers             ALL:-ADH:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP;
+  ssl_session_cache       shared:SSL:8m;
+  ssl_session_timeout     5m;
+  ssl_ciphers             HIGH:+MEDIUM;
+  ssl_verify_client       optional;
+
   root /usr/share/empty;
   location / {
-    proxy_pass http://muppet-upstream;
-    include /etc/nginx/conf.d/proxy_set_header.conf;
-    proxy_set_header X-Client-Verify FAILURE;
+    proxy_pass http://puppetmaster_unicorn;
+    #include /etc/nginx/conf.d/proxy_set_header.conf;
+    proxy_redirect      off;
+    proxy_read_timeout  65;
+    proxy_set_header    Host            $host;
+    proxy_set_header    X-Real-IP       $remote_addr;
+    proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header    X-Client-Verify $ssl_client_verify;
+    proxy_set_header    X-Client-DN     $ssl_client_s_dn;
+    proxy_set_header    X-SSL-Subject   $ssl_client_s_dn;
+    proxy_set_header    X-SSL-Issuer    $ssl_client_i_dn;
+    #proxy_set_header X-Client-Verify SUCCESS;
   }
 }
 
