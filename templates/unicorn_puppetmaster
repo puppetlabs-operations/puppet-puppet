@@ -38,38 +38,19 @@ start() {
 }
 
 stop() {
-    sudo -u $USER kill `cat $pidfile`
-    RETVAL=$?
-    echo
-    [ $RETVAL -eq 0 ] && rm -f "$lockfile"
-    return $RETVAL
+    log_daemon_msg "Stopping Unicorn Pupptemaster server" "unicorn_puppetmaster"
+    if start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE; then
+      log_end_msg 0
+    else
+      log_end_msg 1
+    fi
 }
 
 restart() {
     stop
     sleep 1
     start
-    RETVAL=$?
-    echo
-    [ $RETVAL -ne 0 ] && rm -f "$lockfile"
-    return $RETVAL
-}
-
-condrestart() {
-    status
-    RETVAL=$?
-    [ $RETVAL -eq 0 ] && restart
-}
-
-status() {
-    ps ax | egrep -q "unicorn (worker|master)"
-    RETVAL=$?
-    return $RETVAL
-}
-
-usage() {
-    echo "Usage: $0 {start|stop|restart|status|condrestart}" >&2
-    return 3
+    log_end_msg $?
 }
 
 case "$1" in
@@ -82,14 +63,12 @@ case "$1" in
     restart)
         restart
         ;;
-    condrestart)
-        condrestart
-        ;;
     status)
-        status
+        status_of_proc -p "$PIDFILE" "${DAEMON}"
         ;;
     *)
-        usage
+        echo "Usage: $0 {start|stop|restart|status}" >&2
+        exit 1
         ;;
 esac
 
