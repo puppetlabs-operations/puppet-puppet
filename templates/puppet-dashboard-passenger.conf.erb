@@ -20,7 +20,7 @@ RailsAutoDetect On
   </Directory>
   <Location "/">
     Order allow,deny
-    Allow from <%= ipaddress %>
+    Allow from <%= allowip %>
     Satisfy any
     AuthName "Puppet Dashboard"
     AuthType Basic
