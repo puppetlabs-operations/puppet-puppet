@@ -55,29 +55,29 @@ class puppet (
     }
   }
 
-  if $agent == true {
-    service { "puppetd":
-      name       => "$puppetd_service",
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
-    }
-  } else {
-    service { "puppetd":
-      name       => "$puppetd_service",
-      ensure     => stopped,
-      enable     => false,
-      hasstatus  => true,
-      hasrestart => true,
-    }
+  #  if $agent == true {
+  #    service { "puppetd":
+  #      name       => "$puppetd_service",
+  #      ensure     => running,
+  #      enable     => true,
+  #      hasstatus  => true,
+  #      hasrestart => true,
+  #    }
+  #  } else {
+  #    service { "puppetd":
+  #      name       => "$puppetd_service",
+  #      ensure     => stopped,
+  #      enable     => false,
+  #      hasstatus  => true,
+  #      hasrestart => true,
+  #    }
     cron {
       "puppet agent":
         command => "/usr/bin/puppet agent -t > /dev/null",
         minute  => "*/20";
 
     }
-  }
+  #  }
 
   concat::fragment { 'puppet.conf-common':
     order   => '00',
