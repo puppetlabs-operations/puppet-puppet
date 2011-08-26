@@ -31,7 +31,7 @@ class puppet (
 
   if ! $kernel == "Darwin" {
     package { 'puppet':
-      ensure => installed,
+      ensure => latest,
     }
   }
 
@@ -44,7 +44,7 @@ class puppet (
         source => "puppet:///modules/puppet/${puppet::params::puppetd_defaults}",
       }
     }
-    darwin : {
+    darwin: {
       file { "com.puppetlabs.puppet.plist":
         owner   => root,
         group   => 0,
@@ -55,29 +55,31 @@ class puppet (
     }
   }
 
-  #  if $agent == true {
-  #    service { "puppetd":
-  #      name       => "$puppetd_service",
-  #      ensure     => running,
-  #      enable     => true,
-  #      hasstatus  => true,
-  #      hasrestart => true,
-  #    }
-  #  } else {
-  #    service { "puppetd":
-  #      name       => "$puppetd_service",
-  #      ensure     => stopped,
-  #      enable     => false,
-  #      hasstatus  => true,
-  #      hasrestart => true,
-  #    }
+  if $agent == true {
+    service { "puppetd":
+      name       => "$puppetd_service",
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+    }
+    class { "puppet::monitor": enable => true; }
+  } else {
+    service { "puppetd":
+      name       => "$puppetd_service",
+      ensure     => stopped,
+      enable     => false,
+      hasstatus  => true,
+      hasrestart => true,
+      require    => Cron["puppet agent"],
+    }
     cron {
       "puppet agent":
         command => "/usr/bin/puppet agent -t > /dev/null",
         minute  => "*/20";
-
     }
-  #  }
+    class { "puppet::monitor": enable => false; }
+  }
 
   concat::fragment { 'puppet.conf-common':
     order   => '00',
