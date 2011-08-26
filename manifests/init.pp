@@ -3,6 +3,8 @@
 # This class installs and configures Puppet
 #
 # Parameters:
+# * server: name of the master to connect to
+# * agent: should we run an agent, or cron your mother
 #
 # Actions:
 # - Install Puppet
@@ -11,7 +13,10 @@
 #
 # Sample Usage:
 #
-class puppet ($server){
+class puppet (
+    $server,
+    $agent = true
+  ) {
   include ruby
   include puppet::params
   include concat::setup
@@ -50,12 +55,28 @@ class puppet ($server){
     }
   }
 
-  service { "puppetd":
-    name       => "$puppetd_service",
-    ensure     => running,
-    enable     => true,
-    hasstatus  => true,
-    hasrestart => true,
+  if $agent == true {
+    service { "puppetd":
+      name       => "$puppetd_service",
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+    }
+  } else {
+    service { "puppetd":
+      name       => "$puppetd_service",
+      ensure     => stopped,
+      enable     => false,
+      hasstatus  => true,
+      hasrestart => true,
+    }
+    cron {
+      "puppet agent":
+        command => "/usr/bin/puppet agent -t > /dev/null",
+        minute  => "*/20";
+
+    }
   }
 
   concat::fragment { 'puppet.conf-common':
