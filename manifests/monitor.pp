@@ -9,6 +9,7 @@ class puppet::monitor (
   }
 
   include nagios::params
+  notice ($::nagios::params::nagios_service)
 
   @@nagios_service { "check_puppetd_${hostname}":
     ensure    => $ensure,
