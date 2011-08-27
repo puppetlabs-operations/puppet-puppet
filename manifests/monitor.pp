@@ -8,6 +8,8 @@ class puppet::monitor (
     $ensure = "absent"
   }
 
+  include nagios::params
+
   @@nagios_service { "check_puppetd_${hostname}":
     ensure    => $ensure,
     use       => 'generic-service',
