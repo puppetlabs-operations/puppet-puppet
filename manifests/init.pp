@@ -76,7 +76,7 @@ class puppet (
     cron {
       "puppet agent":
         command => "/usr/bin/puppet agent --onetime --no-daemonize",
-        minute  => "*/20";
+        minute  => "*/30";
     }
     class { "puppet::monitor": enable => false; }
   }
