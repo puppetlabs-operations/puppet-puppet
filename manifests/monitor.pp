@@ -1,5 +1,5 @@
 class puppet::monitor (
-  $enable = true
+    $enable = true
   ) {
 
   if $enable == true {
@@ -10,6 +10,8 @@ class puppet::monitor (
 
   if defined(Class["nagios"]) {
     include nagios::params
+
+    notice ($::nagios::params::nagios_service)
 
     @@nagios_service { "check_puppetd_${hostname}":
       ensure    => $ensure,
