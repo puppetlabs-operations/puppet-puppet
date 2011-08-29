@@ -65,14 +65,14 @@ class puppet (
     }
     class { "puppet::monitor": enable => true; }
   } else {
-    service { "puppetd":
-      name       => "$puppetd_service",
-      ensure     => stopped,
-      enable     => false,
-      hasstatus  => true,
-      hasrestart => true,
-      require    => Cron["puppet agent"],
-    }
+    #service { "puppetd":
+    #  name       => "$puppetd_service",
+    #  ensure     => stopped,
+    #  enable     => false,
+    #  hasstatus  => true,
+    #  hasrestart => true,
+    #  require    => Cron["puppet agent"],
+    #}
     cron {
       "puppet agent":
         command => "/usr/bin/puppet agent --onetime --no-daemonize",
