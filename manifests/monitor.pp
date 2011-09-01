@@ -11,8 +11,6 @@ class puppet::monitor (
   if defined(Class["nagios"]) {
     include nagios::params
 
-    notice ($::nagios::params::nagios_service)
-
     @@nagios_service { "check_puppetd_${hostname}":
       ensure    => $ensure,
       use       => 'generic-service',
