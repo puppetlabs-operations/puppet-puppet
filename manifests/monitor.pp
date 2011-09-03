@@ -12,9 +12,9 @@ class puppet::monitor (
     include nagios::params
 
     @@nagios_service { "check_puppetd_${hostname}":
-      ensure    => $ensure,
-      use       => 'generic-service',
-      host_name => "$fqdn",
+      ensure         => $ensure,
+      use            => 'generic-service',
+      host_name      => "$fqdn",
       check_command => $puppetversion ? {
         '0.25.4' => 'check_nrpe!check_proc!1:1 puppetd',
         default  => $operatingsystem ? {
