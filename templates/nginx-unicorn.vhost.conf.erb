@@ -6,6 +6,7 @@ upstream puppetmaster_unicorn {
 
 server {
   listen 8140;
+  client_max_body_size 8m;  # Increase max body size for dashboard reports.
 
   ssl on;
   ssl_certificate         <%= scope.lookupvar('puppet::puppet_ssldir') %>/certs/<%= fqdn %>.pem;
