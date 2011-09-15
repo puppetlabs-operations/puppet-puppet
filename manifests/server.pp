@@ -47,10 +47,10 @@ class puppet::server (
     $servertype   = "passenger"
   ){
 
-  file { "/etc/puppet/manifests/site.pp":
-    #content => 'node default { include puppetlabs::base }'
-    content => 'import "/etc/puppet/environments/$environment/nodes/*.pp"'
-  }
+    #  file { "/etc/puppet/manifests/site.pp":
+    #    #content => 'node default { include puppetlabs::base }'
+    #    content => 'import "/etc/puppet/environments/$environment/nodes/*.pp"'
+    #  }
 
   case $servertype {
     "passenger": {
