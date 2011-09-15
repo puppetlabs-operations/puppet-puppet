@@ -16,7 +16,7 @@ class puppet::params {
   $puppet_storedconfig_password = 'password'
 
  case $operatingsystem {
-    'centos', 'redhat', 'fedora': {
+    'centos', 'redhat', 'fedora', 'sles': {
       $puppetmaster_package='puppet-server'
       $puppemasterd_service='puppetmasterd'
       $puppetd_service='puppet'
