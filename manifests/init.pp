@@ -62,7 +62,7 @@ class puppet (
 
   if $agent == true {
     service { "puppetd":
-      name       => "$puppetd_service",
+      name       => $puppetd_service,
       ensure     => running,
       enable     => true,
       hasstatus  => true,
@@ -71,7 +71,7 @@ class puppet (
     class { "puppet::monitor": enable => true; }
   } else {
     service { "puppetd":
-      name       => "$puppetd_service",
+      name       => $puppetd_service,
       ensure     => stopped,
       enable     => false,
       hasstatus  => true,
@@ -88,11 +88,11 @@ class puppet (
 
   concat::fragment { 'puppet.conf-common':
     order   => '00',
-    target  => "$puppet::params::puppet_conf",
+    target  => $puppet::params::puppet_conf,
     content => template("puppet/puppet.conf-common.erb");
   }
 
-  concat { "$puppet::params::puppet_conf":
+  concat { $puppet::params::puppet_conf:
     mode    => '0644',
   }
 
