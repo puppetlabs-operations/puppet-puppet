@@ -5,11 +5,11 @@ class puppet::storeconfig::mysql (
 
   include puppet::params
 
-  if $kernel == "Linux" {
-    package { $puppet::params::puppet_storedconfig_packages:
-      ensure => installed,
-    }
-  }
+  #  if $kernel == "Linux" {
+  #    package { $puppet::params::puppet_storedconfig_packages:
+  #      ensure => installed,
+  #    }
+  #  }
 
   concat::fragment { 'puppet.conf-master-storeconfig-mysql':
     order   => '07',
@@ -27,7 +27,8 @@ class puppet::storeconfig::mysql (
       "Debian" => apt,
       "Darwin" => macports,
       default  => gem,
-    }
+    },
+    ensure => installed,
   }
 
    database{ 'puppet':
