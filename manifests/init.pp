@@ -33,6 +33,9 @@ class puppet (
     package { 'puppet':
       ensure => latest,
     }
+    package { 'facter':
+      ensure => latest,
+    }
   }
 
   case $kernel {
