@@ -20,19 +20,36 @@
 #   class { puppet::dashboard: site => 'dashboard.xyz.net; }
 #
 class puppet::dashboard (
-    $site    = "dashboard.${domain}",
-    $db_user = "dashboard",
-    $db_pw   = 'ch@ng3me',
-    $allowip = $ipaddress
+    $site      = "dashboard.${domain}",
+    $db_user   = "dashboard",
+    $db_pw     = 'ch@ng3me',
+    $allowip   = $ipaddress,
+    $appserver = 'passenger'
   ) {
 
-  include ::passenger
-  include passenger::params
   include ruby::dev
 
-  $passenger_version=$passenger::params::version
-  $gem_path=$passenger::params::gem_path
   $dashboard_site = $site
+
+  case $appserver {
+    'passenger': {
+      include ::passenger
+      include passenger::params
+      $passenger_version=$passenger::params::version
+      $gem_path=$passenger::params::gem_path
+
+      apache::vhost { $dashboard_site:
+        port     => '80',
+        priority => '50',
+        docroot  => '/usr/share/puppet-dashboard/public',
+        template => 'puppet/puppet-dashboard-passenger.conf.erb',
+      }
+
+    }
+    'unicorn': {
+    
+    }
+  }
 
   package { 'puppet-dashboard':
     ensure => present,
@@ -54,13 +71,6 @@ class puppet::dashboard (
     owner => 'www-data',
     group => 'www-data',
     require => Package['puppet-dashboard'],
-  }
-
-  apache::vhost { $dashboard_site:
-    port     => '80',
-    priority => '50',
-    docroot  => '/usr/share/puppet-dashboard/public',
-    template => 'puppet/puppet-dashboard-passenger.conf.erb',
   }
 
 }
