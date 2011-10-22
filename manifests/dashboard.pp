@@ -59,8 +59,8 @@ class puppet::dashboard (
           priority       => 50,
           unicorn_socket => '/var/run/puppet/puppet_dashboard_unicorn.sock',
           path           => '/usr/share/puppet-dashboard',
-          auth           =>  { 'auth' => true, 'auth_file' => '/etc/nginx/htpasswd', 'allowfrom' => $ipaddress }
-          # magic        => inline_template( " location  /  {\n satisfy any;\n   allow <%= ipaddress %>;\n  auth_basic            'Puppet Dashboard';\n auth_basic_user_file  /etc/nginx/htpasswd;\n }\n" ),
+          auth           =>  { 'auth' => true, 'auth_file' => '/etc/nginx/htpasswd', 'allowfrom' => $ipaddress },
+          ssl            => true,
       }
       #if ! defined(Class["apache"] { include apache::remove }
     }
