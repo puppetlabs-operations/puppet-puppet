@@ -58,7 +58,7 @@ class puppet::dashboard (
           port           => 88,
           unicorn_socket => '/var/run/puppet/puppet_dashboard_unicorn.sock',
           path           => '/usr/share/puppet-dashboard',
-          magic          => " location  /  {\n satisfy any;   allow #{ipaddress}\n  auth_basic            'Puppet Dashboard';\n auth_basic_user_file  /etc/nginx/htpasswd;\n }\n",
+          magic          => " location  /  {\n satisfy any;   allow #{ipaddress};\n  auth_basic            'Puppet Dashboard';\n auth_basic_user_file  /etc/nginx/htpasswd;\n }\n",
       }
       #if ! defined(Class["apache"] { include apache::remove }
     }
