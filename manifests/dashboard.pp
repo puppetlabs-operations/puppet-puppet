@@ -53,6 +53,11 @@ class puppet::dashboard (
           config  => '/usr/share/puppet-dashboard/config/unicorn.config.rb',
 
       }
+      nginx::unicorn {
+        'dashboard.puppetlabs.com':
+          port           => 88,
+          unicorn_socket => '/var/run/puppet/puppet_dashboard_unicorn.sock',
+      }
       #if ! defined(Class["apache"] { include apache::remove }
     }
   }
