@@ -49,7 +49,8 @@ class puppet::dashboard (
     'unicorn': {
       unicorn::app {
         $dashboard_site:
-          approot => '/usr/share/puppet-dashboard'
+          approot => '/usr/share/puppet-dashboard',
+          config  => '/usr/share/puppet-dashboard/config/unicorn.config.rb',
 
       }
       #if ! defined(Class["apache"] { include apache::remove }
