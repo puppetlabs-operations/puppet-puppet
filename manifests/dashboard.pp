@@ -47,7 +47,11 @@ class puppet::dashboard (
 
     }
     'unicorn': {
-    
+      unicorn::app {
+        $dashboard_site:
+          approot => '/usr/share/puppet-dashboard/public'
+
+      }
     }
   }
 
