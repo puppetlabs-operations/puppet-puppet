@@ -57,6 +57,7 @@ class puppet::dashboard (
         'dashboard.puppetlabs.com':
           port           => 88,
           unicorn_socket => '/var/run/puppet/puppet_dashboard_unicorn.sock',
+          path           => '/usr/share/puppet-dashboard',
       }
       #if ! defined(Class["apache"] { include apache::remove }
     }
