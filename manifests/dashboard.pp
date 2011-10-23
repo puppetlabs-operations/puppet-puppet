@@ -55,7 +55,7 @@ class puppet::dashboard (
       }
       nginx::unicorn {
         'dashboard.puppetlabs.com':
-          port           => 88,
+          port           => 443,
           priority       => 50,
           unicorn_socket => '/var/run/puppet/puppet_dashboard_unicorn.sock',
           path           => '/usr/share/puppet-dashboard',
