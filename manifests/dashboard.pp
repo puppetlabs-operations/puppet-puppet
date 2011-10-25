@@ -49,9 +49,14 @@ class puppet::dashboard (
     'unicorn': {
       unicorn::app {
         $dashboard_site:
-          approot => '/usr/share/puppet-dashboard',
-          config  => '/usr/share/puppet-dashboard/config/unicorn.config.rb',
-
+          approot                  => '/usr/share/puppet-dashboard',
+          config_file              => '/usr/share/puppet-dashboard/config/unicorn.config.rb',
+          unicorn_pidfile          => '/var/run/puppet/puppet_dashboard_unicorn.pid',
+          unicorn_socket           => '/var/run/puppet/puppet_dashboard_unicorn.sock',
+          rack_file                => 'puppet:///modules/unicorn/dashboard_config.ru',
+          unicorn_worker_processes => '2',
+          unicorn_user             => 'www-data',
+          unicorn_group            => 'www-data',
       }
       nginx::unicorn {
         'dashboard.puppetlabs.com':
