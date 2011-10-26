@@ -4,10 +4,13 @@
 #
 class puppet::server::xmppreport {
 
-  package{ ['xmpp4r','json','httparty']:
-    provider => 'gem',
-    ensure   => present,
-  } ->
+  Package{ provider => 'gem', ensure => present }
+
+  package{
+    'xmpp4r':;
+    'json':;
+    'httparty':;
+  }
 
   # This is a little bit dirty, as it just throws it straight in the
   # rubylib, but it's better than messing with libdir on the master.
