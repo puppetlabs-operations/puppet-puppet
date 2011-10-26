@@ -18,13 +18,6 @@ class puppet::server::unicorn {
       rack_file                => 'puppet:///modules/puppet/config.ru',
   }
 
-  #   file {
-  #    "/etc/puppet/unicorn.conf":
-  #    owner  => root,
-  #    group  => root,
-  #    mode   => 644,
-  #    source => "puppet:///modules/puppet/unicorn.conf";
-  #}
+  motd::register{ 'Puppet Master on Unicorn': }
 
 }
-
