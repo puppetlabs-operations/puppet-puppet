@@ -14,7 +14,7 @@ class puppet::server::unicorn {
       initscript               => "puppet/unicorn_puppetmaster",
       unicorn_pidfile          => '/var/run/puppet/puppetmaster_unicorn.pid',
       unicorn_socket           => '/var/run/puppet/puppetmaster_unicorn.sock',
-      unicorn_worker_processes => '2',
+      unicorn_worker_processes => '4',
       rack_file                => 'puppet:///modules/puppet/config.ru',
   }
 
