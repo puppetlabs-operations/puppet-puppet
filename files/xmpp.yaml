@@ -1,0 +1,5 @@
+---
+:xmpp_jid: 'muppetplasters@gmail.com'
+:xmpp_password: 'SnamAishvi'
+:xmpp_target: 'ben@puppetlabs.com,zach@puppetlabs.com'
+:dashboard: 'https://dashboard.puppetlabs.com/'
