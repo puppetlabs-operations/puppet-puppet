@@ -1,12 +1,15 @@
 # nginx configuration for a puppetmaster running in unicorn
 
 upstream puppetmaster_unicorn {
-  server unix:/var/run/puppet/puppetmaster_unicorn.sock max_fails=0 fail_timeout=0;
+  server unix:/var/run/puppet/puppetmaster_unicorn.sock max_fails=0 fail_timeout=0s;
 }
 
 server {
   listen 8140;
   client_max_body_size 8m;  # Increase max body size for dashboard reports.
+
+  proxy_connect_timeout 300s; # 5 minutes a piece, as puppet runs can take a while.
+  proxy_read_timeout    300s; # See http://wiki.nginx.org/NginxHttpProxyModule#proxy_read_timeout
 
   ssl on;
   ssl_certificate         <%= scope.lookupvar('puppet::puppet_ssldir') %>/certs/<%= fqdn %>.pem;
