@@ -11,7 +11,7 @@ class puppet::server::unicorn {
     "puppetmaster":
       approot                  => "/etc/puppet",
       config_file              => "/etc/puppet/unicorn.conf",
-      initscript               => "puppet/unicorn_puppetmaster",
+      initscript               => 'unicorn/initscript_newer.erb',
       unicorn_pidfile          => '/var/run/puppet/puppetmaster_unicorn.pid',
       unicorn_socket           => '/var/run/puppet/puppetmaster_unicorn.sock',
       unicorn_worker_processes => '4',
