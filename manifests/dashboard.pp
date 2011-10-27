@@ -57,6 +57,8 @@ class puppet::dashboard (
           unicorn_worker_processes => '2',
           unicorn_user             => 'www-data',
           unicorn_group            => 'www-data',
+          log_stds                 => true,
+          stdlog_path              => '/var/log/puppet-dashboard',
       }
       nginx::unicorn {
         'dashboard.puppetlabs.com':
