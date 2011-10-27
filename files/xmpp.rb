@@ -18,7 +18,7 @@ Puppet::Reports.register_report(:xmpp) do
 
     url = nil
     JSON.parse( HTTParty.get( "#{dashboard}/nodes.json" ).response.body ).each do |node|
-      return "#{dashboard}/nodes/#{node['id']}".gsub( /\/\/+/ , '/' ) if node['name'] == node_name
+      return "#{dashboard}/nodes/#{node['id']}".gsub( /[^:]\/\/+/ , '/' ) if node['name'] == node_name
     end
 
     return false
