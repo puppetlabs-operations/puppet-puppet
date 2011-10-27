@@ -46,6 +46,8 @@ Puppet::Reports.register_report(:xmpp) do
       host = find_node( self.host , DASHBOARD_URL )
       host ||= "#{DASHBOARD_URL}/nodes?q=#{self.host}"
 
+      env = "/#{self.environment}" if defined? self.environment 
+
       body = "Puppet run for #{self.host} #{self.status} at #{Time.now.asctime}, at #{host}"
       XMPP_TARGET.split(',').each do |target| 
         Puppet.debug "Sending status for #{self.host} to XMMP user #{target}"
