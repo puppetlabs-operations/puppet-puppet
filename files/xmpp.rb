@@ -43,12 +43,12 @@ Puppet::Reports.register_report(:xmpp) do
       cl.connect
       cl.auth(XMPP_PASSWORD)
 
-      host = find_node( self.host , DASHBOARD_URL )
-      host ||= "#{DASHBOARD_URL}/nodes?q=#{self.host}"
+      # host = find_node( self.host , DASHBOARD_URL )
+      host = "#{DASHBOARD_URL}/nodes/#{self.host}"
 
       env = "/#{self.environment}" if defined? self.environment and self.environment != "production"
 
-      body = "Puppet run for #{self.host} #{self.status} at #{Time.now.asctime}, at #{host}"
+      body = "Puppet run #{self.status} for #{host}"
       XMPP_TARGET.split(',').each do |target| 
         Puppet.debug "Sending status for #{self.host} to XMMP user #{target}"
         m = Message::new(target, body).set_type(:normal).set_id('1').set_subject("Puppet run failed!")
