@@ -38,12 +38,12 @@ class puppet::dashboard (
       $passenger_version=$passenger::params::version
       $gem_path=$passenger::params::gem_path
 
-      apache::vhost { $dashboard_site:
-        port     => '80',
-        priority => '50',
-        docroot  => '/usr/share/puppet-dashboard/public',
-        template => 'puppet/puppet-dashboard-passenger.conf.erb',
-      }
+#      apache::vhost { $dashboard_site:
+#        port     => '80',
+#        priority => '50',
+#        docroot  => '/usr/share/puppet-dashboard/public',
+#        template => 'puppet/puppet-dashboard-passenger.conf.erb',
+#      }
 
     }
     'unicorn': {
