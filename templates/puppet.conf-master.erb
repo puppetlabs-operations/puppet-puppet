@@ -5,7 +5,7 @@ manifest    = $confdir/environments/$environment/site.pp
 ssl_client_header         = <%= ssl_client_header %>
 ssl_client_verify_header  = <%= ssl_client_verify_header %>
 report                    = true
-reports                   = store, http, xmpp
+reports                   = store, https, xmpp
 reporturl                 = <%= reporturl %>
 reporturl_ssl_verify      = true
 reporturl_ssl_cert        = /etc/ssl/certs/ca-certificates.crt
