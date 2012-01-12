@@ -62,12 +62,13 @@ class puppet::dashboard (
       }
       nginx::unicorn {
         'dashboard.puppetlabs.com':
-          port           => 443,
           priority       => 50,
           unicorn_socket => '/var/run/puppet/puppet_dashboard_unicorn.sock',
           path           => '/usr/share/puppet-dashboard',
           auth           =>  { 'auth' => true, 'auth_file' => '/etc/nginx/htpasswd', 'allowfrom' => $ipaddress },
           ssl            => true,
+          sslonly        => true,
+          isdefaultvhost => true, # default for SSL.
       }
       #if ! defined(Class["apache"] { include apache::remove }
     }
