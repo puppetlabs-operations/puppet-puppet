@@ -58,7 +58,7 @@ class puppet (
       }
       $puppet_path = '/opt/local/bin/puppet'
     }
-    freebsd: {
+    freebsd, solaris: {
       $puppet_path = '/usr/local/bin/puppet'
     }
   }
