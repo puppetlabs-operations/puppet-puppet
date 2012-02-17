@@ -53,6 +53,14 @@ class puppet::params {
       $puppet_vardir='/var/lib/puppet'
       $puppet_ssldir='/etc/puppet/ssl'
     }
+    'solaris': { # If anyone installs open source puppet they're on their own
+      $puppetd_service='network/puppetagent'
+      $puppet_conf='/etc/puppetlabs/puppet/puppet.conf'
+      $puppet_logdir='/var/log/pe-puppet'
+      $puppet_vardir='/var/opt/lib/puppet'
+      $puppet_ssldir='/etc/puppetlabs/puppet/ssl'
+    }
+    default: { fail("Module puppet::params has no definition for \"${operatingsystem}\"") }
  }
 
 }
