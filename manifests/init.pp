@@ -28,8 +28,9 @@ class puppet (
   $puppet_logdir   = $puppet::params::puppet_logdir
   $puppet_vardir   = $puppet::params::puppet_vardir
   $puppet_ssldir   = $puppet::params::puppet_ssldir
+  $update_puppet   = $puppet::params::update_puppet
 
-  if $kernel != "Darwin" and $kernel != "FreeBSD" and $operatingsystem != 'SLES' and $operatingsystem != 'Solaris' {
+  if $update_puppet {
     package { 'puppet':
       ensure => latest,
     }

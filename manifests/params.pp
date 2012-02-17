@@ -63,4 +63,11 @@ class puppet::params {
      default: { fail("Module puppet::params has no definition for \"${operatingsystem}\"") }
   }
 
+  # Behold, the list of platforms that have horrible package mangement!
+  if $kernel == 'Darwin' or $kernel == 'SunOS' or $kernel == 'FreeBSD' or $operatingsystem == 'SLES' {
+    $update_puppet = undef
+  }
+  else {
+    $update_puppet = true
+  }
 }
