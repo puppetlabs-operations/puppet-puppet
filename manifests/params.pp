@@ -26,6 +26,7 @@ class puppet::params {
        $puppet_logdir='/var/log/puppet'
        $puppet_vardir='/var/lib/puppet'
        $puppet_ssldir='/var/lib/puppet/ssl'
+       $puppet_path = '/usr/bin/puppet'
      }
      'ubuntu', 'debian': {
        $puppetmaster_package='puppetmaster'
@@ -38,6 +39,7 @@ class puppet::params {
        $puppet_logdir='/var/log/puppet'
        $puppet_vardir='/var/lib/puppet'
        $puppet_ssldir='/var/lib/puppet/ssl'
+       $puppet_path = '/usr/bin/puppet'
      }
      'freebsd': {
        $puppetd_service='puppet'
@@ -45,6 +47,7 @@ class puppet::params {
        $puppet_logdir='/var/log/puppet'
        $puppet_vardir='/var/puppet'
        $puppet_ssldir='/var/puppet/ssl'
+       $puppet_path = '/usr/local/bin/puppet'
      }
      'darwin': {
        $puppetd_service='com.puppetlabs.puppet'
@@ -52,6 +55,7 @@ class puppet::params {
        $puppet_logdir='/var/log/puppet'
        $puppet_vardir='/var/lib/puppet'
        $puppet_ssldir='/etc/puppet/ssl'
+       $puppet_path = '/opt/local/bin/puppet'
      }
      'solaris': { # If anyone installs open source puppet they're on their own
        $puppetd_service='network/puppetagent'
@@ -59,6 +63,7 @@ class puppet::params {
        $puppet_logdir='/var/log/pe-puppet'
        $puppet_vardir='/var/opt/lib/puppet'
        $puppet_ssldir='/etc/puppetlabs/puppet/ssl'
+       $puppet_path = '/usr/local/bin/puppet'
      }
      default: { fail("Module puppet::params has no definition for \"${operatingsystem}\"") }
   }

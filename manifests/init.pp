@@ -29,6 +29,7 @@ class puppet (
   $puppet_vardir   = $puppet::params::puppet_vardir
   $puppet_ssldir   = $puppet::params::puppet_ssldir
   $update_puppet   = $puppet::params::update_puppet
+  $puppet_path     = $puppet::params::puppet_path
 
   if $update_puppet {
     package { 'puppet':
@@ -47,7 +48,6 @@ class puppet (
         group  => 'root',
         source => "puppet:///modules/puppet/${puppet::params::puppetd_defaults}",
       }
-      $puppet_path = '/usr/bin/puppet'
     }
     darwin: {
       file { "com.puppetlabs.puppet.plist":
@@ -57,10 +57,6 @@ class puppet (
         source  => "puppet:///modules/puppet/com.puppetlabs.puppet.plist",
         path    => "/Library/LaunchDaemons/com.puppetlabs.puppet.plist",
       }
-      $puppet_path = '/opt/local/bin/puppet'
-    }
-    freebsd, solaris: {
-      $puppet_path = '/usr/local/bin/puppet'
     }
   }
 
