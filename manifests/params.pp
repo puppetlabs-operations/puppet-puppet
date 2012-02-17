@@ -12,7 +12,6 @@
 #
 class puppet::params {
 
-  $puppet_server = 'baal.puppetlabs.com'
   $puppet_storedconfig_password = 'password'
 
  case $operatingsystem {
