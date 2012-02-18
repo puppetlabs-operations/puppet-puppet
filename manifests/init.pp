@@ -93,8 +93,11 @@ class puppet (
   }
 
   concat { $puppet::params::puppet_conf:
-    mode    => '0644',
+    mode => '0644',
+    gnu  => $kernel ? {
+      'SunOS' => 'false',
+      default => 'true',
+    }
   }
-
 }
 
