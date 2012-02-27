@@ -84,7 +84,7 @@ class puppet (
     cron {
       "puppet agent":
         command => "${puppet_path} agent --onetime --no-daemonize >/dev/null",
-        minute  => "*/60";
+        minute  => fqdn_rand( 60 ),
     }
     class { "puppet::monitor": enable => false; }
   }
