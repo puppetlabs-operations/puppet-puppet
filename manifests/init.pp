@@ -38,6 +38,9 @@ class puppet (
     package { 'facter':
       ensure => latest,
     }
+
+    # Fixes a bug. #12813
+    include puppet::hack
   }
 
   case $kernel {
