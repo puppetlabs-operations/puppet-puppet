@@ -13,8 +13,8 @@ postrun_command=/etc/puppet/etckeeper-commit-post
 <% end -%>
 
 [agent]
+certname = <%= clientcert %>
 report = true
 environment = <%= environment %>
 show_diff = true
 splay = false
-
