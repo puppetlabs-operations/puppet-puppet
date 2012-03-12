@@ -44,7 +44,8 @@ class puppet::server (
     $dbsocket     = '/var/run/mysqld/mysqld.sock',
     $certname     = "$fqdn",
     $reporturl    = "http://$fqdn/reports",
-    $servertype   = "passenger"
+    $servertype   = "passenger",
+    $grayskull    = 'true'
   ){
 
     file { "/etc/puppet/manifests/site.pp":
