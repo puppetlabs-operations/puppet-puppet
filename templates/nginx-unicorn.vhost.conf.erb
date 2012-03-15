@@ -5,7 +5,14 @@ upstream puppetmaster_unicorn {
 }
 
 server {
-  listen 8140;
+
+    listen 8140;
+<% if has_variable?( 'ipaddress6' ) -%>
+    # Listen on an ipv6 version of this port too, but only do v6 on it, so we
+    # don't get strange v4 mapped IPs in v6.
+    listen   [::]:8140 default ipv6only=on;
+<% end -%>
+
   client_max_body_size 8m;  # Increase max body size for dashboard reports.
 
   proxy_connect_timeout 300s; # 5 minutes a piece, as puppet runs can take a while.
@@ -16,7 +23,6 @@ server {
   ssl_certificate_key     <%= scope.lookupvar('puppet::puppet_ssldir') %>/private_keys/<%= fqdn %>.pem;
   ssl_client_certificate  <%= scope.lookupvar('puppet::puppet_ssldir') %>/ca/ca_crt.pem;
   ssl_crl                 <%= scope.lookupvar('puppet::puppet_ssldir') %>/ca/ca_crl.pem;
-  #ssl_ciphers             ALL:-ADH:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP;
   ssl_session_cache       shared:SSL:8m;
   ssl_session_timeout     5m;
   ssl_ciphers             HIGH:+MEDIUM;
@@ -26,7 +32,6 @@ server {
 
   location / {
     proxy_pass http://puppetmaster_unicorn;
-    #include /etc/nginx/conf.d/proxy_set_header.conf;
     proxy_redirect      off;
     proxy_set_header    Host            $host;
     proxy_set_header    X-Real-IP       $remote_addr;
@@ -35,7 +40,6 @@ server {
     proxy_set_header    X-Client-DN     $ssl_client_s_dn;
     proxy_set_header    X-SSL-Subject   $ssl_client_s_dn;
     proxy_set_header    X-SSL-Issuer    $ssl_client_i_dn;
-    #proxy_set_header X-Client-Verify SUCCESS;
   }
 }
 
