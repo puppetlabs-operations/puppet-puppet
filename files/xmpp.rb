@@ -46,13 +46,17 @@ Puppet::Reports.register_report(:xmpp) do
       # host = find_node( self.host , DASHBOARD_URL )
       host = "#{DASHBOARD_URL}/nodes/#{self.host}"
 
-      env = "/#{self.environment}" if defined? self.environment and self.environment != "production"
+      # Thanks to https://projects.puppetlabs.com/issues/10064 we now have an
+      # environment to check against.
+      if self.environment == "production"
 
-      body = "Puppet run #{self.status} for #{host}"
-      XMPP_TARGET.split(',').each do |target| 
-        Puppet.debug "Sending status for #{self.host} to XMMP user #{target}"
-        m = Message::new(target, body).set_type(:normal).set_id('1').set_subject("Puppet run failed!")
-        cl.send m
+        body = "Puppet run #{self.status} for #{host}"
+        XMPP_TARGET.split(',').each do |target| 
+          Puppet.debug "Sending status for #{self.host} to XMMP user #{target}"
+          m = Message::new(target, body).set_type(:normal).set_id('1').set_subject("Puppet run failed!")
+          cl.send m
+        end
+
       end
     end
   end
