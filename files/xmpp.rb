@@ -37,6 +37,10 @@ Puppet::Reports.register_report(:xmpp) do
   DESC
 
   def process
+
+    # If you want to debug this...
+    # Puppet.warning  "Sending status for #{self.host} to XMMP in env of #{self.environment} which has #{self.status}"
+
     if self.status == 'failed'
       jid = JID::new(XMPP_JID)
       cl = Client::new(jid)
@@ -46,9 +50,12 @@ Puppet::Reports.register_report(:xmpp) do
       # host = find_node( self.host , DASHBOARD_URL )
       host = "#{DASHBOARD_URL}/nodes/#{self.host}"
 
+
       # Thanks to https://projects.puppetlabs.com/issues/10064 we now have an
       # environment to check against.
-      if self.environment == "production"
+      # 
+      # Need the nil? for things that break before sending their env.
+      if self.environment.nil? or self.environment == 'production'
 
         body = "Puppet run #{self.status} for #{host}"
         XMPP_TARGET.split(',').each do |target| 
