@@ -1,4 +1,4 @@
-class puppet::storeconfig::postgres (
+class puppet::storeconfig::postgresql (
     $dbuser,
     $dbpassword
   ){

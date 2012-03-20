@@ -11,45 +11,60 @@
 # Sample Usage:
 #
 class puppet::storeconfig (
-    $dbadapter,
+    $backend    = '',
     $dbuser     = 'puppet',
-    $dbpassword = 'password',
+    $dbpassword = '',
     $dbserver   = 'localhost',
     $dbsocket   = ''
-  ) {
+) {
 
-  $storeconfigs = 'true' # called from puppet::server only if storeconfigs is on
+  include puppet::params
 
-  package { "gem-activerecord":
-    name => $operatingsystem ? {
-      "Debian" => "libactiverecord-ruby",
-      "Darwin" => "rb-activerecord",
-      default  => activerecord,
-    },
-    provider => $operatingsystem ? {
-      "Debian" => apt,
-      "Darwin" => macports,
-      default  => gem,
+  #$puppet::storeconfigs = 'true' # called from puppet::server only if storeconfigs is on
+
+  case $backend {
+    "mysql","postgresql","sqlite": {
+      package { "gem-activerecord":
+        name => $operatingsystem ? {
+          "Debian" => "libactiverecord-ruby",
+          "Darwin" => "rb-activerecord",
+          default  => activerecord,
+        },
+        provider => $operatingsystem ? {
+          "Debian" => apt,
+          "Darwin" => macports,
+          default  => gem,
+        },
+      }
     }
   }
 
-  case $dbadapter {
-    'sqlite3': {
-      include puppet::storeconfig::sqlite
-    }
-    'mysql': {
-      class { 
-        "puppet::storeconfig::mysql": 
-          dbuser     => $dbuser,
-          dbpassword => $dbpassword,
+    case $backend {
+      'sqlite3': {
+        include puppet::storeconfig::sqlite
       }
+      'mysql': {
+        class { "puppet::storeconfig::mysql":
+            dbuser     => $dbuser,
+            dbpassword => $dbpassword,
+        }
+      }
+      'postgresql': {
+        class { "puppet::storeconfig::postgresql":
+            dbuser     => $dbuser,
+            dbpassword => $dbpassword,
+        }
+      }
+      'grayskull': {
+        include puppet::storeconfig::grayskull
+      }
+      default: { err("Target storeconfigs backend \"$backend\" not implemented") }
     }
-    default: { err("targer dbadapter $dbadapter not implemented") }
   }
 
   concat::fragment { 'puppet.conf-master-storeconfig':
     order   => '06',
-    target  => "/etc/puppet/puppet.conf",
+    target  => $puppet::params::puppet_conf,
     content => template("puppet/puppet.conf-master-storeconfigs.erb");
   }
 

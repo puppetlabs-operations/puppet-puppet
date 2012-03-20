@@ -33,17 +33,18 @@ class puppet::server (
     $backup       = true,
     $modulepath   = '$confdir/modules/site:$confdir/env/$environment/dist',
     $manifest     = '$confdir/modules/site/site.pp',
-    $storeconfigs = 'true',
+    $storeconfigs = '',
     $dbadapter    = 'sqlite3',
     $dbuser       = 'puppet',
     $dbpassword   = 'password',
     $dbserver     = 'localhost',
     $dbsocket     = '/var/run/mysqld/mysqld.sock',
     $certname     = "$fqdn",
+    $report       = 'true',
+    $reports      = ["store", "https"],
     $reporturl    = "http://$fqdn/reports",
-    $servertype   = "passenger",
-    $grayskull    = 'true'
-  ){
+    $servertype   = "unicorn"
+  ) {
 
   include puppet::params
 
@@ -70,14 +71,17 @@ class puppet::server (
     }
   }
 
-  if $storeconfigs == 'true' {
-    #include puppet::storedconfiguration
-    class { "puppet::storeconfig":
-      dbadapter  => $dbadapter,
-      dbuser     => $dbuser,
-      dbpassword => $dbpassword,
-      dbserver   => $dbserver,
-      dbsocket   => $dbsocket
+  # ---
+  # Storeconfigs
+  case $storeconfigs {
+    "mysql","postgresql","sqlite","grayskull": {
+      class { "puppet::storeconfig":
+        backend    => $storeconfigs,
+        dbuser     => $dbuser,
+        dbpassword => $dbpassword,
+        dbserver   => $dbserver,
+        dbsocket   => $dbsocket
+      }
     }
   }
 
