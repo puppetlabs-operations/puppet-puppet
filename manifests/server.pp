@@ -99,6 +99,7 @@ class puppet::server (
     service { $puppet::params::master_service:
       ensure    => stopped,
       enable    => false,
+      hasstatus => false,
       require   => File[$puppet::params::puppet_conf];
     }
   }
