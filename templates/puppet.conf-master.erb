@@ -1,11 +1,11 @@
 [master]
 # See http://hunnur.com/blog/2010/10/dynamic-git-branch-puppet-environments/
-modulepath  = <%= modulepath %>
-manifest    = $confdir/environments/$environment/site.pp
-ssl_client_header         = <%= ssl_client_header %>
-ssl_client_verify_header  = <%= ssl_client_verify_header %>
-report                    = true
-reports                   = store, https, xmpp
-reporturl                 = <%= reporturl %>
-reporturl_ssl_verify      = true
-reporturl_ssl_cert        = /etc/ssl/certs/ca-certificates.crt
+modulepath               = <%= modulepath %>
+manifest                 = <%= manifest %>
+ssl_client_header        = <%= ssl_client_header %>
+ssl_client_verify_header = <%= ssl_client_verify_header %>
+report                   = <%= report %>
+reports                  = <% if reports.is_a? Array %><%= reports.join(", ") %><% else %><%= reports %><% end %>
+reporturl                = <%= reporturl %>
+reporturl_ssl_verify     = true
+reporturl_ssl_cert       = /etc/ssl/certs/ca-certificates.crt
