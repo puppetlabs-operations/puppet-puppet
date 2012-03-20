@@ -5,18 +5,8 @@ class puppet::storeconfig::mysql (
 
   include puppet::params
 
-  #  if $kernel == "Linux" {
-  #    package { $puppet::params::puppet_storedconfig_packages:
-  #      ensure => installed,
-  #    }
-  #  }
-
-  concat::fragment { 'puppet.conf-master-storeconfig-mysql':
-    order   => '07',
-    target  => "/etc/puppet/puppet.conf",
-    content => template("puppet/puppet.conf-master-storeconfigs-mysql.erb");
-  }
-
+  # ---
+  # Install the mysql gem
   package { "gem-mysql":
     name => $operatingsystem ? {
       "Debian" => "libmysql-ruby",
@@ -31,21 +21,23 @@ class puppet::storeconfig::mysql (
     ensure => installed,
   }
 
-   database{ 'puppet':
-     ensure  => present,
-     charset => 'utf8',
-   }
+  # ---
+  # Database setup
+  database{ 'puppet':
+    ensure  => present,
+    charset => 'utf8',
+  }
 
-   database_user{"$dbuser@localhost":
-     ensure        => present,
-     password_hash => mysql_password($dbpassword),
-     require       => Database['puppet'],
-   }
- 
-   database_grant{ 'puppet@localhost/puppet':
-     privileges => [all],
-     require    => [ Database['puppet'], Database_user['puppet@localhost'] ],
-   }
+  database_user{"$dbuser@localhost":
+    ensure        => present,
+    password_hash => mysql_password($dbpassword),
+    require       => Database['puppet'],
+  }
+
+  database_grant{ 'puppet@localhost/puppet':
+    privileges => [all],
+    require    => [ Database['puppet'], Database_user['puppet@localhost'] ],
+  }
 
 
 }
