@@ -5,7 +5,7 @@ class puppet::storeconfig::grayskull {
 
   concat::fragment { 'puppet.conf-master-storeconfig-grayskull':
     order   => '07',
-    target  => "/etc/puppet/puppet.conf",
+    target  => $puppet::params::puppet_conf,
     content => template("puppet/puppet.conf-master-storeconfigs-grayskull.erb");
   }
 
