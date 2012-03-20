@@ -1,8 +1,13 @@
 class puppet::server::backup {
-  bacula::job {
-    "${fqdn}-puppetmaster":
-      files    => ["/etc/puppet","/var/lib/puppet"],
-      excludes => ["/var/lib/puppet/reports"]
-  }
-}
 
+  include puppet::params
+
+  if defined(Class["bacula"]) {
+    bacula::job {
+      "${fqdn}-puppetmaster":
+        files    => [$puppet_confdir,$puppet_vardir],
+        excludes => ["${puppet_vardir}/reports"]
+    }
+  }
+
+}

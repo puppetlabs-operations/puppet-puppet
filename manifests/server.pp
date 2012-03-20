@@ -26,16 +26,13 @@
 #
 #  class { "puppet::server":
 #    modulepath => inline_template("<%= modulepath.join(':') %>"),
-#    dbadapter  => "mysql",
-#    dbuser     => "puppet",
-#    dbpassword => "password"
-#    dbsocket   => "/var/run/mysqld/mysqld.sock",
-#    reporturl  => "http://dashboard.puppetlabs.com/reports";
+#    reporturl  => "https://dashboard.puppetlabs.com/reports";
 #  }
 #
 class puppet::server (
     $backup       = true,
-    $modulepath   = "/etc/puppet/modules",
+    $modulepath   = '$confdir/modules/site:$confdir/env/$environment/dist',
+    $manifest     = '$confdir/modules/site/site.pp',
     $storeconfigs = 'true',
     $dbadapter    = 'sqlite3',
     $dbuser       = 'puppet',
@@ -48,10 +45,14 @@ class puppet::server (
     $grayskull    = 'true'
   ){
 
-    file { "/etc/puppet/manifests/site.pp":
-      ensure      => absent,
-    }
+  include puppet::params
 
+  # ---
+  # The site.pp is set in the puppet.conf, remove site.pp here to avoid confusion
+  file { "${puppet::params::puppet_confdir}/manifests/site.pp": ensure => absent; }
+
+  # ---
+  # Application-server specific SSL configuration
   case $servertype {
     "passenger": {
       include puppet::server::passenger
@@ -80,28 +81,32 @@ class puppet::server (
     }
   }
 
+  # ---
+  # Backups
   if $backup == true { include puppet::server::backup }
 
-  if $kernel != "Darwin" {
-    package { $puppet::params::puppetmaster_package:
-      ensure => present,
+  # ---
+  # Used only for platforms that seperate the master and agent packages
+  if $puppet::params::master_package != '' {
+    package { $puppet::params::master_package: ensure => present; }
+  }
+
+  if $puppet::params::master_service != '' {
+    service { $puppet::params::master_service:
+      ensure    => stopped,
+      enable    => false,
+      require   => File[$puppet::params::puppet_conf];
     }
   }
 
-  concat::fragment { 'puppet.conf-header':
+  # ---
+  # Write the server configuration items
+  concat::fragment { 'puppet.conf-master':
     order   => '05',
-    target  => "/etc/puppet/puppet.conf",
+    target  => $puppet::params::puppet_conf,
     content => template("puppet/puppet.conf-master.erb");
   }
 
-  if $kernel == "Linux" { # added to support osx
-    service {'puppetmaster':
-      ensure    => stopped,
-      enable    => false,
-      hasstatus => false, # this is broken on debian if its disabled, since 0 is still returned when not running
-      require   => File['/etc/puppet/puppet.conf'];
-    }
-  }
 
 }
 

@@ -1,97 +1,81 @@
-# Class: puppet
-#
-# This class installs and configures Puppet
-#
-# Parameters:
-# * server: name of the master to connect to
-# * agent: should we run an agent, or cron your mother
-#
-# Actions:
-# - Install Puppet
-#
-# Requires:
-#
-# Sample Usage:
-#
 class puppet (
-    $server,
-    $agent = true
-  ) {
-  include ruby
+    $server        = hiera("puppet_server"),
+    $manage_agent  = false
+) {
   include puppet::params
   include concat::setup
 
   $puppet_server   = $server
-  $puppet_storedconfig_password = $puppet::params::puppet_storedconfig_password
-  $puppetd_service = $puppet::params::puppetd_service
+  $agent_service   = $puppet::params::agent_service
   $puppet_conf     = $puppet::params::puppet_conf
   $puppet_logdir   = $puppet::params::puppet_logdir
   $puppet_vardir   = $puppet::params::puppet_vardir
   $puppet_ssldir   = $puppet::params::puppet_ssldir
-  $update_puppet   = $puppet::params::update_puppet
-  $puppet_path     = $puppet::params::puppet_path
+  $puppet_cmd      = $puppet::params::puppet_cmd
 
-  if $update_puppet {
-    package { 'puppet':
-      ensure => latest,
-    }
-    package { 'facter':
-      ensure => latest,
-    }
+  # ----
+  # Be carefull about systems that may not be able to upgrade cleanly
+  if $puppet::params::update_puppet {
+    package { 'puppet': ensure => latest; }
+    package { 'facter': ensure => latest; }
 
     # Fixes a bug. #12813
     include puppet::hack
   }
 
-  case $kernel {
-    linux: {
-      file { $puppet::params::puppetd_defaults:
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-        source => "puppet:///modules/puppet/${puppet::params::puppetd_defaults}",
-      }
-    }
-    darwin: {
-      file { "com.puppetlabs.puppet.plist":
-        owner   => root,
-        group   => 0,
-        mode    => 0640,
-        source  => "puppet:///modules/puppet/com.puppetlabs.puppet.plist",
-        path    => "/Library/LaunchDaemons/com.puppetlabs.puppet.plist",
-      }
-    }
-  }
+  if $manage_agent == true {
 
-  if $agent == true {
-    service { "puppetd":
-      name       => $puppetd_service,
+    # ----
+    # Puppet agent management
+    service { "puppet_agent":
+      name       => $agent_service,
       ensure     => running,
       enable     => true,
       hasstatus  => true,
       hasrestart => true,
     }
+
     class { "puppet::monitor": enable => true; }
-  } else {
-    service { "puppetd":
-      name       => $puppetd_service,
-      ensure     => stopped,
-      enable     => false,
-      hasstatus  => true,
-      hasrestart => true,
-      require    => Cron["puppet agent"],
+
+    # ----
+    # Special things for special kernels
+    case $kernel {
+      linux: {
+        file { $puppet::params::agent_defaults:
+          mode   => '0644',
+          owner  => 'root',
+          group  => 'root',
+          source => "puppet:///modules/puppet/${puppet::params::agent_defaults}",
+        }
+      }
+      darwin: {
+        file { "com.puppetlabs.puppet.plist":
+          owner   => root,
+          group   => 0,
+          mode    => 0640,
+          source  => "puppet:///modules/puppet/com.puppetlabs.puppet.plist",
+          path    => "/Library/LaunchDaemons/com.puppetlabs.puppet.plist",
+        }
+      }
     }
+
+  } else {
+
+    # ----
+    # Run the puppet agent out of cron at a random minute, every hour
     cron {
       "puppet agent":
-        command => "${puppet_path} agent --onetime --no-daemonize >/dev/null",
+        command => "${puppet_cmd} agent --onetime --no-daemonize >/dev/null",
         minute  => fqdn_rand( 60 ),
     }
     class { "puppet::monitor": enable => false; }
   }
 
+  # ----
+  # puppet.conf management
   concat::fragment { 'puppet.conf-common':
     order   => '00',
-    target  => $puppet::params::puppet_conf,
+    target  => $puppet_conf,
     content => template("puppet/puppet.conf-common.erb");
   }
 
@@ -102,5 +86,6 @@ class puppet (
       default => 'true',
     }
   }
+
 }
 
