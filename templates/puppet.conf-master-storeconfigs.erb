@@ -1,4 +1,4 @@
-storeconfigs      = <%= storeconfigs %>
+<% if storeconfigs != '' %>storeconfigs      = true<% else %>storeconfigs      = false<% end %>
 thin_storeconfigs = true
 <% if backend == "sqlite" -%>
 dbadapter         = sqlite3
