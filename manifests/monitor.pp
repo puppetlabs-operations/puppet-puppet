@@ -1,11 +1,10 @@
 class puppet::monitor (
     $enable = true
-  ) {
+) {
 
-  if $enable == true {
-    $ensure = "present"
-  } else {
-    $ensure = "absent"
+  $ensure = $enable ? {
+    true    => "present",
+    default => "absent"
   }
 
   if defined(Class["nagios"]) {
