@@ -1,4 +1,25 @@
 storeconfigs      = <%= storeconfigs %>
 thin_storeconfigs = true
-dbadapter         = <%= dbadapter %>
+<% if backend == "sqlite" -%>
+dbadapter         = sqlite3
 dbmigrate         = true
+<% end -%>
+<% if backend == "mysql" -%>
+dbadapter         = mysql
+dbmigrate         = true
+dbuser            = <%= dbuser %>
+dbpassword        = <%= dbpassword %>
+dbserver          = <%= dbserver %>
+dbsocket          = <%= dbsocket %>
+<% end -%>
+<% if backend == "postgresql" -%>
+dbadapter         = postgresql
+dbmigrate         = true
+dbuser            = <%= dbuser %>
+dbpassword        = <%= dbpassword %>
+dbserver          = <%= dbserver %>
+dbname            = puppet
+<% end -%>
+<% if backend == "grayskull" -%>
+storeconfigs_backend = grayskull
+<% end -%>
