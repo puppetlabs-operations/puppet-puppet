@@ -39,27 +39,26 @@ class puppet::storeconfig (
     }
   }
 
-    case $backend {
-      'sqlite3': {
-        include puppet::storeconfig::sqlite
-      }
-      'mysql': {
-        class { "puppet::storeconfig::mysql":
-            dbuser     => $dbuser,
-            dbpassword => $dbpassword,
-        }
-      }
-      'postgresql': {
-        class { "puppet::storeconfig::postgresql":
-            dbuser     => $dbuser,
-            dbpassword => $dbpassword,
-        }
-      }
-      'grayskull': {
-        include puppet::storeconfig::grayskull
-      }
-      default: { err("Target storeconfigs backend \"$backend\" not implemented") }
+  case $backend {
+    'sqlite3': {
+      include puppet::storeconfig::sqlite
     }
+    'mysql': {
+      class { "puppet::storeconfig::mysql":
+          dbuser     => $dbuser,
+          dbpassword => $dbpassword,
+      }
+    }
+    'postgresql': {
+      class { "puppet::storeconfig::postgresql":
+          dbuser     => $dbuser,
+          dbpassword => $dbpassword,
+      }
+    }
+    'grayskull': {
+      include puppet::storeconfig::grayskull
+    }
+    default: { err("Target storeconfigs backend \"$backend\" not implemented") }
   }
 
   concat::fragment { 'puppet.conf-master-storeconfig':
