@@ -39,7 +39,7 @@ Puppet::Reports.register_report(:xmpp) do
   def process
 
     # If you want to debug this...
-    # Puppet.warning  "Sending status for #{self.host} to XMMP in env of #{self.environment} which has #{self.status}"
+    Puppet.warning  "Sending status for #{self.host} to XMMP in env of #{self.environment} which has #{self.status}"
 
     if self.status == 'failed'
       jid = JID::new(XMPP_JID)
