@@ -1,4 +1,4 @@
-# Class: puppet::storedconfiguration
+# Class: puppet::storeconfig
 #
 # This class installs and configures Puppet's stored configuration capability
 #
@@ -56,7 +56,7 @@ class puppet::storeconfig (
       }
     }
     'grayskull': {
-      include puppet::storeconfig::grayskull
+      include grayskull
     }
     default: { err("Target storeconfigs backend \"$backend\" not implemented") }
   }
