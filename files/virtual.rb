@@ -170,7 +170,7 @@ Facter.add("is_virtual") do
   confine :kernel => %w{Linux FreeBSD OpenBSD SunOS HP-UX Darwin GNU/kFreeBSD}
 
   setcode do
-    physical_types = %w{physical xen0 xenu vmware_server vmware_workstation openvzhn}
+    physical_types = %w{physical xen0 vmware_server vmware_workstation openvzhn}
 
     if physical_types.include? Facter.value(:virtual)
       "false"
