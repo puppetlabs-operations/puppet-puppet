@@ -56,7 +56,8 @@ class puppet::storeconfig (
       }
     }
     'grayskull': {
-      include grayskull
+      # Grayskull can have split back ends, so if you need that
+      # including, include it yourself!
     }
     default: { err("Target storeconfigs backend \"$backend\" not implemented") }
   }
