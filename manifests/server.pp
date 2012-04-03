@@ -30,20 +30,21 @@
 #  }
 #
 class puppet::server (
-    $backup       = true,
-    $modulepath   = '$confdir/modules/site:$confdir/env/$environment/dist',
-    $manifest     = '$confdir/modules/site/site.pp',
-    $storeconfigs = '',
-    $dbadapter    = 'sqlite3',
-    $dbuser       = 'puppet',
-    $dbpassword   = 'password',
-    $dbserver     = 'localhost',
-    $dbsocket     = '/var/run/mysqld/mysqld.sock',
-    $certname     = "$fqdn",
-    $report       = 'true',
-    $reports      = ["store", "https"],
-    $reporturl    = "http://$fqdn/reports",
-    $servertype   = "unicorn"
+    $backup             = true,
+    $modulepath         = '$confdir/modules/site:$confdir/env/$environment/dist',
+    $manifest           = '$confdir/modules/site/site.pp',
+    $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
+    $storeconfigs       = '',
+    $dbadapter          = 'sqlite3',
+    $dbuser             = 'puppet',
+    $dbpassword         = 'password',
+    $dbserver           = 'localhost',
+    $dbsocket           = '/var/run/mysqld/mysqld.sock',
+    $certname           = "$fqdn",
+    $report             = 'true',
+    $reports            = ["store", "https"],
+    $reporturl          = "http://$fqdn/reports",
+    $servertype         = "unicorn"
   ) {
 
   include puppet::params
