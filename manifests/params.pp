@@ -66,7 +66,7 @@ class puppet::params {
       $puppet_confdir     = '/etc/puppet'
       $puppet_logdir      = '/var/log/puppet'
       $puppet_vardir      = '/var/lib/puppet'
-      $puppet_ssldir      = '/var/lib/puppet/ssl'
+      $puppet_ssldir      = '/etc/puppet/ssl'
       $puppet_rundir      = '/var/lib/puppet/run/'
       $agent_service      = 'svc:/network/cswpuppetd'
     }
