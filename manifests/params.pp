@@ -56,6 +56,12 @@ class puppet::params {
       $puppet_rundir      = '/var/run/puppet'
       $unicorn_initscript = 'unicorn/initscript_newer.erb'
     }
+
+    # This stops the puppet class breaking. But really, we only have very
+    # limited support for Solaris. And only through OpenCSW
+    'solaris','sunos': {
+      $puppet_conf        = '/opt/csw/etc/puppet/'
+    }
   }
 
   # Behold, the list of platforms that have horrible package mangement!
