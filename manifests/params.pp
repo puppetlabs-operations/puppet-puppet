@@ -59,8 +59,17 @@ class puppet::params {
 
     # This stops the puppet class breaking. But really, we only have very
     # limited support for Solaris. And only through OpenCSW
+    # Taken from: '/opt/csw/bin/puppet config print ...'
     'solaris','sunos': {
       $puppet_conf        = '/opt/csw/etc/puppet/'
+      $puppet_cmd         = '/opt/csw/bin/puppet'
+      $puppet_conf        = '/etc/puppet/puppet.conf'
+      $puppet_confdir     = '/etc/puppet'
+      $puppet_logdir      = '/var/log/puppet'
+      $puppet_vardir      = '/var/lib/puppet'
+      $puppet_ssldir      = '/var/lib/puppet/ssl'
+      $puppet_rundir      = '/var/lib/puppet/run/'
+      $agent_service      = 'svc:/network/cswpuppetd'
     }
   }
 
