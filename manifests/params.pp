@@ -61,7 +61,6 @@ class puppet::params {
     # limited support for Solaris. And only through OpenCSW
     # Taken from: '/opt/csw/bin/puppet config print ...'
     'solaris','sunos': {
-      $puppet_conf        = '/opt/csw/etc/puppet/'
       $puppet_cmd         = '/opt/csw/bin/puppet'
       $puppet_conf        = '/etc/puppet/puppet.conf'
       $puppet_confdir     = '/etc/puppet'
