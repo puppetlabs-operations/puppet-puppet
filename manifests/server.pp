@@ -75,7 +75,7 @@ class puppet::server (
   # ---
   # Storeconfigs
   case $storeconfigs {
-    "mysql","postgresql","sqlite","grayskull": {
+    "mysql","postgresql","sqlite","puppetdb": {
       class { "puppet::storeconfig":
         backend    => $storeconfigs,
         dbuser     => $dbuser,
@@ -83,6 +83,9 @@ class puppet::server (
         dbserver   => $dbserver,
         dbsocket   => $dbsocket
       }
+    }
+    default: {
+      notify { "puppet::server storeconfigs => $storeconfigs option not recognized": }
     }
   }
 
