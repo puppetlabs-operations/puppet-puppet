@@ -55,7 +55,7 @@ class puppet::storeconfig (
           dbpassword => $dbpassword,
       }
     }
-    'grayskull': {
+    'grayskull','puppetdb': {
       # Grayskull can have split back ends, so if you need that
       # including, include it yourself!
     }

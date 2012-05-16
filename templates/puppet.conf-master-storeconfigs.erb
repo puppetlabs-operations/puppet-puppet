@@ -1,5 +1,9 @@
-<% if storeconfigs != '' %>storeconfigs      = true<% else %>storeconfigs      = false<% end %>
+<% if storeconfigs != '' -%>
+storeconfigs      = true
 thin_storeconfigs = true
+<% else -%>
+storeconfigs      = false
+<% end -%>
 <% if backend == "sqlite" -%>
 dbadapter         = sqlite3
 dbmigrate         = true
@@ -22,4 +26,7 @@ dbname            = puppet
 <% end -%>
 <% if backend == "grayskull" -%>
 storeconfigs_backend = grayskull
+<% end -%>
+<% if backend == "puppetdb" -%>
+storeconfigs_backend = puppetdb
 <% end -%>
