@@ -66,8 +66,13 @@ class puppet::server (
       $ssl_client_header        = "HTTP_X_CLIENT_DN"
       $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
     }
+    "thin": {
+      include puppet::server::thin
+      $ssl_client_header        = "HTTP_X_CLIENT_DN"
+      $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
+    }
     default: {
-      err("Only \"passenger\" and \"unicorn\" are valid options for servertype")
+      err('Only "passenger", "thin", and "unicorn" are valid options for servertype')
       fail("Servertype \"$servertype\" not implemented")
     }
   }
