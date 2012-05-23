@@ -2,7 +2,7 @@ class puppet::server::thin {
 
   include puppet::params
 
-  file { "${::puppet::params::puppet_confdir}/config.ru",
+  file { "${::puppet::params::puppet_confdir}/config.ru":
     ensure => present,
     owner  => 'puppet',
     group  => 'puppet',
