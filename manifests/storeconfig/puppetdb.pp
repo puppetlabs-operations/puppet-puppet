@@ -11,5 +11,11 @@ class puppet::storeconfig::puppetdb(
     owner   => 'puppet',
     group   => 'puppet',
     content => template('puppet/puppetdb.conf.erb'),
+    notify => Class['puppet::server'],
+  }
+
+  package { 'puppetdb-terminus':
+    ensure => present,
+    notify => Class['puppet::server'],
   }
 }
