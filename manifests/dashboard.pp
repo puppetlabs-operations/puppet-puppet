@@ -23,9 +23,11 @@ class puppet::dashboard (
     $site      = "dashboard.${domain}",
     $db_user   = "dashboard",
     $db_pw     = 'ch@ng3me',
-    $allowip   = $ipaddress,
+    $allowip   = '',
     $appserver = 'passenger'
   ) {
+
+  $allow_all_ips = "${allowip} ${ipaddress}"
 
   include ruby::dev
 
@@ -65,7 +67,7 @@ class puppet::dashboard (
           priority       => 50,
           unicorn_socket => '/var/run/puppet/puppet_dashboard_unicorn.sock',
           path           => '/usr/share/puppet-dashboard',
-          auth           =>  { 'auth' => true, 'auth_file' => '/etc/nginx/htpasswd', 'allowfrom' => $ipaddress },
+          auth           =>  { 'auth' => true, 'auth_file' => '/etc/nginx/htpasswd', 'allowfrom' => $allowip },
           ssl            => true,
           sslonly        => true,
           isdefaultvhost => true, # default for SSL.
