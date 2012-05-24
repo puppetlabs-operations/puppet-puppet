@@ -4,7 +4,7 @@ class puppet::server::unicorn {
   nginx::vhost {
     "puppetmaster_unicorn":
       port     => 8140,
-      template => "puppet/nginx-unicorn.vhost.conf.erb"
+      template => "puppet/vhost/nginx/unicorn.conf.erb",
   }
 
   unicorn::app {
