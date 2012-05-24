@@ -2,6 +2,11 @@ class puppet::server::thin {
 
   include puppet::params
 
+  nginx::vhost { "puppetmaster_thin":
+    port     => 8140,
+    template => "puppet/vhost/nginx/thin.conf.erb",
+  }
+
   file { "${::puppet::params::puppet_confdir}/config.ru":
     ensure => present,
     owner  => 'puppet',
