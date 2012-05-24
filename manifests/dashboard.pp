@@ -42,7 +42,7 @@ class puppet::dashboard (
 #        port     => '80',
 #        priority => '50',
 #        docroot  => '/usr/share/puppet-dashboard/public',
-#        template => 'puppet/puppet-dashboard-passenger.conf.erb',
+#        template => 'puppet/vhost/apache/passenger-dashboard.conf.erb',
 #      }
 
     }
