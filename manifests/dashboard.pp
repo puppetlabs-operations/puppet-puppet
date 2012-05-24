@@ -85,7 +85,7 @@ class puppet::dashboard (
 
   file { '/etc/puppet-dashboard/database.yml':
     ensure  => present,
-    content => template('puppet/database.yml.erb'),
+    content => template('puppet/dashboard/database.yml.erb'),
     require => Package['puppet-dashboard'],
   }
 
