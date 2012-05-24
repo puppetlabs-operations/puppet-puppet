@@ -23,8 +23,8 @@ server {
   ssl on;
   ssl_certificate         <%= scope.lookupvar('puppet::puppet_ssldir') %>/certs/<%= fqdn %>.pem;
   ssl_certificate_key     <%= scope.lookupvar('puppet::puppet_ssldir') %>/private_keys/<%= fqdn %>.pem;
-  ssl_client_certificate  <%= scope.lookupvar('puppet::puppet_ssldir') %>/ca/ca_crt.pem;
-  ssl_crl                 <%= scope.lookupvar('puppet::puppet_ssldir') %>/ca/ca_crl.pem;
+  ssl_client_certificate  <%= scope.lookupvar('puppet::puppet_ssldir') %>/certs/ca.pem;
+  ssl_crl                 <%= scope.lookupvar('puppet::puppet_ssldir') %>/crl.pem;
   ssl_session_cache       shared:SSL:8m;
   ssl_session_timeout     5m;
   ssl_ciphers             HIGH:+MEDIUM;
