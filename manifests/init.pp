@@ -78,7 +78,7 @@ class puppet (
   concat::fragment { 'puppet.conf-common':
     order   => '00',
     target  => $puppet_conf,
-    content => template("puppet/puppet.conf-common.erb");
+    content => template("puppet/puppet.conf/common.erb");
   }
 
   concat { $puppet::params::puppet_conf:

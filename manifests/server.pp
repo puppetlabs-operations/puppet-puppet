@@ -119,9 +119,6 @@ class puppet::server (
   concat::fragment { 'puppet.conf-master':
     order   => '05',
     target  => $puppet::params::puppet_conf,
-    content => template("puppet/puppet.conf-master.erb");
+    content => template("puppet/puppet.conf/master.erb");
   }
-
-
 }
-

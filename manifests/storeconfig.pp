@@ -64,8 +64,6 @@ class puppet::storeconfig (
   concat::fragment { 'puppet.conf-master-storeconfig':
     order   => '06',
     target  => $puppet::params::puppet_conf,
-    content => template("puppet/puppet.conf-master-storeconfigs.erb");
+    content => template("puppet/puppet.conf/master-storeconfigs.erb");
   }
-
 }
-
