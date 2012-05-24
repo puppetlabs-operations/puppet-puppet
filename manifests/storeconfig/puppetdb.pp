@@ -5,7 +5,7 @@ class puppet::storeconfig::puppetdb(
 ) {
   include puppet::params
 
-  template { "${::puppet::params::confdir}/puppetdb.conf":
+  file { "${::puppet::params::puppet_confdir}/puppetdb.conf":
     ensure  => present,
     mode    => 0644,
     owner   => 'puppet',

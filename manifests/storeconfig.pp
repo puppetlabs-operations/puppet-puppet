@@ -55,9 +55,8 @@ class puppet::storeconfig (
           dbpassword => $dbpassword,
       }
     }
-    'grayskull','puppetdb': {
-      # Grayskull can have split back ends, so if you need that
-      # including, include it yourself!
+    'puppetdb': {
+      class {'::puppet::storeconfig::puppetdb': }
     }
     default: { err("Target storeconfigs backend \"$backend\" not implemented") }
   }
