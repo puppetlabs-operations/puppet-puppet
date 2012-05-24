@@ -44,7 +44,8 @@ class puppet::server (
     $report             = 'true',
     $reports            = ["store", "https"],
     $reporturl          = "http://$fqdn/reports",
-    $servertype         = "unicorn"
+    $servertype         = "unicorn",
+    $ca                 = false
   ) {
 
   include puppet::params
