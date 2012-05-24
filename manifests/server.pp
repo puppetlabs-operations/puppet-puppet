@@ -34,7 +34,7 @@ class puppet::server (
     $modulepath         = '$confdir/modules/site:$confdir/env/$environment/dist',
     $manifest           = '$confdir/modules/site/site.pp',
     $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
-    $storeconfigs       = '',
+    $storeconfigs       = hiera('puppet_storeconfigs'),
     $dbadapter          = 'sqlite3',
     $dbuser             = 'puppet',
     $dbpassword         = 'password',
