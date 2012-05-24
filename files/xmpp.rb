@@ -40,7 +40,7 @@ Puppet::Reports.register_report(:xmpp) do
   def process
 
     # If you want to debug this...
-    Puppet.warning  "xmpp-debug: There's a status for #{self.host} to XMMP in env of #{self.environment} which has #{self.status}"
+    Puppet.warning  "xmpp-debug: There's a status for #{self.host} to XMPP in env \"#{self.environment}\" which is status #{self.status}"
 
     day = Time.now.wday
     if day == 0 or day == 6 # Sat or Sun
