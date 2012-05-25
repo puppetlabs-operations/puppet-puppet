@@ -91,6 +91,14 @@ class puppet::dashboard (
     require => Package['puppet-dashboard'],
   }
 
+  file{ '/usr/share/puppet-dashboard/config/settings.yml':
+    mode    => '0444',
+    owner   => 'www-data',
+    group   => 'www-data',
+    content => "---\ntime_zone: 'Pacific Time (US & Canada)'",
+    notify  => Unicorn::App[$dashboard_site],
+  }
+
   file { [ '/usr/share/puppet-dashboard/public', '/usr/share/puppet-dashboard/public/stylesheets', '/usr/share/puppet-dashboard/public/javascript' ]:
     mode => 0755,
     owner => 'www-data',
