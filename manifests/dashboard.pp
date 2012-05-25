@@ -67,7 +67,7 @@ class puppet::dashboard (
           priority       => 50,
           unicorn_socket => '/var/run/puppet/puppet_dashboard_unicorn.sock',
           path           => '/usr/share/puppet-dashboard',
-          auth           =>  { 'auth' => true, 'auth_file' => '/etc/nginx/htpasswd', 'allowfrom' => $allowip },
+          auth           =>  { 'auth' => true, 'auth_file' => '/etc/nginx/htpasswd', 'allowfrom' => $allow_all_ips },
           ssl            => true,
           sslonly        => true,
           isdefaultvhost => true, # default for SSL.
