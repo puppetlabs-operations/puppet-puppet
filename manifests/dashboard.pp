@@ -27,7 +27,7 @@ class puppet::dashboard (
     $appserver = 'passenger'
   ) {
 
-  $allow_all_ips = "${allowip} ${ipaddress}"
+  $allow_all_ips = "${allowip},${ipaddress}"
 
   include ruby::dev
 
