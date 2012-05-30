@@ -17,9 +17,10 @@ class puppet::server::thin {
   }
 
   thin::app { 'puppetmaster':
-    user   => 'puppet',
-    group  => 'puppet',
-    rackup => "${::puppet::params::puppet_confdir}/config.ru",
+    user    => 'puppet',
+    group   => 'puppet',
+    servers => 1,
+    rackup  => "${::puppet::params::puppet_confdir}/config.ru",
   }
 
   motd::register {"Puppet master on Thin": }
