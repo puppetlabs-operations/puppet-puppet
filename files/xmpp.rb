@@ -47,9 +47,6 @@ Puppet::Reports.register_report(:xmpp) do
       return
     end
 
-    # Am bored of this now...
-    return if self.host == 'urd.puppetlabs.lan'
-
     if self.status == 'failed'
       jid = JID::new(XMPP_JID)
       cl = Client::new(jid)
