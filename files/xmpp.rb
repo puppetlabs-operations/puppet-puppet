@@ -1,7 +1,7 @@
 require 'puppet'
 require 'yaml'
 require 'json'
-require 'httparty'                                                                                                     
+require 'httparty'
 require 'time'
 
 begin
@@ -59,6 +59,13 @@ Puppet::Reports.register_report(:xmpp) do
       # host = find_node( self.host , DASHBOARD_URL )
       host = "#{DASHBOARD_URL}/nodes/#{self.host}"
 
+      # We can get the SHA out of our report (we use the git SHA as the
+      # version, thanks Cody!)
+      commit_string = nil
+      sha = self.configuration_version
+      if sha and sha =~ /^[0-9a-zA-Z]$/
+        commit_string = " see http://git.io/plmc for #{sha}"
+      end
 
       # Thanks to https://projects.puppetlabs.com/issues/10064 we now have an
       # environment to check against.
@@ -66,7 +73,7 @@ Puppet::Reports.register_report(:xmpp) do
       # Need the nil? for things that break before sending their env.
       if self.environment.nil? or self.environment == 'production'
 
-        body = "Puppet run #{self.status} for #{host}"
+        body = "Puppet run #{self.status} for #{host} #{commit_string}"
         XMPP_TARGET.split(',').each do |target| 
           Puppet.debug "Sending status for #{self.host} to XMMP user #{target}"
           m = Message::new(target, body).set_type(:normal).set_id('1').set_subject("Puppet run failed!")
