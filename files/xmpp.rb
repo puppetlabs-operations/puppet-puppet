@@ -52,7 +52,10 @@ Puppet::Reports.register_report(:xmpp) do
 
     # If we ctrl-c'ed then don't bother alerting!!
     begin
-      return if self.logs.last.message == 'Caught INT; calling stop'
+      if self.logs.last.message == 'Caught INT; calling stop'
+        Puppet.warning "xmpp-debug: Am not telling you about #{self.host} as you CTRL-Ced it."
+        return
+      end
     rescue NameError => e
       # I am here in case it doesn't exist.
     end
