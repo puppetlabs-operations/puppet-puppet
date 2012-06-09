@@ -50,6 +50,13 @@ Puppet::Reports.register_report(:xmpp) do
     # Am bored of this now...
     return if self.host == 'urd.puppetlabs.lan'
 
+    # If we ctrl-c'ed then don't bother alerting!!
+    begin
+      return if self.logs.last.message == 'Caught INT; calling stop'
+    rescue NameError => e
+      # I am here in case it doesn't exist.
+    end
+
     if self.status == 'failed'
       jid = JID::new(XMPP_JID)
       cl = Client::new(jid)
@@ -61,7 +68,7 @@ Puppet::Reports.register_report(:xmpp) do
 
       # We can get the SHA out of our report (we use the git SHA as the
       # version, thanks Cody!)
-      commit_string = nil
+      commit_string = ''
       sha = self.configuration_version
       if sha and sha =~ /^[0-9a-zA-Z]$/
         commit_string = " see http://git.io/plmc for #{sha}"
@@ -73,7 +80,7 @@ Puppet::Reports.register_report(:xmpp) do
       # Need the nil? for things that break before sending their env.
       if self.environment.nil? or self.environment == 'production'
 
-        body = "Puppet run #{self.status} for #{host} #{commit_string}"
+        body = "Puppet run #{self.status} for #{host}#{commit_string}"
         XMPP_TARGET.split(',').each do |target| 
           Puppet.debug "Sending status for #{self.host} to XMMP user #{target}"
           m = Message::new(target, body).set_type(:normal).set_id('1').set_subject("Puppet run failed!")
