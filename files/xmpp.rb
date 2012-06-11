@@ -64,13 +64,22 @@ Puppet::Reports.register_report(:xmpp) do
     # If you want to debug this...
     Puppet.warning  "xmpp-debug: There's a status for #{self.host} to XMPP in env \"#{self.environment}\" which is status #{self.status}"
 
+    # We can get the SHA out of our report (we use the git SHA as the
+    # version, thanks Cody!)
+    commit_string = ''
+    sha = self.configuration_version
+    if sha =~ /^[0-9a-zA-Z]$/
+      commit_string = " see http://git.io/plmc for #{sha}"
+      Puppet.debug "xmpp-debug: we has commit string #{sha}"
+    else
+      Puppet.debug "xmpp-debug: no commit string of '#{sha}' for #{self.host}"
+    end
+
+    # Don't alert on weekends.
     day = Time.now.wday
     if day == 0 or day == 6 # Sat or Sun
       return
     end
-
-    # Am bored of this now...
-    return if self.host == 'urd.puppetlabs.lan'
 
     # If we ctrl-c'ed then don't bother alerting!!
     begin
@@ -85,9 +94,15 @@ Puppet::Reports.register_report(:xmpp) do
     if self.status == 'failed'
 
       # get the config every time, so we don't have to restart it to add
-      # users.
+      # users/ignored hosts.
       c = self.getconfig
 
+
+      # If it's an ignored host, don't bother beyond here.
+      return if c[:ignore_hosts].include? self.host
+
+
+      # Now set us up some Jabber
       jid = JID::new(c[:xmpp_jid])
       cl = Client::new(jid)
       cl.connect
@@ -95,17 +110,6 @@ Puppet::Reports.register_report(:xmpp) do
 
       # host = find_node( self.host , DASHBOARD_URL )
       host = "#{c[:dashboard].chomp('/')}/nodes/#{self.host}"
-
-      # We can get the SHA out of our report (we use the git SHA as the
-      # version, thanks Cody!)
-      commit_string = ''
-      sha = self.configuration_version
-      if sha and sha =~ /^[0-9a-zA-Z]$/
-        commit_string = " see http://git.io/plmc for #{sha}"
-        Puppet.debug "xmpp-debug: we has commit string #{sha}"
-      else
-        Puppet.debug "xmpp-debug: no commit string of '#{sha}' for #{self.host}"
-      end
 
       # Thanks to https://projects.puppetlabs.com/issues/10064 we now have an
       # environment to check against.
