@@ -91,6 +91,24 @@ Puppet::Reports.register_report(:xmpp) do
       # I am here in case it doesn't exist.
     end
 
+    # Go through all the log messages and check their message for an
+    # environment. Sketch..
+    # "Could not retrieve catalog from remote server: Error 400 on SERVER:
+    # validate_re(): wrong number of arguments (3; must be 2) at
+    # /etc/puppet/environments/doing_ldap_not_badly/sherwood/apacheds/manifests/config.pp:14
+    # on node yellow.dc1.puppetlabs.net"
+    # For example.
+    self.logs.each do |log|
+      if log.message =~ /Could not retrieve catalog from remote server: Error 400 on SERVER: .* \/etc\/puppet\/environments\/(\w+)\//
+        env = $1
+        if env != 'production'
+          Puppet.warning "xmpp-debug: Ignoring #{self.host} as it's technically in #{env} environment."
+          return
+        end
+      end
+    end
+
+
     if self.status == 'failed'
 
       # get the config every time, so we don't have to restart it to add
