@@ -94,7 +94,7 @@ Puppet::Reports.register_report(:xmpp) do
       cl.auth(c[:xmpp_password])
 
       # host = find_node( self.host , DASHBOARD_URL )
-      host = "#{c[:dashboard]}/nodes/#{self.host}"
+      host = "#{c[:dashboard].chomp('/')}/nodes/#{self.host}"
 
       # We can get the SHA out of our report (we use the git SHA as the
       # version, thanks Cody!)
