@@ -68,11 +68,11 @@ Puppet::Reports.register_report(:xmpp) do
     # version, thanks Cody!)
     commit_string = ''
     sha = self.configuration_version
-    if sha =~ /^[0-9a-zA-Z]$/
+    if sha =~ /^[0-9a-zA-Z]+$/
       commit_string = " see http://git.io/plmc for #{sha}"
       Puppet.debug "xmpp-debug: we has commit string #{sha}"
     else
-      Puppet.debug "xmpp-debug: no commit string of '#{sha}' for #{self.host}"
+      Puppet.warning "xmpp-debug: no usable configuration version string of '#{sha}' for #{self.host}"
     end
 
     # Don't alert on weekends.
