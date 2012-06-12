@@ -22,16 +22,15 @@ class puppet::server::xmppreport {
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        source => 'puppet:///modules/puppet/xmpp.rb';
+        source => 'puppet:///modules/puppet/xmpp.rb',
+        notify => Class['puppet::server'];
     '/etc/puppet/xmpp.yaml':
         ensure => present,
         owner  => 'root',
         group  => 'puppet',
         mode   => '0440',
-        source => 'puppet:///modules/puppet/xmpp.yaml';
+        source => 'puppet:///modules/puppet/xmpp.yaml',
+        notify => Class['puppet::server'];
   }
-
-  # We could, at this, tell Puppet we need to bounce it, but I think
-  # would be bold.
 
 }
