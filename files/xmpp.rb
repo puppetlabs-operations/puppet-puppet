@@ -47,7 +47,7 @@ Puppet::Reports.register_report(:xmpp) do
   def find_report( node_name , dashboard )
 
     JSON.parse( HTTParty.get( "#{dashboard}/nodes.json" ).response.body ).each do |node|
-      return "#{dashboard}/reports/#{node['last_apply_report_id']}" if node['name'] == node_name
+      return "#{dashboard}/reports/#{node['last_apply_report_id']}" if node['name'] == node_name and node['status'] == 'failed'
     end
 
     # If not, just return the node list.
