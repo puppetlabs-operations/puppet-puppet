@@ -43,6 +43,18 @@ Puppet::Reports.register_report(:xmpp) do
     return false
   end
 
+
+  def find_report( node_name , dashboard )
+
+    JSON.parse( HTTParty.get( "#{dashboard}/nodes.json" ).response.body ).each do |node|
+      return "#{dashboard}/reports/#{node['last_apply_report_id']}" if node['name'] == node_name
+    end
+
+    # If not, just return the node list.
+    return "#{dashboard.chomp('/')}/nodes/#{node_name}"
+  end
+
+
   def getconfig
     configs = {}
     configfile = File.join([File.dirname(Puppet.settings[:config]), "xmpp.yaml"])
@@ -127,7 +139,8 @@ Puppet::Reports.register_report(:xmpp) do
       cl.auth(c[:xmpp_password])
 
       # host = find_node( self.host , DASHBOARD_URL )
-      host = "#{c[:dashboard].chomp('/')}/nodes/#{self.host}"
+      # host = "#{c[:dashboard].chomp('/')}/nodes/#{self.host}"
+      dashboard_report_url = find_report( self.host , c[:dashboard] )
 
       # Thanks to https://projects.puppetlabs.com/issues/10064 we now have an
       # environment to check against.
@@ -135,7 +148,7 @@ Puppet::Reports.register_report(:xmpp) do
       # Need the nil? for things that break before sending their env.
       if self.environment.nil? or self.environment == 'production'
 
-        body = "Puppet run #{self.status} for #{host}#{commit_string}"
+        body = "Puppet run #{self.status} for #{dashboard_report_url}#{commit_string}"
 
         c[:xmpp_target].split(',').each do |target| 
           Puppet.debug "Sending status for #{self.host} to XMMP user #{target}"
