@@ -148,7 +148,7 @@ Puppet::Reports.register_report(:xmpp) do
       # Need the nil? for things that break before sending their env.
       if self.environment.nil? or self.environment == 'production'
 
-        body = "Puppet run #{self.status} for #{dashboard_report_url}#{commit_string}"
+        body = "Puppet #{self.status} for #{self.host} #{dashboard_report_url}#{commit_string}"
 
         c[:xmpp_target].split(',').each do |target| 
           Puppet.debug "Sending status for #{self.host} to XMMP user #{target}"
