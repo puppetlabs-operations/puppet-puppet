@@ -19,7 +19,7 @@ class puppet::server::thin {
   thin::app { 'puppetmaster':
     user    => 'puppet',
     group   => 'puppet',
-    servers => 1,
+    servers => 4,
     rackup  => "${::puppet::params::puppet_confdir}/config.ru",
   }
 

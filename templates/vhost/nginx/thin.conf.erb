@@ -2,6 +2,9 @@
 
 upstream puppetmaster_thin {
   server unix:/var/run/thin/puppetmaster.0.sock max_fails=0 fail_timeout=0s;
+  server unix:/var/run/thin/puppetmaster.1.sock max_fails=0 fail_timeout=0s;
+  server unix:/var/run/thin/puppetmaster.2.sock max_fails=0 fail_timeout=0s;
+  server unix:/var/run/thin/puppetmaster.3.sock max_fails=0 fail_timeout=0s;
 }
 
 server {
