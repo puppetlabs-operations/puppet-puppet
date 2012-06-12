@@ -36,7 +36,7 @@ Puppet::Reports.register_report(:xmpp) do
   def find_node( node_name , dashboard )
 
     url = nil
-    JSON.parse( HTTParty.get( "#{dashboard}/nodes.json" ).response.body ).each do |node|
+    JSON.parse( HTTParty.get( "#{dashboard.chomp('/')}/nodes.json" ).response.body ).each do |node|
       return "#{dashboard}/nodes/#{node['id']}".gsub( /[^:]\/\/+/ , '/' ) if node['name'] == node_name
     end
 
@@ -46,7 +46,7 @@ Puppet::Reports.register_report(:xmpp) do
 
   def find_report( node_name , dashboard )
 
-    JSON.parse( HTTParty.get( "#{dashboard}/nodes.json" ).response.body ).each do |node|
+    JSON.parse( HTTParty.get( "#{dashboard.chomp('/')}/nodes.json" ).response.body ).each do |node|
       return "#{dashboard}/reports/#{node['last_apply_report_id']}" if node['name'] == node_name and node['status'] == 'failed'
     end
 
