@@ -8,16 +8,13 @@ class puppet (
   include concat::setup
 
   # FIXME this seems silly
-  $puppet_server    = $server
-  $puppet_ca_server = $ca_server
+  $puppet_server        = $server
+  $puppet_ca_server     = $ca_server
   $puppet_report_server = $report_server
 
   # REFACTOR use scope.lookupvar in templates instead of copying variables
   $agent_service    = $puppet::params::agent_service
   $puppet_conf      = $puppet::params::puppet_conf
-  $puppet_logdir    = $puppet::params::puppet_logdir
-  $puppet_vardir    = $puppet::params::puppet_vardir
-  $puppet_ssldir    = $puppet::params::puppet_ssldir
   $puppet_cmd       = $puppet::params::puppet_cmd
 
   # ----

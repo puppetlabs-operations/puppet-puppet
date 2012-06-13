@@ -2,17 +2,16 @@
 server        = <%= puppet_server %>
 ca_server     = <%= puppet_ca_server %>
 report_server = <%= puppet_report_server %>
+pluginsync    = true
 
-logdir = <%= puppet_logdir %>
-vardir = <%= puppet_vardir %>
-ssldir = <%= puppet_ssldir %>
-rundir=/var/run/puppet
+logdir = <%= scope.lookupvar('puppet::params::puppet_logdir') %>
+vardir = <%= scope.lookupvar('puppet::params::puppet_vardir') %>
+ssldir = <%= scope.lookupvar('puppet::params::puppet_ssldir') %>
+rundir = /var/run/puppet
 
-pluginsync=true
-templatedir=$confdir/templates
 <% if operatingsystem == "Ubuntu" -%>
-prerun_command=/etc/puppet/etckeeper-commit-pre
-postrun_command=/etc/puppet/etckeeper-commit-post
+prerun_command  = /etc/puppet/etckeeper-commit-pre
+postrun_command = /etc/puppet/etckeeper-commit-post
 <% end -%>
 
 [agent]
@@ -22,3 +21,4 @@ environment   = <%= environment %>
 show_diff     = true
 splay         = false
 configtimeout = 360
+
