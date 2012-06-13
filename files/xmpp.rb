@@ -36,7 +36,7 @@ Puppet::Reports.register_report(:xmpp) do
   def find_node( node_name , dashboard )
 
     url = nil
-    JSON.parse( HTTParty.get( "#{dashboard.chomp('/')}/nodes.json" ).response.body ).each do |node|
+    JSON.parse( HTTParty.get( "#{dashboard}/nodes.json" ).response.body ).each do |node|
       return "#{dashboard}/nodes/#{node['id']}".gsub( /[^:]\/\/+/ , '/' ) if node['name'] == node_name
     end
 
@@ -46,12 +46,12 @@ Puppet::Reports.register_report(:xmpp) do
 
   def find_report( node_name , dashboard )
 
-    JSON.parse( HTTParty.get( "#{dashboard.chomp('/')}/nodes.json" ).response.body ).each do |node|
+    JSON.parse( HTTParty.get( "#{dashboard}/nodes.json" ).response.body ).each do |node|
       return "#{dashboard}/reports/#{node['last_apply_report_id']}" if node['name'] == node_name and node['status'] == 'failed'
     end
 
     # If not, just return the node list.
-    return "#{dashboard.chomp('/')}/nodes/#{node_name}"
+    return "#{dashboard}/nodes/#{node_name}"
   end
 
 
@@ -126,6 +126,10 @@ Puppet::Reports.register_report(:xmpp) do
       # get the config every time, so we don't have to restart it to add
       # users/ignored hosts.
       c = self.getconfig
+
+      # Remove any trailing slashes on the URL, so we can join it with
+      # '/path/' later on.
+      c[:dashboard].chomp!( '/' )
 
 
       # If it's an ignored host, don't bother beyond here.
