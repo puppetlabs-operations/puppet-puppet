@@ -7,7 +7,7 @@ logdir = <%= puppet_logdir %>
 vardir = <%= puppet_vardir %>
 ssldir = <%= puppet_ssldir %>
 rundir=/var/run/puppet
-factpath=$vardir/lib/facter
+
 pluginsync=true
 templatedir=$confdir/templates
 <% if operatingsystem == "Ubuntu" -%>
