@@ -1,10 +1,11 @@
 [main]
-server=<%= puppet_server %>
-ca_server=<%= puppet_ca_server %>
-report_server=<%= puppet_report_server %>
-logdir=<%= puppet_logdir %>
-vardir=<%= puppet_vardir %>
-ssldir=<%= puppet_ssldir %>
+server        = <%= puppet_server %>
+ca_server     = <%= puppet_ca_server %>
+report_server = <%= puppet_report_server %>
+
+logdir = <%= puppet_logdir %>
+vardir = <%= puppet_vardir %>
+ssldir = <%= puppet_ssldir %>
 rundir=/var/run/puppet
 factpath=$vardir/lib/facter
 pluginsync=true
@@ -15,9 +16,9 @@ postrun_command=/etc/puppet/etckeeper-commit-post
 <% end -%>
 
 [agent]
-certname = <%= clientcert %>
-report = true
-environment = <%= environment %>
-show_diff = true
-splay = false
+certname      = <%= clientcert %>
+report        = true
+environment   = <%= environment %>
+show_diff     = true
+splay         = false
 configtimeout = 360
