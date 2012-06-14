@@ -1,4 +1,4 @@
-class puppet::server::thin {
+class puppet::server::thin($servers = 4) {
 
   include puppet::params
 
@@ -30,7 +30,7 @@ class puppet::server::thin {
   thin::app { 'puppetmaster':
     user    => 'puppet',
     group   => 'puppet',
-    servers => 4,
+    servers => $servers,
     rackup  => "${::puppet::params::puppet_confdir}/config.ru",
     chdir   => $puppet::params::puppet_confdir,
   }
