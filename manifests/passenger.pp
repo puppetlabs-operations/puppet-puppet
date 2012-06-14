@@ -19,14 +19,14 @@ class puppet::passenger {
 
   $passenger_version=$passenger::params::version
   $gem_path=$passenger::params::gem_path
-  
-  file { 
+
+  file {
     ['/etc/puppet/rack', '/etc/puppet/rack/public', '/etc/puppet/rack/tmp']:
       owner  => 'puppet',
       group  => 'puppet',
       ensure => directory,
   }
-  file { 
+  file {
     '/etc/puppet/rack/config.ru':
       owner  => 'puppet',
       group  => 'puppet',
@@ -34,12 +34,11 @@ class puppet::passenger {
       source => 'puppet:///modules/puppet/config.ru',
   }
 
-  apache::vhost{ 
-    'puppetmaster':
-      port     => '8140',
-      priority => '10',
-      docroot  => '/etc/puppet/rack/public/',
-      ssl      => true,
-      template => 'puppet/vhost/apache/passenger.conf.erb',
+  apache::vhost{ 'puppetmaster':
+    port     => '8140',
+    priority => '10',
+    docroot  => '/etc/puppet/rack/public/',
+    ssl      => true,
+    template => 'puppet/vhost/apache/passenger.conf.erb',
   }
 }
