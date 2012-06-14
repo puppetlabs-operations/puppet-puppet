@@ -7,6 +7,7 @@ class puppet (
   include puppet::params
   include concat::setup
 
+  # This is for compatibility. Agents should include puppet::agent over puppet
   class { 'puppet::agent':
     method        => $cron,
     server        => $server,
