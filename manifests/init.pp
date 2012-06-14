@@ -7,7 +7,13 @@ class puppet (
   include puppet::params
   include concat::setup
 
-  include puppet::agent
+  class { 'puppet::agent':
+    method        => $cron,
+    server        => $server,
+    ca_server     => $ca_server,
+    report_server => $report_server,
+    manage_agent  => $manage_agent,
+  }
 
   # FIXME this seems silly
   $puppet_server        = $server

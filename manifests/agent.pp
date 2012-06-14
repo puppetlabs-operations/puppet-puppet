@@ -1,4 +1,10 @@
-class puppet::agent($method = 'cron') {
+class puppet::agent(
+  $method = 'cron',
+  $server        = hiera("puppet_server"),
+  $ca_server     = hiera("puppet_ca_server", hiera("puppet_server")),
+  $report_server = hiera("puppet_report_server", hiera("puppet_server")),
+  $manage_agent  = false
+) {
 
   # This could be
   #
