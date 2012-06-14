@@ -20,6 +20,12 @@ class puppet::agent(
     default: { fail("Method ${method} is not supported by ${module}") }
   }
 
+  # FIXME this seems silly
+  # These are renamed for the template
+  $puppet_server        = $server
+  $puppet_ca_server     = $ca_server
+  $puppet_report_server = $report_server
+
   # ----
   # puppet.conf management
   concat::fragment { 'puppet.conf-common':

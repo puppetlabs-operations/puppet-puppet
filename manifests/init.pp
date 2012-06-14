@@ -15,16 +15,6 @@ class puppet (
     manage_agent  => $manage_agent,
   }
 
-  # FIXME this seems silly
-  $puppet_server        = $server
-  $puppet_ca_server     = $ca_server
-  $puppet_report_server = $report_server
-
-  # REFACTOR use scope.lookupvar in templates instead of copying variables
-  $agent_service    = $puppet::params::agent_service
-  $puppet_conf      = $puppet::params::puppet_conf
-  $puppet_cmd       = $puppet::params::puppet_cmd
-
   concat { $puppet::params::puppet_conf:
     mode => '0644',
     gnu  => $kernel ? {
