@@ -1,4 +1,4 @@
-class puppet::monitor (
+class puppet::agent::monitor (
     $enable = true
 ) {
 

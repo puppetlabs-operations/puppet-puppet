@@ -10,7 +10,7 @@ class puppet::agent::service {
     hasrestart => true,
   }
 
-  class { "puppet::monitor": enable => true; }
+  class { "::puppet::agent::monitor": enable => true; }
 
   # ----
   # Special things for special kernels

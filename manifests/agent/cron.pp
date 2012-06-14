@@ -6,7 +6,7 @@ class puppet::agent::cron($interval = 1) {
     minute  => fqdn_rand_array($interval, 60),
   }
 
-  class { "puppet::monitor": enable => false; }
+  class { "::puppet::agent::monitor": enable => false; }
 
   service { "puppet_agent":
     name       => $puppet::params::agent_service,
