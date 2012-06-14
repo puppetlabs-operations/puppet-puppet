@@ -7,13 +7,23 @@ class puppet::server::thin {
     template => "puppet/vhost/nginx/thin.conf.erb",
   }
 
-  file { "${::puppet::params::puppet_confdir}/config.ru":
-    ensure => present,
+  concat { "${::puppet::params::puppet_confdir}/config.ru":
     owner  => 'puppet',
     group  => 'puppet',
     mode   => '0644',
-    source => 'puppet:///modules/puppet/config.ru',
     before => Thin::App['puppetmaster'],
+  }
+
+  concat::fragment { "proctitle":
+    order  => '05',
+    target => "${::puppet::params::puppet_confdir}/config.ru",
+    source => 'puppet:///modules/puppet/config.ru/05-proctitle.rb',
+  }
+
+  concat::fragment { "run-puppet-master":
+    order  => '99',
+    target => "${::puppet::params::puppet_confdir}/config.ru",
+    source => 'puppet:///modules/puppet/config.ru/99-run.rb',
   }
 
   thin::app { 'puppetmaster':
