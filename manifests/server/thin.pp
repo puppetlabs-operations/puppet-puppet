@@ -12,6 +12,7 @@ class puppet::server::thin {
     group  => 'puppet',
     mode   => '0644',
     before => Thin::App['puppetmaster'],
+    notify => Nginx::Vhost['puppetmaster_thin'],
   }
 
   concat::fragment { "proctitle":
