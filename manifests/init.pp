@@ -20,16 +20,6 @@ class puppet (
   $puppet_cmd       = $puppet::params::puppet_cmd
 
   # ----
-  # Be carefull about systems that may not be able to upgrade cleanly
-  if $puppet::params::update_puppet {
-    package { 'puppet': ensure => latest; }
-    package { 'facter': ensure => latest; }
-
-    # Fixes a bug. #12813
-    include puppet::hack
-  }
-
-  # ----
   # puppet.conf management
   concat::fragment { 'puppet.conf-common':
     order   => '00',

@@ -1,4 +1,5 @@
-class puppet::hack {
+# IT'S NOT A HACK, IT'S A FEATURE! WHEEEEEEEEEEEE!
+class puppet::package::patches {
 
   # fix facter.
   if $::operatingsystem == 'debian' or $::operatingsystem == 'ubuntu' {
