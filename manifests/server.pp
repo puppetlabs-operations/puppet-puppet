@@ -121,4 +121,14 @@ class puppet::server (
     target  => $puppet::params::puppet_conf,
     content => template("puppet/puppet.conf/master.erb");
   }
+
+  # Nagios!
+  @@nagios_service { "check_puppetmaster_${hostname}":
+    use                 => 'generic-service',
+    check_command       => 'check_puppetmaster',
+    host_name           => $fqdn,
+    service_description => "check_puppetmaster_${hostname}",
+    target              => '/etc/nagios3/conf.d/nagios_service.cfg',
+    notify              => Service[$nagios::params::nagios_service],
+  }
 }
