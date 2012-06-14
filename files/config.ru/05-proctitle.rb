@@ -28,7 +28,7 @@ class ProcTitle
     # stolen from mongrel_proctitle plugin
     wd =  Dir.pwd.split("/")
     wd.pop; wd.pop
-    $app_name = wd.last ? wd.last : 'puppet master'
+    $app_name = 'puppet master'
 
     $app = app
     $count = 0
