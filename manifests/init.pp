@@ -19,14 +19,6 @@ class puppet (
   $puppet_conf      = $puppet::params::puppet_conf
   $puppet_cmd       = $puppet::params::puppet_cmd
 
-  # ----
-  # puppet.conf management
-  concat::fragment { 'puppet.conf-common':
-    order   => '00',
-    target  => $puppet_conf,
-    content => template("puppet/puppet.conf/common.erb");
-  }
-
   concat { $puppet::params::puppet_conf:
     mode => '0644',
     gnu  => $kernel ? {
