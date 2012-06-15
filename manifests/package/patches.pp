@@ -16,4 +16,13 @@ class puppet::package::patches {
       }
     }
   }
+
+  if $::operatingsystem == 'ubuntu' {
+    if $::puppetversion == '2.7.16' {
+      # https://projects.puppetlabs.com/issues/15029
+      file{ '/usr/lib/ruby/1.8/puppet/provider/service/upstart.rb':
+        source => 'puppet:///modules/puppet/patches/upstart.rb'
+      }
+    }
+  }
 }
