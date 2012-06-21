@@ -15,7 +15,7 @@ class puppet::agent(
   Class['puppet::package'] -> Class['puppet::agent']
 
   case $method {
-    cron:    { include puppet::agent::cron }
+    cron:    { class { 'puppet::agent::cron': manage_agent => $manage_agent } }
     service: { include puppet::agent::service }
     default: { fail("Method ${method} is not supported by ${module}") }
   }
