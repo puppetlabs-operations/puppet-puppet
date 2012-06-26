@@ -1,4 +1,4 @@
-class puppet::agent::cron($interval = 1, $manage_agent = false) {
+class puppet::agent::cron($interval = 3, $manage_agent = false) {
   include puppet::params
 
   cron { "puppet agent":
