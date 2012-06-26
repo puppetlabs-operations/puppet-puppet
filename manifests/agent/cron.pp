@@ -3,7 +3,7 @@ class puppet::agent::cron($interval = 3, $manage_agent = false) {
 
   cron { "puppet agent":
     command => "${puppet::params::puppet_cmd} agent --onetime --no-daemonize >/dev/null",
-    minute  => time_interval($interval, 60),
+    minute  => interval($interval, 60),
   }
 
   class { "::puppet::agent::monitor": enable => false; }
