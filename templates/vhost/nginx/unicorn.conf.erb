@@ -3,3 +3,7 @@
 upstream puppetmaster_upstream {
   server unix:/var/run/puppet/puppetmaster_unicorn.sock max_fails=0 fail_timeout=0s;
 }
+
+<%# YO DAWG %>
+<%= scope.function_template('puppet/vhost/nginx/base.conf.erb' ) %>
+

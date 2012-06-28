@@ -4,7 +4,7 @@ class puppet::server::thin {
 
   nginx::vhost { "puppetmaster":
     port     => 8140,
-    template => "puppet/vhost/nginx/base.conf.erb",
+    template => "puppet/vhost/nginx/thin.conf.erb",
   }
 
   concat::fragment { "proctitle":

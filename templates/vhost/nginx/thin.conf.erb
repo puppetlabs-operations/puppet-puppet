@@ -5,3 +5,7 @@ upstream puppetmaster_upstream {
   server unix:/var/run/thin/puppetmaster.<%= count %>.sock max_fails=0 fail_timeout=0s;
 <% end -%>
 }
+
+<%# YO DAWG %>
+<%= scope.function_template('puppet/vhost/nginx/base.conf.erb' ) %>
+
