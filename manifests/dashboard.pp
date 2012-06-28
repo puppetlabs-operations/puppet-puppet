@@ -20,25 +20,25 @@
 #   class { puppet::dashboard: site => 'dashboard.xyz.net; }
 #
 class puppet::dashboard (
-    $site      = "dashboard.${domain}",
-    $db_user   = "dashboard",
-    $db_pw     = 'ch@ng3me',
-    $allowip   = '',
-    $appserver = 'passenger'
-  ) {
-
-  $allow_all_ips = "${allowip},${ipaddress}"
+  $site      = "dashboard.${domain}",
+  $db_user   = "dashboard",
+  $db_pw     = 'ch@ng3me',
+  $allowip   = '',
+  $appserver = 'passenger'
+) {
 
   include ruby::dev
 
+  $allow_all_ips  = "${allowip},${ipaddress}"
+  $approot        = '/usr/share/puppet-dashboard'
   $dashboard_site = $site
 
   case $appserver {
     'passenger': {
       include ::passenger
       include passenger::params
-      $passenger_version=$passenger::params::version
-      $gem_path=$passenger::params::gem_path
+      $passenger_version = $passenger::params::version
+      $gem_path          = $passenger::params::gem_path
 
 #      apache::vhost { $dashboard_site:
 #        port     => '80',
@@ -49,30 +49,27 @@ class puppet::dashboard (
 
     }
     'unicorn': {
-      unicorn::app {
-        $dashboard_site:
-          approot                  => '/usr/share/puppet-dashboard',
-          config_file              => '/usr/share/puppet-dashboard/config/unicorn.config.rb',
-          unicorn_pidfile          => '/var/run/puppet/puppet_dashboard_unicorn.pid',
-          unicorn_socket           => '/var/run/puppet/puppet_dashboard_unicorn.sock',
-          rack_file                => 'puppet:///modules/unicorn/config.ru',
-          unicorn_worker_processes => '2',
-          unicorn_user             => 'www-data',
-          unicorn_group            => 'www-data',
-          log_stds                 => true,
-          stdlog_path              => '/var/log/puppet-dashboard',
+      unicorn::app { $dashboard_site:
+        approot                  => $approot,
+        config_file              => "${approot}/config/unicorn.config.rb",
+        unicorn_pidfile          => '/var/run/puppet/puppet_dashboard_unicorn.pid',
+        unicorn_socket           => '/var/run/puppet/puppet_dashboard_unicorn.sock',
+        rack_file                => 'puppet:///modules/unicorn/config.ru',
+        unicorn_worker_processes => '2',
+        unicorn_user             => 'www-data',
+        unicorn_group            => 'www-data',
+        log_stds                 => true,
+        stdlog_path              => '/var/log/puppet-dashboard',
       }
-      nginx::unicorn {
-        'dashboard.puppetlabs.com':
-          priority       => 50,
-          unicorn_socket => '/var/run/puppet/puppet_dashboard_unicorn.sock',
-          path           => '/usr/share/puppet-dashboard',
-          auth           =>  { 'auth' => true, 'auth_file' => '/etc/nginx/htpasswd', 'allowfrom' => $allow_all_ips },
-          ssl            => true,
-          sslonly        => true,
-          isdefaultvhost => true, # default for SSL.
+      nginx::unicorn { 'dashboard.puppetlabs.com':
+        priority       => 50,
+        unicorn_socket => '/var/run/puppet/puppet_dashboard_unicorn.sock',
+        path           => '/usr/share/puppet-dashboard',
+        auth           =>  { 'auth' => true, 'auth_file' => '/etc/nginx/htpasswd', 'allowfrom' => $allow_all_ips },
+        ssl            => true,
+        sslonly        => true,
+        isdefaultvhost => true, # default for SSL.
       }
-      #if ! defined(Class["apache"] { include apache::remove }
     }
   }
 
@@ -85,13 +82,21 @@ class puppet::dashboard (
     db_pw   => $db_pw;
   }
 
+  file { "${approot}/config.ru":
+    ensure => present,
+    owner  => 'www-data',
+    group  => 'www-data',
+    mode   => '0644',
+    source => 'puppet:///modules/unicorn/config.ru',
+  }
+
   file { '/etc/puppet-dashboard/database.yml':
     ensure  => present,
     content => template('puppet/dashboard/database.yml.erb'),
     require => Package['puppet-dashboard'],
   }
 
-  file{ '/usr/share/puppet-dashboard/config/settings.yml':
+  file { '/usr/share/puppet-dashboard/config/settings.yml':
     mode    => '0444',
     owner   => 'www-data',
     group   => 'www-data',
@@ -99,12 +104,14 @@ class puppet::dashboard (
     notify  => Unicorn::App[$dashboard_site],
   }
 
-  file { [ '/usr/share/puppet-dashboard/public', '/usr/share/puppet-dashboard/public/stylesheets', '/usr/share/puppet-dashboard/public/javascript' ]:
+  file { [
+      "${approot}/public",
+      "${approot}/public/stylesheets",
+      "${approot}/public/javascript"
+  ]:
     mode => 0755,
     owner => 'www-data',
     group => 'www-data',
     require => Package['puppet-dashboard'],
   }
-
 }
-
