@@ -4,7 +4,7 @@ class puppet::server::thin($servers = 4) {
 
   nginx::vhost { "puppetmaster_thin":
     port     => 8140,
-    template => "puppet/vhost/nginx/thin.conf.erb",
+    template => ["puppet/vhost/nginx/thin.conf.erb", "puppet/vhost/nginx/base.conf.erb"],
   }
 
   concat { "${::puppet::params::puppet_confdir}/config.ru":
