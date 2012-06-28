@@ -45,7 +45,8 @@ class puppet::server (
     $reports            = ["store", "https"],
     $reporturl          = "http://$fqdn/reports",
     $servertype         = "unicorn",
-    $ca                 = false
+    $ca                 = false,
+    $monitor            = true
   ) {
 
   include puppet::params
@@ -122,13 +123,15 @@ class puppet::server (
     content => template("puppet/puppet.conf/master.erb");
   }
 
-  # Nagios!
-  @@nagios_service { "check_puppetmaster_${hostname}":
-    use                 => 'generic-service',
-    check_command       => 'check_puppetmaster',
-    host_name           => $fqdn,
-    service_description => "check_puppetmaster_${hostname}",
-    target              => '/etc/nagios3/conf.d/nagios_service.cfg',
-    notify              => Service[$nagios::params::nagios_service],
+  if $monitor == true {
+    # Nagios!
+    @@nagios_service { "check_puppetmaster_${hostname}":
+      use                 => 'generic-service',
+      check_command       => 'check_puppetmaster',
+      host_name           => $fqdn,
+      service_description => "check_puppetmaster_${hostname}",
+      target              => '/etc/nagios3/conf.d/nagios_service.cfg',
+      notify              => Service[$nagios::params::nagios_service],
+    }
   }
 }
