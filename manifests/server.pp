@@ -45,8 +45,7 @@ class puppet::server (
     $reports            = ["store", "https"],
     $reporturl          = "http://$fqdn/reports",
     $servertype         = "unicorn",
-    $ca                 = false,
-    $monitor            = true
+    $ca                 = false
   ) {
 
   include puppet::params
@@ -123,8 +122,10 @@ class puppet::server (
     content => template("puppet/puppet.conf/master.erb");
   }
 
-  if $monitor == true {
-    # Nagios!
+  # Nagios!
+  $monitor_server = hiera('puppet_server_monitor', true)
+
+  if $monitor_server {
     @@nagios_service { "check_puppetmaster_${hostname}":
       use                 => 'generic-service',
       check_command       => 'check_puppetmaster',
