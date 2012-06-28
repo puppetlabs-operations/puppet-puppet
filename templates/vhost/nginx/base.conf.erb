@@ -1,4 +1,7 @@
 
+<%# YO DAWG %>
+<%= scope.function_template('puppet/vhost/nginx/' + scope.lookupvar('puppet::server::servertype') + '.conf.erb' ) %>
+
 server {
 
     listen 8140;
