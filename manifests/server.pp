@@ -96,8 +96,15 @@ class puppet::server (
 
   # ---
   # Backups
-  $backup_server = hiera('puppet_server_backup', true)
-  if $backup_server { include puppet::server::backup }
+  #
+  # FIXME
+  # http://projects.puppetlabs.com/issues/10590
+  # err: Could not retrieve catalog from remote server: Error 400 on SERVER: can't clone TrueClass
+  #
+  # Use a real boolean after hiera 1.0 is out
+  #
+  $backup_server = hiera('puppet_server_backup', 'true')
+  if $backup_server == 'true' { include puppet::server::backup }
 
   # ---
   # Used only for platforms that seperate the master and agent packages
@@ -123,9 +130,15 @@ class puppet::server (
   }
 
   # Nagios!
-  $monitor_server = hiera('puppet_server_monitor', true)
+  # FIXME
+  # http://projects.puppetlabs.com/issues/10590
+  # err: Could not retrieve catalog from remote server: Error 400 on SERVER: can't clone TrueClass
+  #
+  # Use a real boolean after hiera 1.0 is out
+  #
+  $monitor_server = hiera('puppet_server_monitor', 'true')
 
-  if $monitor_server {
+  if $monitor_server == 'true' {
     @@nagios_service { "check_puppetmaster_${hostname}":
       use                 => 'generic-service',
       check_command       => 'check_puppetmaster',
