@@ -129,6 +129,20 @@ class puppet::server (
     content => template("puppet/puppet.conf/master.erb");
   }
 
+  concat { "${::puppet::params::puppet_confdir}/config.ru":
+    owner  => 'puppet',
+    group  => 'puppet',
+    mode   => '0644',
+    notify => Nginx::Vhost['puppetmaster'],
+  }
+
+  concat::fragment { "run-puppet-master":
+    order  => '99',
+    target => "${::puppet::params::puppet_confdir}/config.ru",
+    source => 'puppet:///modules/puppet/config.ru/99-run.rb',
+  }
+
+
   # Nagios!
   # FIXME
   # http://projects.puppetlabs.com/issues/10590
