@@ -33,44 +33,31 @@ class puppet::dashboard (
   $approot        = '/usr/share/puppet-dashboard'
   $dashboard_site = $site
 
-  case $appserver {
-    'passenger': {
-      include ::passenger
-      include passenger::params
-      $passenger_version = $passenger::params::version
-      $gem_path          = $passenger::params::gem_path
+  unicorn::app { $dashboard_site:
+    approot                  => $approot,
+    config_file              => "${approot}/config/unicorn.config.rb",
+    unicorn_pidfile          => '/var/run/puppet/puppet_dashboard_unicorn.pid',
+    unicorn_socket           => '/var/run/puppet/puppet_dashboard_unicorn.sock',
+    rack_file                => 'puppet:///modules/unicorn/config.ru',
+    unicorn_worker_processes => '2',
+    unicorn_user             => 'www-data',
+    unicorn_group            => 'www-data',
+    log_stds                 => true,
+    stdlog_path              => '/var/log/puppet-dashboard',
+  }
 
-#      apache::vhost { $dashboard_site:
-#        port     => '80',
-#        priority => '50',
-#        docroot  => '/usr/share/puppet-dashboard/public',
-#        template => 'puppet/vhost/apache/passenger-dashboard.conf.erb',
-#      }
-
-    }
-    'unicorn': {
-      unicorn::app { $dashboard_site:
-        approot                  => $approot,
-        config_file              => "${approot}/config/unicorn.config.rb",
-        unicorn_pidfile          => '/var/run/puppet/puppet_dashboard_unicorn.pid',
-        unicorn_socket           => '/var/run/puppet/puppet_dashboard_unicorn.sock',
-        rack_file                => 'puppet:///modules/unicorn/config.ru',
-        unicorn_worker_processes => '2',
-        unicorn_user             => 'www-data',
-        unicorn_group            => 'www-data',
-        log_stds                 => true,
-        stdlog_path              => '/var/log/puppet-dashboard',
-      }
-      nginx::unicorn { 'dashboard.puppetlabs.com':
-        priority       => 50,
-        unicorn_socket => '/var/run/puppet/puppet_dashboard_unicorn.sock',
-        path           => '/usr/share/puppet-dashboard',
-        auth           =>  { 'auth' => true, 'auth_file' => '/etc/nginx/htpasswd', 'allowfrom' => $allow_all_ips },
-        ssl            => true,
-        sslonly        => true,
-        isdefaultvhost => true, # default for SSL.
-      }
-    }
+  nginx::unicorn { 'dashboard.puppetlabs.com':
+    priority       => 50,
+    unicorn_socket => '/var/run/puppet/puppet_dashboard_unicorn.sock',
+    path           => $approot,
+    auth           => {
+      'auth'      => true,
+      'auth_file' => '/etc/nginx/htpasswd',
+      'allowfrom' => $allow_all_ips,
+    },
+    ssl            => true,
+    sslonly        => true,
+    isdefaultvhost => true, # default for SSL.
   }
 
   package { 'puppet-dashboard':
