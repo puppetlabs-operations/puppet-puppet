@@ -20,11 +20,10 @@
 #   class { puppet::dashboard: site => 'dashboard.xyz.net; }
 #
 class puppet::dashboard (
-  $site      = "dashboard.${domain}",
-  $db_user   = "dashboard",
-  $db_pw     = 'ch@ng3me',
-  $allowip   = '',
-  $appserver = 'passenger'
+  $db_user,
+  $db_pw,
+  $site    = "dashboard.${domain}",
+  $allowip = '',
 ) {
 
   include ruby::dev
