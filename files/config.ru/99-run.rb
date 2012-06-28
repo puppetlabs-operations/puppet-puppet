@@ -1,5 +1,5 @@
 
-ARGV << "--rack"
+ARGV << "--rack --trace"
 require 'puppet/application/master'
 # we're usually running inside a Rack::Builder.new {} block,
 # therefore we need to call run *here*.
