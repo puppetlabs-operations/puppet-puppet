@@ -13,7 +13,6 @@ class puppet::server::unicorn {
       initscript               => $puppet::params::unicorn_initscript,
       unicorn_pidfile          => "${puppet::params::puppet_rundir}/puppetmaster_unicorn.pid",
       unicorn_socket           => "${puppet::params::puppet_rundir}/puppetmaster_unicorn.sock",
-      unicorn_worker_processes => '4',
       stdlog_path              => $puppet::params::puppet_logdir,
       log_stds                 => 'true',
       rack_file                => 'puppet:///modules/puppet/config.ru',
