@@ -2,6 +2,7 @@ class puppet::server::thin {
 
   include puppet::params
 
+  $servers = $::processorcount
   nginx::vhost { "puppetmaster":
     port     => 8140,
     template => "puppet/vhost/nginx/thin.conf.erb",
