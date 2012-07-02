@@ -1,13 +1,19 @@
 [master]
 # See http://hunnur.com/blog/2010/10/dynamic-git-branch-puppet-environments/
-modulepath               = <%= modulepath %>
-manifest                 = <%= manifest %>
+modulepath = <%= modulepath %>
+manifest   = <%= manifest %>
+ca         = <%= ca %>
+
 config_version           = "<%= config_version_cmd %>"
 ssl_client_header        = <%= ssl_client_header %>
 ssl_client_verify_header = <%= ssl_client_verify_header %>
-report                   = <%= report %>
-reports                  = <% if reports.is_a? Array %><%= reports.join(", ") %><% else %><%= reports %><% end %>
-reporturl                = <%= reporturl %>
-reporturl_ssl_verify     = true
-reporturl_ssl_cert       = /etc/ssl/certs/ca-certificates.crt
-ca                       = <%= ca %>
+
+report               = <%= report %>
+reports              = <% if reports.is_a? Array %><%= reports.join(", ") %><% else %><%= reports %><% end %>
+reporturl            = <%= reporturl %>
+reporturl_ssl_verify = true
+reporturl_ssl_cert   = /etc/ssl/certs/ca-certificates.crt
+
+
+user  = puppet
+group = puppet
