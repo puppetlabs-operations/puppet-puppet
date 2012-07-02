@@ -14,6 +14,8 @@ class puppet::server::unicorn {
     unicorn_socket  => "${puppet::params::puppet_rundir}/puppetmaster_unicorn.sock",
     stdlog_path     => $puppet::params::puppet_logdir,
     log_stds        => 'true',
+    unicorn_user    => 'puppet',
+    unicorn_group   => 'puppet',
     before          => Service['nginx'],
   }
 
