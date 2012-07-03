@@ -161,5 +161,19 @@ class puppet::server (
       target              => '/etc/nagios3/conf.d/nagios_service.cfg',
       notify              => Service[$nagios::params::nagios_service],
     }
+
+    @@nagios_servicedependency {"check_puppetmaster_${hostname}":
+      host_name => "$fqdn",
+      service_description => "check_ping_${hostname}",
+
+      dependent_host_name => "$fqdn",
+      dependent_service_description => "check_puppetmaster_${hostname}",
+
+      execution_failure_criteria => "n",
+      notification__failure_criteria => "w,u,c",
+
+      ensure => present,
+      target => '/etc/nagios3/conf.d/nagios_servicedep.cfg',
+    }
   }
 }
