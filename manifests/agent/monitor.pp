@@ -27,17 +27,14 @@ class puppet::agent::monitor (
     }
 
     @@nagios_servicedependency {"check_puppetd_${hostname}":
-      host_name => "$fqdn",
-      service_description => "check_ping_${hostname}",
-
-      dependent_host_name => "$fqdn",
+      host_name                     => "$fqdn",
+      service_description           => "check_ping_${hostname}",
+      dependent_host_name           => "$fqdn",
       dependent_service_description => "check_puppetd_${hostname}",
-
-      execution_failure_criteria => "n",
+      execution_failure_criteria    => "n",
       notification_failure_criteria => "w,u,c",
-
-      ensure => present,
-      target => '/etc/nagios3/conf.d/nagios_servicedep.cfg',
+      ensure                        => present,
+      target                        => '/etc/nagios3/conf.d/nagios_servicedep.cfg',
     }
   }
 
