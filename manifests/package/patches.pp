@@ -31,7 +31,7 @@ class puppet::package::patches {
   if $::operatingsystem == 'Debian' {
     if $::puppetversion == '2.7.18' {
       file{ '/usr/lib/ruby/1.8/puppet/type.rb':
-        source => 'puppet:///modules/puppet/patches/agent.rb'
+        source => 'puppet:///modules/puppet/patches/type.rb'
       }
     }
   }
