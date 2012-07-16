@@ -30,12 +30,7 @@ class puppet::package::patches {
   # Make it not tell me about not every host not supporting AIX/Sol ACLs
   if $::operatingsystem == 'Debian' {
     if $::puppetversion == '2.7.18' {
-      $patchdir = $::osfamily ? {
-        Debian  => '/usr/lib/ruby/1.8/puppet',
-        RedHat  => '/usr/lib/ruby/site_ruby/1.8/puppet',
-        default => '/usr/lib/ruby/1.8/puppet',
-      }
-      file{ "${patchdir}/type.rb":
+      file{ '/usr/lib/ruby/1.8/puppet/type.rb':
         source => 'puppet:///modules/puppet/patches/type.rb'
       }
     }
