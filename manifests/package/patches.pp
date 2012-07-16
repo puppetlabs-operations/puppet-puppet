@@ -25,4 +25,15 @@ class puppet::package::patches {
       }
     }
   }
+
+  # https://github.com/puppetlabs/puppet/pull/798
+  # Make it not tell me about not every host not supporting AIX/Sol ACLs
+  if $::operatingsystem == 'Debian' {
+    if $::puppetversion == '2.7.18' {
+      file{ '/usr/lib/ruby/1.8/puppet/type.rb':
+        source => 'puppet:///modules/puppet/patches/agent.rb'
+      }
+    }
+  }
+
 }
