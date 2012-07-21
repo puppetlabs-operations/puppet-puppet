@@ -121,14 +121,6 @@ Puppet::Reports.register_report(:irccat) do
           return
         end
       end
-
-      if log.message =~ /connect to host github.com port 22: Connection timed out fatal/
-        if self.status == 'failed'
-          irccatter( "#{self.host} failed to talk to teh hubs. LOL" , c[:irccathost] , c[:irccatport] )
-          return
-        end
-      end
-
     end
 
 
