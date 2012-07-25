@@ -15,7 +15,7 @@ Facter.add("confenv") do
     # Split it, in case it is PE. You can compare strings too, it's a little
     # dirty.
     if Facter.value( 'puppetversion' ).split( ' ' )[0] > "2.7"
-      env = %x{#{path} config print environment}.chomp
+      env = %x{#{path} config print environment --mode agent}.chomp
     else
       env = %x{#{path} agent --configprint environment}.chomp
     end
