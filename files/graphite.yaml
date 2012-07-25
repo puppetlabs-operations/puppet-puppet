@@ -1,3 +1,4 @@
 ---
 :graphite_server: 'graphite.dc1.puppetlabs.net'
 :graphite_port: '2003'
+:graphite_prefix: 'puppet'
