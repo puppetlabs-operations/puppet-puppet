@@ -1,6 +1,7 @@
 production:
   adapter: mysql
-  database: dashboard_production
+  database: <%= db_name %>
   username: <%= db_user %>
   password: <%= db_pw %>
   encoding: utf8
+  host: <%= db_host %>
