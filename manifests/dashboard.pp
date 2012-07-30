@@ -22,8 +22,11 @@
 class puppet::dashboard (
   $db_user,
   $db_pw,
-  $site    = "dashboard.${domain}",
-  $allowip = '',
+  $db_host   = 'localhost',
+  $db_name   = 'puppet_dashboard',
+  $manage_db = true,
+  $site      = "dashboard.${domain}",
+  $allowip   = ''
 ) {
 
   include ruby::dev
@@ -62,9 +65,12 @@ class puppet::dashboard (
     ensure => present,
   }
 
-  mysql::db { "dashboard_production":
-    db_user => $db_user,
-    db_pw   => $db_pw;
+  if $manage_db {
+    # FIXME THIS IS NOT COMPATIBLE WITH THE NEW MYSQL MODULE
+    mysql::db { "dashboard_production":
+      db_user => $db_user,
+      db_pw   => $db_pw;
+    }
   }
 
   file { "${approot}/config.ru":
