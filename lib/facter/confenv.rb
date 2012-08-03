@@ -1,26 +1,26 @@
 Facter.add("confenv") do
   setcode do
+    env = nil
 
-    path = nil
-    # We should change this to grab $puppet::params::puppet_cmd
-    [ '/usr/bin/puppet', '/usr/local/bin/puppet', '/opt/puppet/bin/puppet', '/opt/csw/bin/puppet' ].each do |puppet|
-      if File.exists?( puppet )
-        path = puppet
-        break
+    puppet_paths = [
+      '/usr/bin/puppet',
+      '/usr/local/bin/puppet',
+      '/opt/puppet/bin/puppet',
+      '/opt/csw/bin/puppet'
+    ]
+    path = puppet_paths.find { |puppet_path| File.exists? puppet_path }
+
+    if path
+      # Split it, in case it is PE. You can compare strings too, it's a little
+      # dirty.
+      if Facter.value( 'puppetversion' ).split( ' ' )[0] > "2.7"
+        cmd = %{#{path} config print environment --mode agent}
+      else
+        cmd = %{#{path} agent --configprint environment}
       end
-    end
-
-    return "problem with environment" if path.nil?
-
-    # Split it, in case it is PE. You can compare strings too, it's a little
-    # dirty.
-    if Facter.value( 'puppetversion' ).split( ' ' )[0] > "2.7"
-      env = %x{#{path} config print environment --mode agent}.chomp
-    else
-      env = %x{#{path} agent --configprint environment}.chomp
+      env = Facter::Util::Resolution.exec(cmd).chomp
     end
 
     env
-
   end
 end
