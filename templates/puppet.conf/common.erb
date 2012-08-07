@@ -7,7 +7,7 @@ pluginsync    = true
 logdir = <%= scope.lookupvar('puppet::params::puppet_logdir') %>
 vardir = <%= scope.lookupvar('puppet::params::puppet_vardir') %>
 ssldir = <%= scope.lookupvar('puppet::params::puppet_ssldir') %>
-rundir = /var/run/puppet
+rundir = <%= scope.lookupvar('puppet::params::puppet_rundir') %>
 
 <% if operatingsystem == "Ubuntu" -%>
 prerun_command  = /etc/puppet/etckeeper-commit-pre
