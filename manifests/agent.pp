@@ -1,9 +1,9 @@
 class puppet::agent(
   $method = 'cron',
-  $server        = hiera("puppet_server"),
-  $ca_server     = hiera("puppet_ca_server", hiera("puppet_server")),
-  $report_server = hiera("puppet_report_server", hiera("puppet_server")),
-  $manage_agent  = false
+  $server         = hiera("puppet_server"),
+  $ca_server      = hiera("puppet_ca_server", hiera("puppet_server")),
+  $report_server  = hiera("puppet_report_server", hiera("puppet_server")),
+  $manage_service = undef
 ) {
 
   # This could be
@@ -15,7 +15,7 @@ class puppet::agent(
   Class['puppet::package'] -> Class['puppet::agent']
 
   case $method {
-    cron:    { class { 'puppet::agent::cron': manage_agent => $manage_agent } }
+    cron:    { class { 'puppet::agent::cron': manage_service => $manage_service } }
     service: { include puppet::agent::service }
     default: { fail("Method ${method} is not supported by ${module}") }
   }
