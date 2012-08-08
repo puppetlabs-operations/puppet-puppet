@@ -1,4 +1,4 @@
-class puppet::agent::cron($interval = 3, $manage_agent = false) {
+class puppet::agent::cron($interval = 3, $disable_agent = false) {
   include puppet::params
 
   cron { "puppet agent":
@@ -8,7 +8,7 @@ class puppet::agent::cron($interval = 3, $manage_agent = false) {
 
   class { "::puppet::agent::monitor": enable => false; }
 
-  if $manage_agent {
+  if $disable_agent {
     service { "puppet_agent":
       name       => $puppet::params::agent_service,
       ensure     => stopped,
