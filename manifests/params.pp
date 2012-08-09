@@ -4,6 +4,7 @@ class puppet::params {
   $puppet_cmd         = hiera('puppet_cmd', undef)
   $agent_service      = hiera('agent_service', undef)
   $agent_defaults     = hiera('agent_defaults', undef)
+  $update_puppet      = hiera('update_puppet', undef)
   $master_package     = hiera('master_package', undef)
   $master_service     = hiera('master_service', undef)
   $puppet_conf        = hiera('puppet_conf', undef)
