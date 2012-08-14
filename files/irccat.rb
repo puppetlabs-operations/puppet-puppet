@@ -25,7 +25,6 @@ Puppet::Reports.register_report(:irccat) do
 
   def find_node( node_name , dashboard )
 
-    url = nil
     JSON.parse( HTTParty.get( "#{dashboard}/nodes.json" ).response.body ).each do |node|
       return "#{dashboard}/nodes/#{node['id']}".gsub( /[^:]\/\/+/ , '/' ) if node['name'] == node_name
     end
@@ -104,6 +103,7 @@ Puppet::Reports.register_report(:irccat) do
       end
     rescue NameError => e
       # I am here in case it doesn't exist.
+      Puppet.warning "Failed to tell you something because of #{e}"
     end
 
     # Go through all the log messages and check their message for an
@@ -114,13 +114,23 @@ Puppet::Reports.register_report(:irccat) do
     # on node buttons.puppetlabs.net"
     # For example.
     self.logs.each do |log|
-      if log.message =~ /Could not retrieve catalog from remote server: Error 400 on SERVER: .* \/etc\/puppet\/environments\/(\w+)\//
-        env = $1
-        if env != 'production'
-          Puppet.warning "irccat-debug: Ignoring #{self.host} as it's technically in #{env} environment."
-          return
-        end
+
+      # Just keep adding reasons to fail here.
+      case
+        when log.message =~ /Could not retrieve catalog from remote server: Error 400 on SERVER: .* \/etc\/puppet\/environments\/(\w+)\//
+          env = $1
+        when log.message =~ /change from \w+ to \w+ failed: Could not update: undefined method .* for .* at \/etc\/puppet\/environments\/(\w+)\//
+          env = $1
+        else
+          # Assume it's production otherwise.
+          env = 'production'
       end
+
+      if env != 'production'
+        Puppet.warning "irccat-debug: Ignoring #{self.host} as it's technically in #{env} environment."
+        return
+      end
+
     end
 
 
