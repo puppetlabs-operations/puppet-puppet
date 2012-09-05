@@ -125,6 +125,9 @@ Puppet::Reports.register_report(:irccat) do
         when log.message =~ /Could not evaluate: No route to host - connect/
           Puppet.warning "irccat-debug: Ignoring #{self.host} as routing is broken and you know this already."
           return
+        when log.message =~ /eval_generate: getaddrinfo: hostname nor servname provided, or not known/
+          Puppet.warning "irccat-debug: Ignoring #{self.host} as resolving DNS is broken and you know this already."
+          return
         else
           # Assume it's production otherwise.
           env = 'production'
