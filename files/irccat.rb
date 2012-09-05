@@ -121,6 +121,10 @@ Puppet::Reports.register_report(:irccat) do
           env = $1
         when log.message =~ /change from \w+ to \w+ failed: Could not update: undefined method .* for .* at \/etc\/puppet\/environments\/(\w+)\//
           env = $1
+        # This is a temp (HAH) hack to save our channel. Too much noise.
+        when log.message =~ /Could not evaluate: No route to host - connect/
+          Puppet.warning "irccat-debug: Ignoring #{self.host} as routing is broken and you know this already."
+          return
         else
           # Assume it's production otherwise.
           env = 'production'
