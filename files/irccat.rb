@@ -63,6 +63,10 @@ Puppet::Reports.register_report(:irccat) do
 
   def process
 
+    # Some variables we'd like to use later.
+    puppetdb_host  = nil
+    puppetdb_error = false
+
     # get the config every time, so we don't have to restart it to add
     # users/ignored hosts.
     c = self.getconfig
@@ -128,6 +132,11 @@ Puppet::Reports.register_report(:irccat) do
         when log.message =~ /eval_generate: getaddrinfo: hostname nor servname provided, or not known/
           Puppet.warning "irccat-debug: Ignoring #{self.host} as resolving DNS is broken and you know this already."
           return
+        when log.message =~ /Could not retrieve catalog from remote server: Error 400 on SERVER: .+ command for .+ to PuppetDB at (.+):\d+: /
+          puppetdb_host = $1
+          puppetdb_error = true
+          Puppet.warning "irccat-debug: I think PuppetDB is broken on #{puppetdb_host}"
+          break
         else
           # Assume it's production otherwise.
           env = 'production'
@@ -144,6 +153,12 @@ Puppet::Reports.register_report(:irccat) do
     if self.status == 'failed'
 
       dashboard_report_url = find_report( self.host , c[:dashboard] )
+
+      # Is puppetdb possibly down?
+      if puppetdb_error == true
+        irccatter( "I think PuppetDB is dead on #{puppetdb_host} for #{self.host}, see #{dashboard_report_url}" , c[:irccathost] , c[:irccatport] )
+        return
+      end
 
       # Thanks to https://projects.puppetlabs.com/issues/10064 we now have an
       # environment to check against.
