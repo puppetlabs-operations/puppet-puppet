@@ -66,6 +66,8 @@ Puppet::Reports.register_report(:irccat) do
     # Some variables we'd like to use later.
     puppetdb_host  = nil
     puppetdb_error = false
+    git_error = false
+    git_msg   = nil
 
     # get the config every time, so we don't have to restart it to add
     # users/ignored hosts.
@@ -137,6 +139,11 @@ Puppet::Reports.register_report(:irccat) do
           puppetdb_error = true
           Puppet.warning "irccat-debug: I think PuppetDB is broken on #{puppetdb_host}"
           break
+        when log.message =~ /Could not evaluate: Execution of '\/[a-z\/]+\/bin\/git fetch origin' returned 128: (ssh_exchange_identification|fatal): (.*)\Z/
+          git_error = true
+          git_msg = $2
+          Puppet.warning "irccat-debug: I think GitHub (or our git repo) is broken with #{git_msg} from #{self.host}"
+          break
         else
           # Assume it's production otherwise.
           env = 'production'
@@ -153,6 +160,16 @@ Puppet::Reports.register_report(:irccat) do
     if self.status == 'failed'
 
       dashboard_report_url = find_report( self.host , c[:dashboard] )
+
+      # Due to github breaking, I'm now doing the same for the hubs.
+      if git_error == true
+        # Trim it, in case it's a long error...
+        git_msg = git_msg.slice(0..21) + '...' if git_msg.length > 24
+        body = "I think GitHub (or our git repo) is broken with '#{git_msg}' from #{self.host}. Check #{dashboard_report_url}"
+        irccatter( body , c[:irccathost] , c[:irccatport] )
+        return
+      end
+
 
       # Is puppetdb possibly down?
       if puppetdb_error == true
