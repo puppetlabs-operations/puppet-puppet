@@ -226,7 +226,7 @@ class GitRepo
       pp_and_system "git clone #{$gitnoise} -b #{branchname} #{@mirrordir} #{directory}"
       pp_and_system "cd #{checkout_as} && git submodule #{$gitnoise} update --init | grep -vE 'Cloning into |^From |->'" unless %x{cd #{directory} && git submodule status}.empty?
 
-      if $librarian && File.exist?("#{checkout_as}/Puppetfile")
+      if $librarian && File.exist?("#{directory}/Puppetfile")
         # sketchy librarian mode?
         File.delete("#{checkout_as}/Puppetfile.lock") \
           if $librarian_temerarious && File.exist?('#{checkout_as}/Puppetfile.lock')
