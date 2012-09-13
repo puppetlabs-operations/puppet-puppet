@@ -10,7 +10,6 @@
 # Hardcode city. Suck it up.
 #
 
-require 'pp'
 require 'fileutils'
 require 'optparse'
 require 'socket'
@@ -25,10 +24,7 @@ Statsd.port = 8125
 shorthostname = Socket.gethostname.split('.').first
 statname = "puppetgitdeploy.#{shorthostname}"
 
-github_repo_urls = { :default => 'git@github.com:puppetlabs/puppetlabs-modules.git',
-                     # :adrient => 'git@github.com:adrienthebo/puppetlabs-modules.git',
-                     #:zach    => 'git@github.com:xaque208/puppetlabs-modules.git'
-}
+github_repo_urls = { :default => 'git@github.com:puppetlabs/puppetlabs-modules.git' }
 
 # Identifer for individual repos.
 $NSIDENT = 'nonPL'
@@ -68,7 +64,8 @@ def parse(args)
       $parallel = "GO REALLY FAST"
     end
 
-    opts.on('-d', '--debug=val', "Include debug output") do |val|
+    opts.on('-d', '--debug=val', "Include debug output",
+                                 "Values: [exec, librarian, git, all]") do |val|
       $debug = true
 
       case val
@@ -103,12 +100,22 @@ rescue => e
 end
 
 def pp_and_system(dome)
-  pp dome if $execnoise
+  puts "* Execute: \"#{dome}\"" if $execnoise
   system dome
 end
 
 def dputs(text)
   puts text if $debug
+end
+
+#
+# @return [Float] The duration of the operation in seconds
+def benchmark(&block)
+  initial = Time.now.to_f
+  yield
+  completion = Time.now.to_f
+
+  (completion - initial).round
 end
 
 class GitRepo
@@ -119,13 +126,11 @@ class GitRepo
 
     @git_repo_url = git_repo_url
     @namespace    = git_name == :default ?  '' : "#{$NSIDENT}#{git_name}" # :default doesn't have a namespace, but everything else should.
-
-    check_env_dir base_dir
-
     @env_base_dir = base_dir
     @mirrordir = "#{@env_base_dir}/.github_pl_#{@namespace}modules_repo"
-    # We need to mirror the repo before we can get the list of branches!
-    self.mirror_repo
+
+    check_env_dir
+    mirror_repo
 
     @branches = self.get_branches
     @branchcount = @branches.size
@@ -133,62 +138,61 @@ class GitRepo
 
   # check the dir exists, try and make it if not. Bail if we have to.
   private
-  def check_env_dir(base_dir)
-    unless File.directory? base_dir
+  def check_env_dir
+    unless File.directory? @env_base_dir
       begin
-        dputs "Trying to mkdir -p to #{base_dir}"
-        FileUtils.mkdir_p base_dir
+        dputs "Trying to mkdir -p to #{@env_base_dir}"
+        FileUtils.mkdir_p @env_base_dir
       rescue
-        raise "Can't make environments base dir of #{base_dir}."
+        raise "Can't make environments base dir of #{@env_base_dir}."
       end
     end
   end
   public
 
   def get_branches
-    dputs "CDing to #{@mirrordir} from #{Dir.getwd}"
+    dputs "Fetching current list of branches from #{@mirrordir}"
     Dir.chdir @mirrordir do
 
       branches_wot_we_have = []
 
       `git branch -a`.split("\n").each do |branch|
         branch = branch.split(/ +/)[1]
-        next if branch == "master"
         next if branch =~ /remotes\/origin\/(HEAD|master)/
         next if branch =~ /\// # Zach safe code.
 
         branches_wot_we_have << branch
       end
 
+      dputs "Branches to instantiate:"
+      branches_wot_we_have.each do |br|
+        dputs "  - #{br}"
+      end
+      dputs "(#{branches_wot_we_have.size} total)"
       branches_wot_we_have
     end
   end
 
   def populate_branchi_concurrent
     pidlist = []
-    @branches.each do |branch|
+    @branches.each do |branchname|
       pid = fork
       if pid.nil?
-        make_subbranch(branch)
+        br = GitBranch.new(branchname, @env_base_dir, @mirror_dir)
+        br.make!
         Process.exit # Since this is a child process, exit after doing the work.
       else
         pidlist << pid
       end
     end
 
-    pidlist.each do |pid|
-      Process.waitpid pid, 0
-      # Fancy output for monitoring progress.
-      # XXX this will generate noise when used as a library.
-      $stdout.print '.'
-      $stdout.flush
-    end
-    puts # Part of fancy output for parallel operation.
+    pidlist.each { |pid| Process.waitpid pid, 0 }
   end
 
   def populate_branchi_sequential
-    @branches.each do |b|
-      self.make_subbranch b
+    @branches.each do |branchname|
+      br = GitBranch.new(branchname, @env_base_dir, @mirrordir)
+      br.make!
     end
   end
 
@@ -202,64 +206,6 @@ class GitRepo
     end
   end
 
-  def update_existing_branch(directory, branchname)
-    dputs "doing a pull on an existing branch"
-    Dir.chdir directory do
-      pp_and_system "git fetch #{$gitnoise} --all && git reset #{$gitnoise} --hard origin/#{branchname}" # origin #{branch_to_make}"
-      if $submodules
-        pp_and_system "git submodule #{$gitnoise} update --init | grep -vE 'Cloning into |^From |->'" unless %x{ git submodule status }.empty?
-      end
-
-      if $librarian && File.exist?('Puppetfile')
-        # sketchy librarian mode?
-        File.delete('Puppetfile.lock') if $librarian_temerarious && File.exist?('Puppetfile.lock')
-
-        pp_and_system "/var/lib/gems/1.8/bin/librarian-puppet install #{$librarian_noise}"
-      end
-
-    end
-  end
-
-  def create_new_branch(directory, branchname)
-    dputs "doing a clone on a new branch"
-    Dir.chdir @env_base_dir do
-      pp_and_system "git clone #{$gitnoise} -b #{branchname} #{@mirrordir} #{directory}"
-      pp_and_system "cd #{checkout_as} && git submodule #{$gitnoise} update --init | grep -vE 'Cloning into |^From |->'" unless %x{cd #{directory} && git submodule status}.empty?
-
-      if $librarian && File.exist?("#{directory}/Puppetfile")
-        # sketchy librarian mode?
-        File.delete("#{checkout_as}/Puppetfile.lock") \
-          if $librarian_temerarious && File.exist?('#{checkout_as}/Puppetfile.lock')
-
-        pp_and_system "cd #{directory} && /var/lib/gems/1.8/bin/librarian-puppet install #{$librarian_noise}"
-      end
-    end
-  end
-
-  # Generate a environment from a git branch
-  #
-  # @param [String] branch_to_make The name of the git branch
-  # @param [String] make_as The name of the directory to create the branch
-  def make_subbranch(branch_to_make, make_as=nil)
-    dputs "Making ol' #{branch_to_make}"
-
-    Dir.chdir @env_base_dir do
-      checkout_directory = branch_to_make.split('/').last
-
-      # If a specific branch name has been supplied, then use that. Else, fall
-      # back to the name of the branch and use that. if a namespace is supplied,
-      # then prepend that.
-      checkout_as = @namespace + (make_as || checkout_directory)
-
-      branch_dir = "#{@env_base_dir}/#{checkout_as}"
-
-      if File.directory? branch_dir
-        update_existing_branch(branch_dir, branch_to_make)
-      else
-        create_new_branch(branch_dir, branch_to_make)
-      end
-    end
-  end
 
   def fetch_master
     # just assume it's checked out, for now.
@@ -272,9 +218,10 @@ class GitRepo
   # clones will be hard linked when possible.
   def mirror_repo
     if File.directory? @mirrordir
+      dputs "Updating mirror of #{@git_repo_url} at #{@mirrordir}"
       fetch_master
     else
-      dputs "Making clone of remote repo locally to #{@mirrordir}"
+      dputs "Mirroring #{@git_repo_url} to #{@mirrordir}"
       pp_and_system("git clone #{$gitnoise} --mirror #{@git_repo_url} #{@mirrordir}")
     end
   end
@@ -308,6 +255,65 @@ class GitRepo
   end
 end
 
+class GitBranch
+
+  #
+  # @param [String] branchname The name of the git branch
+  # @param [String] The base directory to instantiate the branch
+  # @param [String] The path of the git source repository
+  def initialize(branchname, basedir, source_repo)
+    @branchname  = branchname
+    @basedir     = basedir
+    @source_repo = source_repo
+    @directory   = (branchname == 'master' ? 'production' : branchname)
+  end
+
+  def full_path
+    @full_path ||= File.join(@basedir, @directory)
+  end
+
+  def make!
+    Dir.chdir @basedir do
+      if File.directory? full_path
+        update_existing_branch
+      else
+        create_new_branch
+      end
+
+      update_branch_members
+    end
+  end
+
+  def update_existing_branch
+    dputs "Fetching existing branch #{full_path}"
+    Dir.chdir full_path do
+      pp_and_system "git fetch #{$gitnoise} --all && git reset #{$gitnoise} --hard origin/#{@branchname}"
+    end
+  end
+
+  def create_new_branch
+    dputs "Cloning new branch #{full_path}"
+    Dir.chdir @basedir do
+      pp_and_system "git clone #{$gitnoise} -b #{@branchname} #{@source_repo} #{full_path}"
+    end
+  end
+
+  # Update any sort of nested repository structures
+  def update_branch_members
+    Dir.chdir full_path do
+      if $submodules
+        pp_and_system "git submodule #{$gitnoise} update --init | grep -vE 'Cloning into |^From |->'" unless %x{ git submodule status }.empty?
+      end
+
+      if $librarian && File.exist?('Puppetfile')
+        # sketchy librarian mode?
+        File.delete('Puppetfile.lock') if $librarian_temerarious && File.exist?('Puppetfile.lock')
+        pp_and_system "/var/lib/gems/1.8/bin/librarian-puppet install #{$librarian_noise}"
+      end
+    end
+  end
+end
+
 if __FILE__ == $0
 
   parse(ARGV)
@@ -316,11 +322,11 @@ if __FILE__ == $0
   ENV['LANG'] = 'C'
 
   startdir = Dir.getwd
-  Statsd.timing(statname) do
+  timing = benchmark do
 
     github_repo_urls.each_pair do |username, repo|
 
-      dputs "Working on #{username}'s repo from #{repo}"
+      dputs "Generating branches from user #{username.to_s}, repository \"#{repo}\""
 
       # In case that any of the following code changes the directory but
       # doesn't change back, we ensure we're in the right directory before
@@ -333,14 +339,16 @@ if __FILE__ == $0
       # repo we just checked out, so it's a local only operation.
       g.populate_branchi
 
-      # By default it ignores master, this throws it in to production.
-      g.make_subbranch("master", "production")
-
       # Finally, tidy up other branches/envs
       g.delete_extraneous_branches
 
     end
   end
+
+  mode = $parallel ? 'parallel' : 'sequential'
+
+  puts "Update duration: #{timing} seconds. (mode: #{mode})"
+  Statsd.timing(statname, timing)
 
   # odyi | barn: "Might not be all just thin.  There is a bug with the
   # config version thing.  Only way to make it go away is to touch
