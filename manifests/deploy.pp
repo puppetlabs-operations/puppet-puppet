@@ -24,8 +24,8 @@ class puppet::deploy {
 
   cron { "Puppet: puppet_deploy.rb":
     user    => root,
-    command => '/usr/local/bin/puppet_deploy.rb 2>/dev/null',
-    minute  => '*/8',
+    command => '/usr/local/bin/puppet_deploy.rb 1>/dev/null 2>/dev/null',
+    minute  => fqdn_rand(60),
     require => File["/usr/local/bin/puppet_deploy.rb"];
   }
 
