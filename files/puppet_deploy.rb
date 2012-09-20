@@ -178,7 +178,7 @@ class GitRepo
     @branches.each do |branchname|
       pid = fork
       if pid.nil?
-        br = GitBranch.new(branchname, @env_base_dir, @mirror_dir)
+        br = GitBranch.new(branchname, @env_base_dir, @mirrordir)
         br.make!
         Process.exit # Since this is a child process, exit after doing the work.
       else
