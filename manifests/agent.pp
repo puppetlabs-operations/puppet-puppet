@@ -17,10 +17,7 @@ class puppet::agent(
   case $method {
     cron:    { class { 'puppet::agent::cron': manage_service => $manage_service } }
     service: { include puppet::agent::service }
-    default: {
-      notify { "Agent run method \"${method}\" is not supported by ${module_name}, defaulting to cron": loglevel => warning }
-      class { 'puppet::agent::cron': manage_service => $manage_service }
-    }
+    default: { fail("Method ${method} is not supported by ${module}") }
   }
 
   # FIXME this seems silly

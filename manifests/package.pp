@@ -1,7 +1,6 @@
 class puppet::package {
 
   include puppet::params
-  require puppet::package::repository
 
   # ----
   # Be carefull about systems that may not be able to upgrade cleanly
