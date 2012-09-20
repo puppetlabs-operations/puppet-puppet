@@ -1,4 +1,4 @@
-class puppet::package::repository($devel = false) {
+class puppet::package::repository($devel = hiera('puppet_package_devel', false)) {
 
   case $osfamily {
     Redhat: {
