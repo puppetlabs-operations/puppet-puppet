@@ -1,4 +1,4 @@
-class puppet::package::repository {
+class puppet::package::repository($devel = false) {
 
   case $osfamily {
     Redhat: {
@@ -21,12 +21,17 @@ class puppet::package::repository {
       }
     }
     Debian: {
+      $repo_list = $devel ? {
+        true  => 'main dependencies devel',
+        false => 'main dependencies',
+      }
+
       apt::source { "puppetlabs":
         location   => "http://apt.puppetlabs.com/",
         key        => '4BD6EC30',
         key_source => 'http://apt.puppetlabs.com/pubkey.gpg',
         pin        => '900',
-        repos      => 'main dependencies',
+        repos      => $repo_list,
       }
 
       package{ "puppetlabs-release":
