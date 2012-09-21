@@ -5,5 +5,4 @@ upstream puppetmaster_upstream {
 }
 
 <%# YO DAWG %>
-<%= scope.function_template('puppet/vhost/nginx/base.conf.erb' ) %>
-
+<%= scope.function_template(['puppet/vhost/nginx/base.conf.erb']) %>
