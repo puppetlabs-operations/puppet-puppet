@@ -116,27 +116,30 @@ class puppet::server (
     package { $puppet::params::master_package: ensure => present; }
   }
 
-  # ---
-  # Write the server configuration items
   concat::fragment { 'puppet.conf-master':
     order   => '05',
     target  => $puppet::params::puppet_conf,
     content => template("puppet/puppet.conf/master.erb");
   }
 
-  concat { "${::puppet::params::puppet_confdir}/config.ru":
-    owner  => 'puppet',
-    group  => 'puppet',
-    mode   => '0644',
-    notify => Nginx::Vhost['puppetmaster'],
-  }
+  # ---
+  # If the server type is rack based, configure the config.ru
+  case $servertype {
+    'unicorn', 'thin': {
+      concat { "${::puppet::params::puppet_confdir}/config.ru":
+        owner  => 'puppet',
+        group  => 'puppet',
+        mode   => '0644',
+        notify => Nginx::Vhost['puppetmaster'],
+      }
 
-  concat::fragment { "run-puppet-master":
-    order  => '99',
-    target => "${::puppet::params::puppet_confdir}/config.ru",
-    source => 'puppet:///modules/puppet/config.ru/99-run.rb',
+      concat::fragment { "run-puppet-master":
+        order  => '99',
+        target => "${::puppet::params::puppet_confdir}/config.ru",
+        source => 'puppet:///modules/puppet/config.ru/99-run.rb',
+      }
+    }
   }
-
 
   # Nagios!
   # FIXME
