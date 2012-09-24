@@ -11,6 +11,7 @@ class puppet::agent(
   #    require 'puppet::package'
   #
   # yep.
+  include puppet
   include puppet::package
   Class['puppet::package'] -> Class['puppet::agent']
 
