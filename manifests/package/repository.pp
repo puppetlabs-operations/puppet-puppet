@@ -39,8 +39,5 @@ class puppet::package::repository($devel = hiera('puppet_package_devel', false))
         require => Apt::Source["puppetlabs"],
       }
     }
-    default: {
-      notify { "${module_name} has no love for ${osfamily}": }
-    }
   }
 }
