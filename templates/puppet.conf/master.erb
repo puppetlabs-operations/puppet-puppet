@@ -6,7 +6,7 @@ ca         = <%= ca %>
 
 config_version           = "<%= config_version_cmd %>"
 
-<% if ssl_client_header -%>
+<% if @ssl_client_header -%>
 ssl_client_header        = <%= ssl_client_header %>
 ssl_client_verify_header = <%= ssl_client_verify_header %>
 <% end -%>
