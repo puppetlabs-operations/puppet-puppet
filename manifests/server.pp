@@ -47,6 +47,7 @@ class puppet::server (
     $ca                 = false
   ) {
 
+  include puppet
   include puppet::params
 
   # ---
