@@ -1,5 +1,5 @@
 # Default puppet data
-class puppet::data {
+class puppet::params::defaults {
 
   case $operatingsystem {
     'debian', 'ubuntu': {
