@@ -3,11 +3,18 @@ Facter.add("confenv") do
     env = nil
 
     if path = Facter.value(:puppet_path)
-      # Split it, in case it is PE. You can compare strings too, it's a little
-      # dirty.
-      if Facter.value( 'puppetversion' ).split( ' ' )[0] > "2.7"
+      # If we're looking at PE, then this will have a version string like this:
+      #
+      # 2.7.12 (Puppet Enterprise 2.5.1)
+      #
+      # We scan for things looking like semantic version strings then grab the first one.
+      version = Facter.value('puppetversion').scan(/\d+\.\d+/).first.to_f
+      case version
+      when 3.0
+        cmd = %{#{path} config print environment --run_mode agent}
+      when 2.7
         cmd = %{#{path} config print environment --mode agent}
-      else
+      when 2.6
         cmd = %{#{path} agent --configprint environment}
       end
       env = Facter::Util::Resolution.exec(cmd).chomp
