@@ -71,6 +71,9 @@ class puppet::server (
       $ssl_client_header        = "HTTP_X_CLIENT_DN"
       $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
     }
+    "standalone": {
+      include puppet::server::standalone
+    }
     default: {
       err('Only "passenger", "thin", and "unicorn" are valid options for servertype')
       fail("Servertype \"$servertype\" not implemented")
@@ -110,15 +113,6 @@ class puppet::server (
   # Used only for platforms that seperate the master and agent packages
   if $puppet::params::master_package != '' {
     package { $puppet::params::master_package: ensure => present; }
-  }
-
-  if $puppet::params::master_service != '' {
-    service { $puppet::params::master_service:
-      ensure    => stopped,
-      enable    => false,
-      hasstatus => true,
-      require   => File[$puppet::params::puppet_conf];
-    }
   }
 
   # ---
