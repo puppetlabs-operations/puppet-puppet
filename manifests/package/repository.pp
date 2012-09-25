@@ -19,6 +19,17 @@ class puppet::package::repository($devel = hiera('puppet_package_devel', false))
         keepalive  => 1,
         gpgkey     => 'http://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs'
       }
+
+      if $devel {
+        yumrepo { 'puppetlabs-devel':
+          descr      => "Puppet Labs Development packages",
+          baseurl    => "http://yum.puppetlabs.com/el/5/devel/$architecture/",
+          enabled    => 1,
+          gpgcheck   => 1,
+          keepalive  => 1,
+          gpgkey     => 'http://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs'
+        }
+      }
     }
     Debian: {
       $repo_list = $devel ? {
