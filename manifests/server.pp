@@ -136,7 +136,10 @@ class puppet::server (
       concat::fragment { "run-puppet-master":
         order  => '99',
         target => "${::puppet::params::puppet_confdir}/config.ru",
-        source => 'puppet:///modules/puppet/config.ru/99-run.rb',
+        source => $puppetversion ? {
+          /^2.7/ => 'puppet:///modules/puppet/config.ru/99-run-2.7.rb',
+          /^3.0/ => 'puppet:///modules/puppet/config.ru/99-run-3.0.rb',
+        },
       }
     }
   }
