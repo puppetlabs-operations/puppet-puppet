@@ -1,5 +1,13 @@
 class puppet::server::unicorn {
 
+  class { 'puppet::server::standalone':
+    enabled => false,
+    before  => [
+      Nginx::Vhost['puppetmaster'],
+      Unicorn::App['puppetmaster'],
+    ],
+  }
+
   include puppet::params
   nginx::vhost { "puppetmaster":
     port     => 8140,
