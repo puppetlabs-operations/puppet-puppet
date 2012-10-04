@@ -10,7 +10,6 @@
 # * dbpassword
 # * dbserver
 # * dbsocket
-# * certname
 # * servertype
 #
 # Actions:
@@ -39,7 +38,6 @@ class puppet::server (
     $dbpassword         = 'password',
     $dbserver           = 'localhost',
     $dbsocket           = '/var/run/mysqld/mysqld.sock',
-    $certname           = "$fqdn",
     $report             = 'true',
     $reports            = ["store", "https"],
     $reporturl          = "http://$fqdn/reports",
