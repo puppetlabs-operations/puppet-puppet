@@ -1,3 +1,33 @@
+# == Class: puppet::agent
+#
+# Install, configure, and run a puppet agent instance.
+#
+# == Parameters
+#
+# [*server*]
+#   The puppet server to use for fetching catalogs. Required.
+# [*ca_server*]
+#   The puppet server to use for certificate requests and similar actions.
+#   Default: puppet::agent::server
+# [*report_server*]
+#   The puppet server to send reports.
+#   Default: puppet::agent::server
+# [*manage_service*]
+#   Whether to manage the puppet agent service when using the cron run method.
+#   Default: undef
+# [*method*]
+#   The mechanism for performing puppet runs.
+#   Supported methods: [cron, service]
+#   Default: cron
+#
+# == Example:
+#
+#   class { 'puppet::agent':
+#     server        => 'puppet.example.com',
+#     report_server => 'puppet_reports.example.com',
+#     method        => 'service',
+#  }
+#
 class puppet::agent(
   $server,
   $ca_server      = $puppet::agent::server,
