@@ -1,4 +1,11 @@
+# == Class: puppet::package::patches
+#
+# Install critical patches for defective versions
+#
+# == Notes
+#
 # IT'S NOT A HACK, IT'S A FEATURE! WHEEEEEEEEEEEE!
+#
 class puppet::package::patches {
 
   # fix facter.
