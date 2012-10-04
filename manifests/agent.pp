@@ -2,18 +2,12 @@ class puppet::agent(
   $server,
   $ca_server      = $puppet::agent::server,
   $report_server  = $puppet::agent::server,
-  $manage_service = undef
+  $manage_service = undef,
   $method         = 'cron',
 ) {
 
-  # This could be
-  #
-  #    require 'puppet::package'
-  #
-  # yep.
   include puppet
-  include puppet::package
-  Class['puppet::package'] -> Class['puppet::agent']
+  require puppet::package
 
   case $method {
     cron:    { class { 'puppet::agent::cron': manage_service => $manage_service } }
