@@ -50,10 +50,10 @@ class puppet::agent(
 
   # ----
   # puppet.conf management
-  concat::fragment { 'puppet.conf-common':
+  concat::fragment { 'puppet.conf-agent':
     order   => '00',
     target  => $puppet::params::puppet_conf,
-    content => template("puppet/puppet.conf/common.erb");
+    content => template("puppet/puppet.conf/agent.erb");
   }
 
 }
