@@ -1,3 +1,17 @@
+# == Class: puppet::package::repository
+#
+# Add Puppet Labs package repositories
+#
+# == Parameters
+#
+# [*devel*]
+#   Include development repositories for bleeding edge releases.
+#   Default: false
+#
+# == Requirements
+#
+# If used on apt based distributions, this requires the puppetlabs/apt module.
+#
 class puppet::package::repository($devel = hiera('puppet_package_devel', false)) {
 
   case $osfamily {
