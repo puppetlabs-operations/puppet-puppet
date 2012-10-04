@@ -30,8 +30,8 @@
 #
 class puppet::agent(
   $server,
-  $ca_server      = $puppet::agent::server,
-  $report_server  = $puppet::agent::server,
+  $ca_server      = hiera('puppet::agent::server'),
+  $report_server  = hiera('puppet::agent::server'),
   $manage_service = undef,
   $method         = 'cron',
 ) {
