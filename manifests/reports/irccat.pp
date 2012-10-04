@@ -1,6 +1,6 @@
 # A report plugin to send irccat to IRC.
 #
-class puppet::server::irccatreport {
+class puppet::reports::irccatreport {
 
   Package{ provider => 'gem', ensure => present }
 

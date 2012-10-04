@@ -2,7 +2,7 @@
 # See http://www.kartar.net/2011/06/puppet-xmpp/ and
 # https://github.com/barn/puppet-xmpp
 #
-class puppet::server::xmppreport {
+class puppet::reports::xmppreport {
 
   Package{ provider => 'gem', ensure => present }
 

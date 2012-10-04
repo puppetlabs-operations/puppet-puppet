@@ -1,7 +1,7 @@
 # A report plugin to send metrics to graphite
 # From https://github.com/nareshov/puppet-graphite
 #
-class puppet::server::graphitereport {
+class puppet::reports::graphitereport {
 
   # This is a little bit dirty, as it just throws it straight in the
   # rubylib, but it's better than messing with libdir on the master.
