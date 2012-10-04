@@ -1,8 +1,14 @@
-# Class: puppet::server
+# == Class: puppet::server
 #
 # This class installs and configures a Puppet master
 #
-# Parameters:
+# == Description
+#
+# This class implements a Puppet master based around the dynamic environments
+# workflow descripted in http://puppetlabs.com/blog/git-workflow-and-puppet-environments/
+#
+# ==  Parameters
+#
 # * modulepath
 # * storeconfigs
 # * dbadapter
@@ -12,10 +18,7 @@
 # * dbsocket
 # * servertype
 #
-# Actions:
-#
-# Requires:
-#
+# == Example
 # Sample Usage:
 #
 #  $modulepath = [
