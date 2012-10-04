@@ -35,12 +35,7 @@ class puppet::server (
     $modulepath         = '$confdir/modules/site:$confdir/env/$environment/dist',
     $manifest           = '$confdir/modules/site/site.pp',
     $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
-    $storeconfigs       = hiera('puppet_storeconfigs'),
-    $dbadapter          = 'sqlite3',
-    $dbuser             = 'puppet',
-    $dbpassword         = 'password',
-    $dbserver           = 'localhost',
-    $dbsocket           = '/var/run/mysqld/mysqld.sock',
+    $storeconfigs       = undef,
     $report             = 'true',
     $reports            = ["store", "https"],
     $reporturl          = "http://$fqdn/reports",
@@ -84,18 +79,9 @@ class puppet::server (
 
   # ---
   # Storeconfigs
-  case $storeconfigs {
-    "mysql","postgresql","sqlite","puppetdb": {
-      class { "puppet::storeconfig":
-        backend    => $storeconfigs,
-        dbuser     => $dbuser,
-        dbpassword => $dbpassword,
-        dbserver   => $dbserver,
-        dbsocket   => $dbsocket
-      }
-    }
-    default: {
-      notify { "puppet::server storeconfigs => $storeconfigs option not recognized": }
+  if $storeconfigs {
+    class { "puppet::storeconfig":
+      backend    => $storeconfigs,
     }
   }
 
