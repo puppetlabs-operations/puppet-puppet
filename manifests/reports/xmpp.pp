@@ -2,7 +2,7 @@
 # See http://www.kartar.net/2011/06/puppet-xmpp/ and
 # https://github.com/barn/puppet-xmpp
 #
-class puppet::reports::xmpp {
+class puppet::reports::xmpp($jid, $password, $dashboard, $target = [], $ignore_hosts = []) {
 
   Package{ provider => 'gem', ensure => present }
 
