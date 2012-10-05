@@ -1,7 +1,7 @@
 # A report plugin to send metrics to graphite
 # From https://github.com/nareshov/puppet-graphite
 #
-class puppet::reports::graphite {
+class puppet::reports::graphite($server, $port, $prefix) {
 
   include puppet::reports
 
@@ -17,11 +17,11 @@ class puppet::reports::graphite {
       mode   => '0644',
       source => 'puppet:///modules/puppet/reports/graphite.rb';
     '/etc/puppet/graphite.yaml':
-      ensure => present,
-      owner  => 'root',
-      group  => 'puppet',
-      mode   => '0440',
-      source => 'puppet:///modules/puppet/reports/graphite.yaml';
+      ensure  => present,
+      owner   => 'root',
+      group   => 'puppet',
+      mode    => '0440',
+      content => template('puppet/reports/graphite.yaml.erb'),
   }
 
   # We could, at this, tell Puppet we need to bounce it, but I think
