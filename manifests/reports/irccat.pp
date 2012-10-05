@@ -1,6 +1,6 @@
 # A report plugin to send irccat to IRC.
 #
-class puppet::reports::irccat {
+class puppet::reports::irccat($host, $githuburl, $dashboard, $ignore_hosts = []) {
 
   Package{ provider => 'gem', ensure => present }
 
@@ -24,11 +24,11 @@ class puppet::reports::irccat {
       source => 'puppet:///modules/puppet/reports/irccat.rb',
       notify => Class['puppet::server'];
     '/etc/puppet/irccat.yaml':
-      ensure => present,
-      owner  => 'root',
-      group  => 'puppet',
-      mode   => '0440',
-      source => 'puppet:///modules/puppet/reports/irccat.yaml',
-      notify => Class['puppet::server'];
+      ensure  => present,
+      owner   => 'root',
+      group   => 'puppet',
+      mode    => '0440',
+      content => template('puppet/reports/irccat.yaml.erb'),
+      notify  => Class['puppet::server'];
   }
 }

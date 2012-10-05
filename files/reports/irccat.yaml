@@ -1,9 +1,0 @@
----
-:irccathost: 'jotunn.puppetlabs.lan'
-:githuburl: 'http://git.io/plmc'
-:dashboard: 'https://dashboard.puppetlabs.com/'
-:ignore_hosts:
-- urd.puppetlabs.lan
-- yellow.dc1.puppetlabs.net
-- lb424p014_pub.vlp.com
-- metis.puppetlabs.lan
