@@ -11,12 +11,17 @@ ssl_client_header        = <%= ssl_client_header %>
 ssl_client_verify_header = <%= ssl_client_verify_header %>
 <% end -%>
 
+<% if @report -%>
 report               = <%= report %>
-reports              = <% if reports.is_a? Array %><%= reports.join(", ") %><% else %><%= reports %><% end %>
 reporturl            = <%= reporturl %>
 reporturl_ssl_verify = true
 reporturl_ssl_cert   = /etc/ssl/certs/ca-certificates.crt
-
+<% end -%>
+<% if reports.is_a? Array and reports.size > 0 -%>
+reports              = <%= reports.join(", ") %>
+<% else -%>
+reports              = <%= reports %>
+<% end -%>
 
 user  = puppet
 group = puppet
