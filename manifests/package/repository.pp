@@ -12,7 +12,7 @@
 #
 # If used on apt based distributions, this requires the puppetlabs/apt module.
 #
-class puppet::package::repository($devel = hiera('puppet_package_devel', false)) {
+class puppet::package::repository($devel = false) {
 
   case $osfamily {
     Redhat: {
