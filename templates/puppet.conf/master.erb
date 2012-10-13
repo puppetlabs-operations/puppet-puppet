@@ -4,6 +4,9 @@ modulepath = <%= modulepath %>
 manifest   = <%= manifest %>
 ca         = <%= ca %>
 
+<% if servertype == 'standalone' -%>
+bindaddress              = <%= bindaddress %>
+<% end -%>
 config_version           = "<%= config_version_cmd %>"
 
 <% if @ssl_client_header -%>
