@@ -1,0 +1,7 @@
+---
+:irccathost: <%= @host %>
+:githuburl: <%= @githuburl %>
+:dashboard: <%= @dashboard %>
+<% if @ignore_hosts -%>
+:ignore_hosts: [<%= @ignore_hosts.join(', ') %>]
+<% end %>
