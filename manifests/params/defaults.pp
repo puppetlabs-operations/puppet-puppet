@@ -20,7 +20,7 @@ class puppet::params::defaults {
       $puppet_cmd         = '/usr/local/bin/puppet'
       $agent_service      = 'puppet'
       $master_package     = ''
-      $master_service     = ''
+      $master_service     = 'puppetmaster'
       $puppet_conf        = '/usr/local/etc/puppet/puppet.conf'
       $puppet_confdir     = '/usr/local/etc/puppet'
       $puppet_logdir      = '/var/log/puppet'
