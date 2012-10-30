@@ -1,4 +1,4 @@
-class puppet::deploy {
+class puppet::deploy($frequency = 6, $interval_in_minutes = 60) {
 
   # Since 3aefec78893778f020759f947659e0f2bf30d776 we have
   # librarian-puppet support. See http://librarian-puppet.com/
@@ -25,7 +25,7 @@ class puppet::deploy {
   cron { "Puppet: puppet_deploy.rb":
     user    => root,
     command => '/usr/local/bin/puppet_deploy.rb 1>/dev/null 2>/dev/null',
-    minute  => interval(6, 60),
+    minute  => interval($frequency, $interval_in_minutes),
     require => File["/usr/local/bin/puppet_deploy.rb"];
   }
 
