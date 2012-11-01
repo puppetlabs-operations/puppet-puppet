@@ -36,6 +36,7 @@ $debug      = false
 $submodules = true
 $librarian  = true
 $gitnoise   = "--quiet"
+$branch     = nil
 
 # By enabling this option, it deletes the Puppetfile.lock in librarian
 # mode. This has the effect of always pulling down the version specified
@@ -62,6 +63,10 @@ def parse(args)
 
     opts.on('-p', '--parallel', "Run updates in parallel") do
       $parallel = "GO REALLY FAST"
+    end
+
+    opts.on('-b', '--branch=nom', "Just update named branch") do |val|
+      $branch = val
     end
 
     opts.on('-d', '--debug=val', "Include debug output",
@@ -150,6 +155,8 @@ class GitRepo
   end
   public
 
+  # Add the check for $branch here, because that way it works (stupidly,
+  # some would say) even if you specify sequential or parallel.
   def get_branches
     dputs "Fetching current list of branches from #{@mirrordir}"
     Dir.chdir @mirrordir do
@@ -164,10 +171,17 @@ class GitRepo
         branches_wot_we_have << branch
       end
 
+      # Is this the right thing to do here? If we set a branch, and it's
+      # not in there, is falling back to doing all of them correct?
+      if ! $branch.nil? and branches_wot_we_have.include? $branch
+        return $branch
+      end
+
       dputs "Branches to instantiate:"
       branches_wot_we_have.each do |br|
         dputs "  - #{br}"
       end
+
       dputs "(#{branches_wot_we_have.size} total)"
       branches_wot_we_have
     end
@@ -229,6 +243,12 @@ class GitRepo
   # Check for any environments/branches that exist in the directory but do not
   # have an according git branch
   def delete_extraneous_branches
+
+    unless $branch.nil?
+      dputs "Not deleting branches, as I'm in single branch mode."
+      return true
+    end
+
     Dir.chdir @env_base_dir do
       Dir.glob('*') do |dir|
         next if dir == "#{@namespace}production" # Hardcode DON'T RM PROD!
