@@ -87,6 +87,10 @@ def parse(args)
       end
     end
 
+    opts.on('--[no-]librarian', "Update librarian") do |bool|
+      $librarian = bool
+    end
+
     opts.on('--[no-]submodules', "Update submodules") do |bool|
       $submodules = bool
     end
