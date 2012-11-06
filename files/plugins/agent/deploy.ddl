@@ -11,12 +11,14 @@ action 'puppet', :description => 'Deploy Puppet manifests' do
 
   input :parallel,
         :description => 'Whether to fork for each environment',
+        :prompt      => 'Parallelize',
         :type        => :boolean,
         :default     => true,
         :optional    => true
 
   input :librarian,
         :description => 'Whether to update librarian',
+        :prompt      => 'Update librarian-puppet',
         :type        => :boolean,
         :default     => true,
         :optional    => true
