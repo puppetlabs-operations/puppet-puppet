@@ -12,12 +12,14 @@ action 'puppet', :description => 'Deploy Puppet manifests' do
   input :parallel,
         :description => 'Whether to fork for each environment',
         :type        => :boolean,
-        :default     => true
+        :default     => true,
+        :optional    => true
 
   input :librarian,
         :description => 'Whether to update librarian',
         :type        => :boolean,
-        :default     => true
+        :default     => true,
+        :optional    => true
 
   output :status,
          :description => 'The status of puppet_deploy.rb',
