@@ -9,7 +9,17 @@ metadata :name        => 'Puppet Deploy, now with Mcollective!',
 action 'puppet', :description => 'Deploy Puppet manifests' do
   display :always
 
+  input :parallel,
+        :description => 'Whether to fork for each environment',
+        :type        => :boolean,
+        :default     => true
+
+  input :librarian,
+        :description => 'Whether to update librarian',
+        :type        => :boolean,
+        :default     => true
+
   output :status,
          :description => 'The status of puppet_deploy.rb',
-         :display_as => 'Status'
+         :display_as  => 'Status'
 end

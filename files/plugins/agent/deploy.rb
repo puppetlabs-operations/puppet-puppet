@@ -10,10 +10,17 @@ class MCollective::Agent::Deploy < MCollective::RPC::Agent
 
 
   def startup_hook
-    @puppet_cmd = @config.pluginconf['deploy.puppet.cmd'] || '/usr/local/bin/puppet_deploy.rb --parallel'
+    @executable = @config.pluginconf['deploy.puppet.cmd'] || '/usr/local/bin/puppet_deploy.rb'
   end
 
   action :puppet do
-    reply[:status] = run(@puppet_cmd, :stdout => :out, :stderr => :err)
+
+    argv = [@executable]
+    argv << '--parallel'     if request[:parallel]
+    argv << '--no-librarian' unless request[:librarian]
+
+    cmd = argv.join(' ')
+
+    reply[:status] = run(cmd, :stdout => :out, :stderr => :err)
   end
 end
