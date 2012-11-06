@@ -16,8 +16,11 @@ class MCollective::Agent::Deploy < MCollective::RPC::Agent
   action :puppet do
 
     argv = [@executable]
-    argv << '--parallel'     if request[:parallel]
-    argv << '--no-librarian' unless request[:librarian]
+
+    # Default to true
+    argv << '--parallel'     if request[:parallel].nil? or request[:parallel]
+    # Default to false
+    argv << '--no-librarian' if defined(request[:librarian]) and request[:librarian] == false
 
     cmd = argv.join(' ')
 
