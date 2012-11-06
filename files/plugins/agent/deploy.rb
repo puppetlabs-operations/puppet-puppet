@@ -20,7 +20,7 @@ class MCollective::Agent::Deploy < MCollective::RPC::Agent
     # Default to true
     argv << '--parallel'     if request[:parallel].nil? or request[:parallel]
     # Default to false
-    argv << '--no-librarian' if defined(request[:librarian]) and request[:librarian] == false
+    argv << '--no-librarian' if defined?(request[:librarian]) and request[:librarian] == false
 
     cmd = argv.join(' ')
 
