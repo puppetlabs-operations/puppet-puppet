@@ -84,6 +84,8 @@ def parse(args)
         $gitnoise        = ''
         $librarian_noise = '--verbose'
         $execnoise       = 'this is noisy.'
+      else
+        $stderr.puts "Given unrecognized debug type of '#{val}', ignoring it"
       end
     end
 
