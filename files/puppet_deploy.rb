@@ -332,9 +332,15 @@ class GitBranch
       end
 
       if $librarian && File.exist?('Puppetfile')
+        # Display updating branch in proctitle
+        procname = $0
+        $0 = "#{File.basename(__FILE__)}: Updating librarian-puppet in branch #{@basedir}"
+
         # sketchy librarian mode?
         File.delete('Puppetfile.lock') if $librarian_temerarious && File.exist?('Puppetfile.lock')
         pp_and_system "/var/lib/gems/1.8/bin/librarian-puppet install #{$librarian_noise}"
+
+        $0 = procname
       end
     end
   end
