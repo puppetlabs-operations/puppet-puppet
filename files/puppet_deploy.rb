@@ -10,14 +10,13 @@
 # Hardcode city. Suck it up.
 #
 
+require 'rubygems'
+require 'statsd'
 require 'fileutils'
 require 'optparse'
 require 'socket'
 
-
 # the https://github.com/bvandenbos/statsd-client version
-require 'rubygems'
-require 'statsd'
 Statsd.host = 'statsd.dc1.puppetlabs.net'
 Statsd.port = 8125
 
@@ -346,44 +345,44 @@ class GitBranch
   end
 end
 
-if __FILE__ == $0
-
+def run
   parse(ARGV)
 
   # Change the environment so that all subprocesses get a reasonable LANG
   ENV['LANG'] = 'C'
 
   startdir = Dir.getwd
-  timing = benchmark do
 
-    github_repo_urls.each_pair do |username, repo|
+  github_repo_urls.each_pair do |username, repo|
 
-      dputs "Generating branches from user #{username.to_s}, repository \"#{repo}\""
+    dputs "Generating branches from user #{username.to_s}, repository \"#{repo}\""
 
-      # In case that any of the following code changes the directory but
-      # doesn't change back, we ensure we're in the right directory before
-      # continuing.
-      Dir.chdir startdir
+    # In case that any of the following code changes the directory but
+    # doesn't change back, we ensure we're in the right directory before
+    # continuing.
+    Dir.chdir startdir
 
-      g = GitRepo.new(env_base_dir, username, repo)
+    g = GitRepo.new(env_base_dir, username, repo)
 
-      # Do all the wee bonnie branches other than main. This will clone them from the
-      # repo we just checked out, so it's a local only operation.
-      g.populate_branchi
-
-      # Finally, tidy up other branches/envs
-      g.delete_extraneous_branches
-
-    end
+    # Do all the wee bonnie branches other than main. This will clone them from the
+    # repo we just checked out, so it's a local only operation.
+    g.populate_branchi
+    g.delete_extraneous_branches
   end
-
-  mode = $parallel ? 'parallel' : 'sequential'
-
-  puts "Update duration: #{timing} seconds. (mode: #{mode})"
-  Statsd.timing(statname, timing)
 
   # odyi | barn: "Might not be all just thin.  There is a bug with the
   # config version thing.  Only way to make it go away is to touch
   # site.pp of the environment you just updated."
   system('/usr/bin/find /etc/puppet/ -maxdepth 3 -mindepth 3 -type f -name site.pp | xargs touch')
+end
+
+if __FILE__ == $0
+  timing = benchmark do
+    run
+  end
+
+  mode = $parallel ? 'parallel' : 'sequential'
+  puts "Update duration: #{timing} seconds. (mode: #{mode})"
+
+  Statsd.timing(statname, timing)
 end
