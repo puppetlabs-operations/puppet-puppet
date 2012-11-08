@@ -23,8 +23,6 @@ Statsd.port = 8125
 shorthostname = Socket.gethostname.split('.').first
 statname = "puppetgitdeploy.#{shorthostname}"
 
-github_repo_urls = { :default => 'git@github.com:puppetlabs/puppetlabs-modules.git' }
-
 # Identifer for individual repos.
 $NSIDENT = 'nonPL'
 
@@ -373,6 +371,8 @@ def run
 
   startdir = Dir.getwd
 
+  # I am very sorry for this. :(
+  github_repo_urls = { :default => 'git@github.com:puppetlabs/puppetlabs-modules.git' }
   github_repo_urls.each_pair do |username, repo|
 
     dputs "Generating branches from user #{username.to_s}, repository \"#{repo}\""
