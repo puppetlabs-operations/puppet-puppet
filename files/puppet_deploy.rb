@@ -128,6 +128,26 @@ def benchmark(&block)
   (completion - initial).round
 end
 
+def lock(path, &block)
+
+  lockfile = File.new(path, 'w')
+  locked   = false
+
+  if lockfile.flock(File::LOCK_EX | File::LOCK_NB)
+    locked = true
+    yield
+  else
+    raise "Unable to lock #{path}"
+  end
+ensure
+  if locked
+    # unlink before unlocking to prevent race conditions
+    File.unlink(path)
+    lockfile.flock(File::LOCK_UN)
+  end
+  lockfile.close unless lockfile.closed?
+end
+
 class GitRepo
 
   attr_accessor :repo, :branches, :branchcount
@@ -377,12 +397,19 @@ def run
 end
 
 if __FILE__ == $0
-  timing = benchmark do
-    run
+
+  begin
+    lock('/var/lock/puppet_deploy.lock') do
+      timing = benchmark do
+        run
+      end
+
+      mode = $parallel ? 'parallel' : 'sequential'
+      puts "Update duration: #{timing} seconds. (mode: #{mode})"
+
+      Statsd.timing(statname, timing)
+    end
+  rescue => e
+    $stderr.puts "Error while updating: #{e}"
   end
-
-  mode = $parallel ? 'parallel' : 'sequential'
-  puts "Update duration: #{timing} seconds. (mode: #{mode})"
-
-  Statsd.timing(statname, timing)
 end
