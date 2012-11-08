@@ -23,11 +23,6 @@ Statsd.port = 8125
 shorthostname = Socket.gethostname.split('.').first
 statname = "puppetgitdeploy.#{shorthostname}"
 
-# Identifer for individual repos.
-$NSIDENT = 'nonPL'
-
-# $modulepath=`puppet master --configprint modulepath`
-env_base_dir  = '/etc/puppet/environments'
 
 $debug      = false
 $submodules = true
@@ -370,6 +365,12 @@ def run
   ENV['LANG'] = 'C'
 
   startdir = Dir.getwd
+
+  # Identifer for individual repos.
+  $NSIDENT = 'nonPL'
+
+  # $modulepath=`puppet master --configprint modulepath`
+  env_base_dir  = '/etc/puppet/environments'
 
   # I am very sorry for this. :(
   github_repo_urls = { :default => 'git@github.com:puppetlabs/puppetlabs-modules.git' }
