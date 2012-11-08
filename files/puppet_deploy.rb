@@ -212,7 +212,12 @@ class GitRepo
       if pid.nil?
         br = GitBranch.new(branchname, @env_base_dir, @mirrordir)
         br.make!
-        Process.exit # Since this is a child process, exit after doing the work.
+
+        # Since this is a child process, exit after doing the work. `Process.exit!`
+        # is used over the regular exit to ensure that no ensure or at_exit
+        # blocks are run, since the parent process handles cleanup and the
+        # children shouldn't try to do that work as well.
+        Process.exit!
       else
         pidlist << pid
       end
