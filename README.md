@@ -28,7 +28,7 @@ something that scales a bit more.
       class { "::puppet::server":
         modulepath   => inline_template("<%= modulepath.join(':') %>"),
         storeconfigs => "puppetdb",
-        reporturl    => "https://dashboard.puppetlabs.com/reports",
+        reporturl    => "https://my.puppet.dashboard/reports",
         servertype   => 'unicorn',
         manifest     => '$confdir/environments/$environment/site.pp',
         ca           => $ca,
@@ -36,7 +36,7 @@ something that scales a bit more.
           'https',
           'graphite',
           'irccat',
-          'store', # (#16894) Nick wants nice report data for puppetdb.
+          'store',
         ],
       }
 
