@@ -7,4 +7,5 @@ summary 'Install and manage Puppet open source'
 
 source 'https://github.com/puppetlabs-operations/puppet-puppet'
 project_page 'https://github.com/puppetlabs-operations/puppet-puppet'
-dependency 'stahnma/puppet-module-puppetlabs_yum', '>= 0.1.0'
+
+dependency 'stahnma/puppetlabs_yum', '>= 0.1.0'
