@@ -3,8 +3,8 @@ metadata :name        => 'Puppet Deploy, now with Mcollective!',
          :author      => 'Adrien Thebo',
          :license     => 'Do whatever the fuck you want',
          :url         => 'http://purple.com',
-         :version     => '0.0.1',
-         :timeout     => 300
+         :version     => '0.1.0',
+         :timeout     => 600
 
 action 'puppet', :description => 'Deploy Puppet manifests' do
   display :always

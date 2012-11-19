@@ -5,8 +5,8 @@ class MCollective::Agent::Deploy < MCollective::RPC::Agent
            :author      => 'Adrien Thebo',
            :license     => 'Do whatever the fuck you want',
            :url         => 'http://purple.com',
-           :version     => '0.0.1',
-           :timeout     => 300
+           :version     => '0.1.0',
+           :timeout     => 600
 
 
   def startup_hook
