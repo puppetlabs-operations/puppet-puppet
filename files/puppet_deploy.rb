@@ -130,7 +130,7 @@ def lock(path, &block)
     locked = true
     yield
   else
-    raise "Unable to lock #{path}"
+    raise "Unable to lock #{path} (deploy already in progress)"
   end
 ensure
   if locked
