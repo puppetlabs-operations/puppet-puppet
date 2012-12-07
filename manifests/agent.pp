@@ -34,7 +34,8 @@ class puppet::agent(
   $report_server  = hiera('puppet::agent::server'),
   $manage_service = undef,
   $method         = 'cron',
-  $custom_repo    = true
+  $custom_repo    = true,
+  $environment    = 'production'
 ) {
 
   include puppet
