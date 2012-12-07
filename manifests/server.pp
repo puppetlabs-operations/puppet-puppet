@@ -51,7 +51,9 @@ class puppet::server (
 
   # ---
   # The site.pp is set in the puppet.conf, remove site.pp here to avoid confusion
-  file { "${puppet::params::puppet_confdir}/manifests/site.pp": ensure => absent; }
+  if ($manifest != "${puppet::params::puppet_confdir}/manifests/site.pp") {
+    file { "${puppet::params::puppet_confdir}/manifests/site.pp": ensure => absent; }
+  }
 
   # ---
   # Application-server specific SSL configuration
