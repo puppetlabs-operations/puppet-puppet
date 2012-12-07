@@ -12,7 +12,7 @@
 #
 class puppet::passenger {
   include ruby::dev
-  include apache::ssl
+  include apache::mod::ssl
   include ::passenger
   include passenger::params
 
