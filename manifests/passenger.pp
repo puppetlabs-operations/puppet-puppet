@@ -15,7 +15,6 @@ class puppet::passenger {
   include apache::ssl
   include ::passenger
   include passenger::params
-  include ::rack
 
   $passenger_version=$passenger::params::version
   $gem_path=$passenger::params::gem_path
