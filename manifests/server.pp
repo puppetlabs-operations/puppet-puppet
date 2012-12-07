@@ -41,7 +41,9 @@ class puppet::server (
     $reporturl          = "http://$fqdn/reports",
     $servertype         = "unicorn",
     $ca                 = false,
-    $bindaddress        = '::'
+    $bindaddress        = '::',
+    $backup_server      = hiera('puppet_server_backup', 'true'),
+    $monitor_server     = hiera('puppet_server_monitor', 'true')
   ) {
 
   include puppet
@@ -95,7 +97,6 @@ class puppet::server (
   #
   # Use a real boolean after hiera 1.0 is out
   #
-  $backup_server = hiera('puppet_server_backup', 'true')
   if $backup_server == 'true' { include puppet::server::backup }
 
   # ---
@@ -139,7 +140,6 @@ class puppet::server (
   #
   # Use a real boolean after hiera 1.0 is out
   #
-  $monitor_server = hiera('puppet_server_monitor', 'true')
 
   if $monitor_server == 'true' {
     @@nagios_service { "check_puppetmaster_${hostname}":
