@@ -14,8 +14,4 @@ class puppet::storeconfig::puppetdb(
     notify => Class['puppet::server'],
   }
 
-  package { 'puppetdb-terminus':
-    ensure => present,
-    notify => Class['puppet::server'],
-  }
 }
