@@ -16,8 +16,8 @@ class puppet::passenger {
   include ::passenger
   include passenger::params
 
-  $passenger_version=$passenger::params::version
-  $gem_path=$passenger::params::gem_path
+  $passenger_version = $::passenger::params::version
+  $gem_path          = $::passenger::params::gem_path
 
   file {
     ['/etc/puppet/rack', '/etc/puppet/rack/public', '/etc/puppet/rack/tmp']:
