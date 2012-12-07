@@ -2,7 +2,9 @@
 # See http://hunnur.com/blog/2010/10/dynamic-git-branch-puppet-environments/
 modulepath = <%= modulepath %>
 manifest   = <%= manifest %>
+<% if ca -%>
 ca         = <%= ca %>
+<% end -%>
 
 <% if servertype == 'standalone' -%>
 bindaddress              = <%= bindaddress %>
