@@ -27,10 +27,10 @@ class puppet::passenger {
   }
   file {
     '/etc/puppet/rack/config.ru':
-      owner  => 'puppet',
-      group  => 'puppet',
-      mode   => '0644',
-      source => 'puppet:///modules/puppet/config.ru',
+      owner   => 'puppet',
+      group   => 'puppet',
+      mode    => '0644',
+      source  => 'puppet:///modules/puppet/config.ru.passenger',
   }
 
   apache::vhost{ 'puppetmaster':
