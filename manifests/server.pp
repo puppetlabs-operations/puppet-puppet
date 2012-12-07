@@ -103,6 +103,25 @@ class puppet::server (
   # Used only for platforms that seperate the master and agent packages
   if $puppet::params::master_package != '' {
     package { $puppet::params::master_package: ensure => present; }
+
+    # ---
+    # OS / Distro-specific post package configuration
+    case $::lsbdistid {
+      'Ubuntu': {
+        file_line { '/etc/default/puppetmaster START':
+          path    => '/etc/default/puppetmaster',
+          line    => 'START=no',
+          match   => '^START=',
+          require => Package[$puppet::params::master_package],
+        }
+
+        service { 'puppetmaster':
+          enable  => false,
+          ensure  => stopped,
+          require => Package[$puppet::params::master_package],
+        }
+      }
+    }
   }
 
   concat::fragment { 'puppet.conf-master':
