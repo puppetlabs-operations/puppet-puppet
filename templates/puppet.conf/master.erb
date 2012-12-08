@@ -26,5 +26,11 @@ reports              = <%= reports.join(", ") %>
 reports              = <%= reports %>
 <% end -%>
 
+<% if @enc == 'exec' -%>
+node_terminus = exec
+external_nodes = <%= enc_exec %>
+<% end -%>
+
+
 user  = puppet
 group = puppet

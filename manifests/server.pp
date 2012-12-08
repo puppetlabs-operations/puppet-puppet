@@ -41,7 +41,9 @@ class puppet::server (
     $reporturl          = "http://$fqdn/reports",
     $servertype         = "unicorn",
     $ca                 = false,
-    $bindaddress        = '::'
+    $bindaddress        = '::',
+    $enc                = '',
+    $enc_exec           = ''
   ) {
 
   include puppet
