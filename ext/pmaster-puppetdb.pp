@@ -14,4 +14,10 @@ class { 'puppet::server':
   monitor_server     => false,
   backup_server      => false,
   manifest           => '/etc/puppet/manifests/site.pp',
-}
+} -> 
+class { 'puppetdb':
+  database           => 'embedded',
+  listen_address     => '0.0.0.0',
+  ssl_listen_address => '0.0.0.0',
+} -> 
+class { 'puppetdb::master::config': }
