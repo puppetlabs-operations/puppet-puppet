@@ -18,6 +18,7 @@ class puppet::storeconfig (
     $dbsocket   = ''
 ) {
 
+  include puppet
   include puppet::params
 
   #$puppet::storeconfigs = 'true' # called from puppet::server only if storeconfigs is on
