@@ -27,7 +27,4 @@ class puppet::server::unicorn {
     unicorn_group   => 'puppet',
     before          => Service['nginx'],
   }
-
-  motd::register{ 'Puppet Master on Unicorn': }
-
 }

@@ -20,6 +20,4 @@ class puppet::server::thin {
     rackup  => "${::puppet::params::puppet_confdir}/config.ru",
     chdir   => $puppet::params::puppet_confdir,
   }
-
-  motd::register {"Puppet master on Thin": }
 }
