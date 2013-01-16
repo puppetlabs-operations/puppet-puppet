@@ -43,7 +43,8 @@ class puppet::server (
     $ca                 = false,
     $bindaddress        = '::',
     $enc                = '',
-    $enc_exec           = ''
+    $enc_exec           = '',
+    $monitor_server = hiera('puppet_server_monitor', 'true'),
   ) {
 
   include puppet
@@ -133,15 +134,6 @@ class puppet::server (
       }
     }
   }
-
-  # Nagios!
-  # FIXME
-  # http://projects.puppetlabs.com/issues/10590
-  # err: Could not retrieve catalog from remote server: Error 400 on SERVER: can't clone TrueClass
-  #
-  # Use a real boolean after hiera 1.0 is out
-  #
-  $monitor_server = hiera('puppet_server_monitor', 'true')
 
   if $monitor_server == 'true' {
     @@nagios_service { "check_puppetmaster_${hostname}":
