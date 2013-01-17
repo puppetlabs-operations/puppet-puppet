@@ -69,6 +69,7 @@ class puppet::params::defaults {
       $puppet_rundir      = '/var/lib/puppet/run/'
       $agent_service      = 'svc:/network/cswpuppetd'
     }
+    default: { fail("Sorry, $operatingsystem is not supported") }
   }
 
   # Behold, the list of platforms that have horrible package mangement!
