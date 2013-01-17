@@ -55,6 +55,18 @@ class puppet::params::defaults {
       $puppet_rundir      = '/var/run/puppet'
       $unicorn_initscript = 'unicorn/initscript_newer.erb'
     }
+    'gentoo': {
+      $puppet_cmd         = '/usr/bin/puppet'
+      $agent_service      = 'puppet'
+      $master_package     = 'app-admin/puppet'
+      $master_service     = 'puppetmaster'
+      $puppet_conf        = '/etc/puppet/puppet.conf'
+      $puppet_confdir     = '/etc/puppet'
+      $puppet_logdir      = '/var/log/puppet'
+      $puppet_vardir      = '/var/lib/puppet'
+      $puppet_ssldir      = '/var/lib/puppet/ssl'
+      $puppet_rundir      = '/var/run/puppet'
+    }
 
     # This stops the puppet class breaking. But really, we only have very
     # limited support for Solaris. And only through OpenCSW
