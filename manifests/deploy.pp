@@ -1,5 +1,9 @@
 class puppet::deploy($ensure = 'present', $frequency = 6, $interval_in_minutes = 60) {
 
+  if $ensure == 'present' {
+    notify { "puppet::deploy is deprecated; please see https://github.com/puppetlabs-operations/puppet-r10k": }
+  }
+
   # Since 3aefec78893778f020759f947659e0f2bf30d776 we have
   # librarian-puppet support. See http://librarian-puppet.com/
   package { 'librarian-puppet':
