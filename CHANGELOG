@@ -1,0 +1,14 @@
+CHANGELOG
+=========
+
+0.10.0
+------
+
+2012-01-25
+
+  * support for ENC configuration in puppet.conf
+  * Updated module dependencies
+  * `interval` function removed
+  * variable support for Gentoo
+  * 'puppet::deploy' deprecated
+  * misc. cleanup and refactors
