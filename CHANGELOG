@@ -1,10 +1,17 @@
 CHANGELOG
 =========
 
+0.11.0
+
+2013-02-01
+
+  * Remove use of dynamic scoping from passenger code
+  * Add support for ploperations/unicorn 1.0.0
+
 0.10.0
 ------
 
-2012-01-25
+2013-01-25
 
   * support for ENC configuration in puppet.conf
   * Updated module dependencies
