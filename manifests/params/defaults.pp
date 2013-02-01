@@ -14,7 +14,6 @@ class puppet::params::defaults {
       $puppet_vardir      = '/var/lib/puppet'
       $puppet_ssldir      = '/var/lib/puppet/ssl'
       $puppet_rundir      = '/var/run/puppet'
-      $unicorn_initscript = 'unicorn/initscript_newer.erb'
     }
     'freebsd': {
       $puppet_cmd         = '/usr/local/bin/puppet'
@@ -27,7 +26,6 @@ class puppet::params::defaults {
       $puppet_vardir      = '/var/puppet'
       $puppet_ssldir      = '/var/puppet/ssl'
       $puppet_rundir      = '/var/run/puppet'
-      $unicorn_initscript = 'unicorn/rcscript.erb'
     }
     'darwin': {
       $puppet_cmd     = '/opt/local/bin/puppet'
@@ -53,7 +51,6 @@ class puppet::params::defaults {
       $puppet_vardir      = '/var/lib/puppet'
       $puppet_ssldir      = '/var/lib/puppet/ssl'
       $puppet_rundir      = '/var/run/puppet'
-      $unicorn_initscript = 'unicorn/initscript_newer.erb'
     }
     'gentoo': {
       $puppet_cmd         = '/usr/bin/puppet'
