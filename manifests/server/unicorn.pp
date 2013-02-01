@@ -19,12 +19,11 @@ class puppet::server::unicorn {
     approot         => $::puppet::params::puppet_confdir,
     config_file     => "${::puppet::params::puppet_confdir}/unicorn.conf",
     initscript      => $puppet::params::unicorn_initscript,
-    unicorn_pidfile => "${puppet::params::puppet_rundir}/puppetmaster_unicorn.pid",
-    unicorn_socket  => "${puppet::params::puppet_rundir}/puppetmaster_unicorn.sock",
-    stdlog_path     => $puppet::params::puppet_logdir,
-    log_stds        => 'true',
-    unicorn_user    => 'puppet',
-    unicorn_group   => 'puppet',
+    pidfile         => "${puppet::params::puppet_rundir}/puppetmaster_unicorn.pid",
+    socket          => "${puppet::params::puppet_rundir}/puppetmaster_unicorn.sock",
+    logdir          => $puppet::params::puppet_logdir,
+    user            => 'puppet',
+    group           => 'puppet',
     before          => Service['nginx'],
   }
 }
