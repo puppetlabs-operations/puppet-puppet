@@ -18,7 +18,6 @@ class puppet::server::unicorn {
   unicorn::app { "puppetmaster":
     approot         => $::puppet::params::puppet_confdir,
     config_file     => "${::puppet::params::puppet_confdir}/unicorn.conf",
-    initscript      => $puppet::params::unicorn_initscript,
     pidfile         => "${puppet::params::puppet_rundir}/puppetmaster_unicorn.pid",
     socket          => "${puppet::params::puppet_rundir}/puppetmaster_unicorn.sock",
     logdir          => $puppet::params::puppet_logdir,
