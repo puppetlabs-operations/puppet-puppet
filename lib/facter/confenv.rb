@@ -8,17 +8,19 @@ Facter.add("confenv") do
       # 2.7.12 (Puppet Enterprise 2.5.1)
       #
       # We scan for things looking like semantic version strings then grab the first one.
-      version = Facter.value('puppetversion').scan(/\d+\.\d+/).first.to_f
+      version = "#{Facter.value("puppet_major_version")}.#{Facter.value("puppet_minor_version")}"
       case version
-      when 3.0
+      when "3.1"
+        cmd = %{#{path} agent --configprint environment}
+      when "3.0"
         cmd = %{#{path} config print environment --run_mode agent}
-      when 2.7
+      when "2.7"
         cmd = %{#{path} config print environment --mode agent}
-      when 2.6
+      when "2.6"
         cmd = %{#{path} agent --configprint environment}
       end
 
-      if output = Facter::Util::Resolution.exec(cmd)
+      if cmd and (output = Facter::Util::Resolution.exec(cmd))
         env = output.chomp
       end
     end
