@@ -20,7 +20,7 @@ Facter.add("confenv") do
         cmd = %{#{path} agent --configprint environment}
       end
 
-      if output = Facter::Util::Resolution.exec(cmd)
+      if cmd and (output = Facter::Util::Resolution.exec(cmd))
         env = output.chomp
       end
     end
