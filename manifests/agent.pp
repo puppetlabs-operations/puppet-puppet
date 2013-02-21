@@ -12,6 +12,9 @@
 # [*report_server*]
 #   The puppet server to send reports.
 #   Default: puppet::agent::server
+# [*add_puppet_repos*]
+#   Whether to add Puppet Labs APT or YUM package repos.
+#   Default: true
 # [*manage_service*]
 #   Whether to manage the puppet agent service when using the cron run method.
 #   Default: undef
@@ -29,15 +32,19 @@
 #  }
 #
 class puppet::agent(
-  $server         = hiera('puppet::agent::server', 'puppet'),
-  $ca_server      = hiera('puppet::agent::server', 'puppet'),
-  $report_server  = hiera('puppet::agent::server', 'puppet'),
-  $manage_service = undef,
-  $method         = 'cron',
+  $server           = hiera('puppet::agent::server', 'puppet'),
+  $ca_server        = hiera('puppet::agent::server', 'puppet'),
+  $report_server    = hiera('puppet::agent::server', 'puppet'),
+  $add_puppet_repos = true,
+  $manage_service   = undef,
+  $method           = 'cron',
 ) {
 
   include puppet
-  require puppet::package
+
+  if $add_puppet_repos {
+    require puppet::package
+  }
 
   case $method {
     cron:    { class { 'puppet::agent::cron': manage_service => $manage_service } }
