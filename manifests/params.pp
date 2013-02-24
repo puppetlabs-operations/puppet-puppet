@@ -6,7 +6,6 @@ class puppet::params(
   $puppet_cmd         = $puppet::params::defaults::puppet_cmd,
   $agent_service      = $puppet::params::defaults::agent_service,
   $agent_defaults     = $puppet::params::defaults::agent_defaults,
-  $update_puppet      = $puppet::params::defaults::update_puppet,
   $master_package     = $puppet::params::defaults::master_package,
   $master_service     = $puppet::params::defaults::master_service,
   $puppet_conf        = $puppet::params::defaults::puppet_conf,

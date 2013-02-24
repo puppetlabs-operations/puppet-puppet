@@ -34,10 +34,11 @@ class puppet::agent(
   $report_server  = hiera('puppet::agent::server'),
   $manage_service = undef,
   $method         = 'cron',
+  $ensure         = 'present',
 ) {
 
   include puppet
-  require puppet::package
+  include puppet::package
 
   case $method {
     cron:    { class { 'puppet::agent::cron': manage_service => $manage_service } }
