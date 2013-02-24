@@ -38,7 +38,15 @@ class puppet::agent(
 ) {
 
   include puppet
-  include puppet::package
+  include puppet::params
+  if $::fqdn == $server or $::hostname == $server {
+    if $puppet::params::agent_package != $puppet::params::master_package {
+      include puppet::package::agent
+    }
+  }
+  else {
+    include puppet::package::agent
+  }
 
   case $method {
     cron:    { class { 'puppet::agent::cron': manage_service => $manage_service } }

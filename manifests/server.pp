@@ -51,6 +51,7 @@ class puppet::server (
 
   include puppet
   include puppet::params
+  include puppet::package::server
 
   # ---
   # The site.pp is set in the puppet.conf, remove site.pp here to avoid confusion
@@ -101,12 +102,6 @@ class puppet::server (
   # Use a real boolean after hiera 1.0 is out
   #
   if $backup_server == 'true' { include puppet::server::backup }
-
-  # ---
-  # Used only for platforms that seperate the master and agent packages
-  if $puppet::params::master_package != $puppet::params::agent_package {
-    package { $puppet::params::master_package: ensure => $ensure; }
-  }
 
   concat::fragment { 'puppet.conf-master':
     order   => '05',
