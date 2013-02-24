@@ -35,6 +35,8 @@ class puppet::agent(
   $manage_service = undef,
   $method         = 'cron',
   $ensure         = 'present',
+  $use            = "$puppet::params::agent_use",
+  $keywords       = '',
 ) {
 
   include puppet

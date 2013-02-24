@@ -47,6 +47,8 @@ class puppet::server (
   $monitor_server     = hiera('puppet_server_monitor', 'true'),
   $backup_server      = hiera('puppet_server_backup', 'true'),
   $ensure             = 'present',
+  $use                = "$puppet::params::master_use",
+  $keywords           = '',
 ) {
 
   include puppet
