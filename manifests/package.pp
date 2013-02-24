@@ -3,7 +3,7 @@ class puppet::package {
   include puppet::params
   include puppet::package::repository
 
-  package { 'puppet':
+  package { $puppet::params::agent_package:
     ensure => $puppet::agent::ensure;
   }
 
