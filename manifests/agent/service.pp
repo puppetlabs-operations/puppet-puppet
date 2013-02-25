@@ -2,7 +2,7 @@ class puppet::agent::service {
   include puppet::params
   # ----
   # Puppet agent management
-  service { "puppet_agent":
+  service { 'puppet_agent':
     name       => $puppet::params::agent_service,
     ensure     => running,
     enable     => true,
@@ -10,7 +10,7 @@ class puppet::agent::service {
     hasrestart => true,
   }
 
-  class { "::puppet::agent::monitor": enable => true; }
+  class { '::puppet::agent::monitor': enable => true; }
 
   # ----
   # Special things for special kernels
@@ -24,12 +24,12 @@ class puppet::agent::service {
       }
     }
     darwin: {
-      file { "com.puppetlabs.puppet.plist":
+      file { 'com.puppetlabs.puppet.plist':
         owner   => root,
         group   => 0,
         mode    => 0640,
-        source  => "puppet:///modules/puppet/com.puppetlabs.puppet.plist",
-        path    => "/Library/LaunchDaemons/com.puppetlabs.puppet.plist",
+        source  => 'puppet:///modules/puppet/com.puppetlabs.puppet.plist',
+        path    => '/Library/LaunchDaemons/com.puppetlabs.puppet.plist',
       }
     }
   }
