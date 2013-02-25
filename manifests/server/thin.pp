@@ -3,12 +3,12 @@ class puppet::server::thin {
   include puppet::params
 
   $servers = $::processorcount
-  nginx::vhost { "puppetmaster":
+  nginx::vhost { 'puppetmaster':
     port     => 8140,
-    template => "puppet/vhost/nginx/thin.conf.erb",
+    template => 'puppet/vhost/nginx/thin.conf.erb',
   }
 
-  concat::fragment { "proctitle":
+  concat::fragment { 'proctitle':
     order  => '05',
     target => "${::puppet::params::puppet_confdir}/config.ru",
     source => 'puppet:///modules/puppet/config.ru/05-proctitle.rb',
