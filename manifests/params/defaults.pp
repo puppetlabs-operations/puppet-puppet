@@ -91,6 +91,6 @@ class puppet::params::defaults {
     # err: Could not retrieve catalog from remote server: Error 400 on SERVER: can't clone TrueClass
     #
     # Use a real boolean after hiera 1.0 is out
-    $update_puppet = 'true'
+    $update_puppet = true
   }
 }
