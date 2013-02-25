@@ -36,15 +36,12 @@ class puppet::dashboard (
   $dashboard_site = $site
 
   unicorn::app { $dashboard_site:
-    approot                  => $approot,
-    config_file              => "${approot}/config/unicorn.config.rb",
-    unicorn_pidfile          => '/var/run/puppet/puppet_dashboard_unicorn.pid',
-    unicorn_socket           => '/var/run/puppet/puppet_dashboard_unicorn.sock',
-    unicorn_worker_processes => '2',
-    unicorn_user             => 'www-data',
-    unicorn_group            => 'www-data',
-    log_stds                 => true,
-    stdlog_path              => '/var/log/puppet-dashboard',
+    approot     => $approot,
+    config_file => "${approot}/config/unicorn.config.rb",
+    pidfile     => '/var/run/puppet/puppet_dashboard_unicorn.pid',
+    socket      => '/var/run/puppet/puppet_dashboard_unicorn.sock',
+    user        => 'www-data',
+    group       => 'www-data',
   }
 
   nginx::unicorn { 'dashboard.puppetlabs.com':
