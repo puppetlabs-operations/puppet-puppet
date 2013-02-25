@@ -15,7 +15,7 @@
 class puppet::package::repository($devel = false) {
   case $osfamily {
     Redhat: {
-      class { "puppetlabs_yum":
+      class { 'puppetlabs_yum':
         enable_devel   => $devel,
       }
     }
