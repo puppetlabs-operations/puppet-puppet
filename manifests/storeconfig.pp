@@ -24,17 +24,17 @@ class puppet::storeconfig (
   #$puppet::storeconfigs = 'true' # called from puppet::server only if storeconfigs is on
 
   case $backend {
-    "mysql","postgresql","sqlite": {
-      package { "gem-activerecord":
-        name => $operatingsystem ? {
-          "Debian" => "libactiverecord-ruby",
-          "Darwin" => "rb-activerecord",
-          default  => activerecord,
+    'mysql','postgresql','sqlite': {
+      package { 'gem-activerecord':
+        name => ${::operatingsystem} ? {
+          'Debian' => 'libactiverecord-ruby',
+          'Darwin' => 'rb-activerecord',
+          default  => 'activerecord',
         },
-        provider => $operatingsystem ? {
-          "Debian" => apt,
-          "Darwin" => macports,
-          default  => gem,
+        provider => ${::operatingsystem} ? {
+          'Debian' => 'apt',
+          'Darwin' => 'macports',
+          default  => 'gem',
         },
       }
     }
@@ -45,13 +45,13 @@ class puppet::storeconfig (
       include puppet::storeconfig::sqlite
     }
     'mysql': {
-      class { "puppet::storeconfig::mysql":
+      class { 'puppet::storeconfig::mysql':
           dbuser     => $dbuser,
           dbpassword => $dbpassword,
       }
     }
     'postgresql': {
-      class { "puppet::storeconfig::postgresql":
+      class { 'puppet::storeconfig::postgresql':
           dbuser     => $dbuser,
           dbpassword => $dbpassword,
       }
@@ -65,6 +65,7 @@ class puppet::storeconfig (
   concat::fragment { 'puppet.conf-master-storeconfig':
     order   => '06',
     target  => $puppet::params::puppet_conf,
-    content => template("puppet/puppet.conf/master-storeconfigs.erb");
+    content => template('puppet/puppet.conf/master-storeconfigs.erb');
   }
 }
+
