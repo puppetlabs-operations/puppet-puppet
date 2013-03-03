@@ -35,9 +35,9 @@ class puppet::agent(
   $manage_service = undef,
   $method         = 'cron',
   $ensure         = 'present',
-  $use            = "$puppet::params::agent_use",
+  $use            = $puppet::params::agent_use,
   $keywords       = '',
-) {
+) inherits puppet::params {
 
   include puppet
   if $::fqdn == $server or $::hostname == $server {
