@@ -32,23 +32,27 @@
 #  }
 #
 class puppet::server (
-    $modulepath         = '$confdir/modules/site:$confdir/env/$environment/dist',
-    $manifest           = '$confdir/modules/site/site.pp',
-    $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
-    $storeconfigs       = undef,
-    $report             = 'true',
-    $reports            = ["store", "https"],
-    $reporturl          = "http://$fqdn/reports",
-    $servertype         = "unicorn",
-    $ca                 = false,
-    $bindaddress        = '::',
-    $enc                = '',
-    $enc_exec           = '',
-    $monitor_server = hiera('puppet_server_monitor', 'true'),
-  ) {
+  $modulepath         = '$confdir/modules/site:$confdir/env/$environment/dist',
+  $manifest           = '$confdir/modules/site/site.pp',
+  $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
+  $storeconfigs       = undef,
+  $report             = 'true',
+  $reports            = ["store", "https"],
+  $reporturl          = "http://$fqdn/reports",
+  $servertype         = "unicorn",
+  $ca                 = false,
+  $bindaddress        = '::',
+  $enc                = '',
+  $enc_exec           = '',
+  $monitor_server     = hiera('puppet_server_monitor', 'true'),
+  $backup_server      = hiera('puppet_server_backup', 'true'),
+  $ensure             = 'present',
+  $use                = $puppet::params::master_use,
+  $keywords           = '',
+) inherits puppet::params {
 
   include puppet
-  include puppet::params
+  include puppet::package::server
 
   # ---
   # The site.pp is set in the puppet.conf, remove site.pp here to avoid confusion
@@ -85,7 +89,7 @@ class puppet::server (
   # Storeconfigs
   if $storeconfigs {
     class { "puppet::storeconfig":
-      backend    => $storeconfigs,
+      backend => $storeconfigs,
     }
   }
 
@@ -98,14 +102,7 @@ class puppet::server (
   #
   # Use a real boolean after hiera 1.0 is out
   #
-  $backup_server = hiera('puppet_server_backup', 'true')
   if $backup_server == 'true' { include puppet::server::backup }
-
-  # ---
-  # Used only for platforms that seperate the master and agent packages
-  if $puppet::params::master_package != '' {
-    package { $puppet::params::master_package: ensure => present; }
-  }
 
   concat::fragment { 'puppet.conf-master':
     order   => '05',

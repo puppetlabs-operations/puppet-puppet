@@ -1,16 +1,18 @@
-class puppet::package($ensure = 'latest') {
+# == Class: puppet::package
+#
+# Common operations of puppet package installation for agent and server.
+#
+class puppet::package {
 
-  include puppet::params
-  require puppet::package::repository
+  include puppet::package::repository
 
-  # ----
-  # Be carefull about systems that may not be able to upgrade cleanly
-  if $puppet::params::update_puppet {
-    package { 'puppet': ensure => $ensure; }
-    package { 'facter': ensure => $ensure; }
-
-    # Fixes a bug. #12813
-    class { '::puppet::package::patches': }
+  if $::operatingsystem == 'gentoo' {
+    package_use { 'sys-apps/net-tools':
+      use    => 'old-output',
+      target => 'puppet',
+    }
   }
 
+  # Fixes a bug. #12813
+  class { '::puppet::package::patches': }
 }

@@ -4,11 +4,13 @@
 #
 class puppet::params(
   $puppet_cmd         = $puppet::params::defaults::puppet_cmd,
+  $agent_package      = $puppet::params::defaults::agent_package,
   $agent_service      = $puppet::params::defaults::agent_service,
   $agent_defaults     = $puppet::params::defaults::agent_defaults,
-  $update_puppet      = $puppet::params::defaults::update_puppet,
+  $agent_use          = $puppet::params::defaults::agent_use,
   $master_package     = $puppet::params::defaults::master_package,
   $master_service     = $puppet::params::defaults::master_service,
+  $master_use         = $puppet::params::defaults::master_use,
   $puppet_conf        = $puppet::params::defaults::puppet_conf,
   $puppet_confdir     = $puppet::params::defaults::puppet_confdir,
   $puppet_logdir      = $puppet::params::defaults::puppet_logdir,

@@ -30,14 +30,24 @@
 #
 class puppet::agent(
   $server         = hiera('puppet::agent::server'),
-  $ca_server      = hiera('puppet::agent::server'),
-  $report_server  = hiera('puppet::agent::server'),
+  $ca_server      = hiera('puppet::agent::server', "$server"),
+  $report_server  = hiera('puppet::agent::server', "$server"),
   $manage_service = undef,
   $method         = 'cron',
-) {
+  $ensure         = 'present',
+  $use            = $puppet::params::agent_use,
+  $keywords       = '',
+) inherits puppet::params {
 
   include puppet
-  require puppet::package
+  if $::fqdn == $server or $::hostname == $server {
+    if $puppet::params::agent_package != $puppet::params::master_package {
+      include puppet::package::agent
+    }
+  }
+  else {
+    include puppet::package::agent
+  }
 
   case $method {
     cron:    { class { 'puppet::agent::cron': manage_service => $manage_service } }
