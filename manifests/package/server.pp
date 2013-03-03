@@ -1,3 +1,7 @@
+# == Class: puppet::package::server
+#
+# Handle the puppet server package installation.
+#
 class puppet::package::server inherits puppet::package {
 
   if $::operatingsystem == 'gentoo' {

@@ -1,3 +1,7 @@
+# == Class: puppet::package::agent
+#
+# Handle the puppet agent package installation.
+#
 class puppet::package::agent inherits puppet::package {
 
   if $::operatingsystem == 'gentoo' {

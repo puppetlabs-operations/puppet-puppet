@@ -1,3 +1,7 @@
+# == Class: puppet::package
+#
+# Common operations of puppet package installation for agent and server.
+#
 class puppet::package {
 
   include puppet::package::repository
