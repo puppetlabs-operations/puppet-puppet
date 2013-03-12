@@ -36,15 +36,15 @@ class puppet::server (
     $manifest           = '$confdir/modules/site/site.pp',
     $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
     $storeconfigs       = undef,
-    $report             = 'true',
-    $reports            = ["store", "https"],
-    $reporturl          = "http://$fqdn/reports",
-    $servertype         = "unicorn",
+    $report             = true,
+    $reports            = ['store', 'https'],
+    $reporturl          = "http://${::fqdn}/reports",
+    $servertype         = 'unicorn',
     $ca                 = false,
     $bindaddress        = '::',
     $enc                = '',
     $enc_exec           = '',
-    $monitor_server = hiera('puppet_server_monitor', 'true'),
+    $monitor_server = hiera('puppet_server_monitor', true),
   ) {
 
   include puppet
@@ -57,22 +57,22 @@ class puppet::server (
   # ---
   # Application-server specific SSL configuration
   case $servertype {
-    "passenger": {
+    'passenger': {
       include puppet::server::passenger
-      $ssl_client_header        = "SSL_CLIENT_S_DN"
-      $ssl_client_verify_header = "SSL_CLIENT_VERIFY"
+      $ssl_client_header        = 'SSL_CLIENT_S_DN'
+      $ssl_client_verify_header = 'SSL_CLIENT_VERIFY'
     }
-    "unicorn": {
+    'unicorn': {
       include puppet::server::unicorn
-      $ssl_client_header        = "HTTP_X_CLIENT_DN"
-      $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
+      $ssl_client_header        = 'HTTP_X_CLIENT_DN'
+      $ssl_client_verify_header = 'HTTP_X_CLIENT_VERIFY'
     }
-    "thin": {
+    'thin': {
       include puppet::server::thin
-      $ssl_client_header        = "HTTP_X_CLIENT_DN"
-      $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
+      $ssl_client_header        = 'HTTP_X_CLIENT_DN'
+      $ssl_client_verify_header = 'HTTP_X_CLIENT_VERIFY'
     }
-    "standalone": {
+    'standalone': {
       include puppet::server::standalone
     }
     default: {
@@ -84,7 +84,7 @@ class puppet::server (
   # ---
   # Storeconfigs
   if $storeconfigs {
-    class { "puppet::storeconfig":
+    class { 'puppet::storeconfig':
       backend    => $storeconfigs,
     }
   }
@@ -98,7 +98,7 @@ class puppet::server (
   #
   # Use a real boolean after hiera 1.0 is out
   #
-  $backup_server = hiera('puppet_server_backup', 'true')
+  $backup_server = hiera('puppet_server_backup', true)
   if $backup_server == 'true' { include puppet::server::backup }
 
   # ---
@@ -110,7 +110,7 @@ class puppet::server (
   concat::fragment { 'puppet.conf-master':
     order   => '05',
     target  => $puppet::params::puppet_conf,
-    content => template("puppet/puppet.conf/master.erb");
+    content => template('puppet/puppet.conf/master.erb');
   }
 
   # ---
@@ -124,10 +124,10 @@ class puppet::server (
         notify => Nginx::Vhost['puppetmaster'],
       }
 
-      concat::fragment { "run-puppet-master":
+      concat::fragment { 'run-puppet-master':
         order  => '99',
         target => "${::puppet::params::puppet_confdir}/config.ru",
-        source => $puppetversion ? {
+        source => $::puppetversion ? {
           /^2.7/ => 'puppet:///modules/puppet/config.ru/99-run-2.7.rb',
           /^3.[0|1]/ => 'puppet:///modules/puppet/config.ru/99-run-3.0.rb',
         },
@@ -136,43 +136,43 @@ class puppet::server (
   }
 
   if $monitor_server == 'true' {
-    @@nagios_service { "check_puppetmaster_${hostname}":
+    @@nagios_service { "check_puppetmaster_${::hostname}":
       use                 => 'generic-service',
       check_command       => 'check_puppetmaster',
-      host_name           => $fqdn,
-      service_description => "check_puppetmaster_${hostname}",
+      host_name           => ${::fqdn},
+      service_description => "check_puppetmaster_${::hostname}",
       target              => '/etc/nagios3/conf.d/nagios_service.cfg',
       notify              => Service[$nagios::params::nagios_service],
     }
 
-    @@nagios_servicedependency {"check_puppetmaster_${hostname}":
-      host_name                     => "$fqdn",
-      service_description           => "check_ping_${hostname}",
-      dependent_host_name           => "$fqdn",
-      dependent_service_description => "check_puppetmaster_${hostname}",
-      execution_failure_criteria    => "n",
-      notification_failure_criteria => "w,u,c",
+    @@nagios_servicedependency {"check_puppetmaster_${::hostname}":
+      host_name                     => "${::fqdn}",
+      service_description           => "check_ping_${::hostname}",
+      dependent_host_name           => "${::fqdn}",
+      dependent_service_description => "check_puppetmaster_${::hostname}",
+      execution_failure_criteria    => 'n',
+      notification_failure_criteria => 'w,u,c',
       ensure                        => present,
       target                        => '/etc/nagios3/conf.d/nagios_servicedep.cfg',
     }
 
     if $ca == true {
-      @@nagios_service { "check_certs_${hostname}":
+      @@nagios_service { "check_certs_${::hostname}":
         use                 => 'generic-service',
         check_command       => 'check_nrpe_1arg!check_certs',
-        host_name           => $fqdn,
-        service_description => "check_certs_${hostname}",
+        host_name           => ${::fqdn},
+        service_description => "check_certs_${::hostname}",
         target              => '/etc/nagios3/conf.d/nagios_service.cfg',
         notify              => Service[$nagios::params::nagios_service],
       }
 
-      @@nagios_servicedependency {"check_certs_${hostname}":
-        host_name                     => "$fqdn",
-        service_description           => "check_ping_${hostname}",
-        dependent_host_name           => "$fqdn",
-        dependent_service_description => "check_certs_${hostname}",
-        execution_failure_criteria    => "n",
-        notification_failure_criteria => "w,u,c",
+      @@nagios_servicedependency {"check_certs_${::hostname}":
+        host_name                     => "${::fqdn}",
+        service_description           => "check_ping_${::hostname}",
+        dependent_host_name           => "${::fqdn}",
+        dependent_service_description => "check_certs_${::hostname}",
+        execution_failure_criteria    => 'n',
+        notification_failure_criteria => 'w,u,c',
         ensure                        => present,
         target                        => '/etc/nagios3/conf.d/nagios_servicedep.cfg',
       }

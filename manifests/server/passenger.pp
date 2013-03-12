@@ -1,5 +1,5 @@
 class puppet::server::passenger {
-  if $kernel != "Darwin" {
+  if $kernel != 'Darwin' {
     include puppet::passenger
   }
 }

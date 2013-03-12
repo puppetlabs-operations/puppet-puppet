@@ -3,11 +3,11 @@ class puppet::agent::monitor (
 ) {
 
   $ensure = $enable ? {
-    true    => "present",
-    default => "absent"
+    true    => 'present',
+    default => 'absent'
   }
 
-  if defined(Class["nagios"]) {
+  if defined(Class['nagios']) {
     include nagios::params
 
     @@nagios_service { "check_puppetd_${hostname}":
@@ -31,8 +31,8 @@ class puppet::agent::monitor (
       service_description           => "check_ping_${hostname}",
       dependent_host_name           => "$fqdn",
       dependent_service_description => "check_puppetd_${hostname}",
-      execution_failure_criteria    => "n",
-      notification_failure_criteria => "w,u,c",
+      execution_failure_criteria    => 'n',
+      notification_failure_criteria => 'w,u,c',
       ensure                        => present,
       target                        => '/etc/nagios3/conf.d/nagios_servicedep.cfg',
     }

@@ -10,12 +10,12 @@ class puppet::server::unicorn {
 
   include puppet::params
   include nginx::server
-  nginx::vhost { "puppetmaster":
+  nginx::vhost { 'puppetmaster':
     port     => 8140,
-    template => "puppet/vhost/nginx/unicorn.conf.erb",
+    template => 'puppet/vhost/nginx/unicorn.conf.erb',
   }
 
-  unicorn::app { "puppetmaster":
+  unicorn::app { 'puppetmaster':
     approot         => $::puppet::params::puppet_confdir,
     config_file     => "${::puppet::params::puppet_confdir}/unicorn.conf",
     pidfile         => "${puppet::params::puppet_rundir}/puppetmaster_unicorn.pid",
