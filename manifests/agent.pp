@@ -29,9 +29,9 @@
 #  }
 #
 class puppet::agent(
-  $server         = hiera('puppet::agent::server'),
-  $ca_server      = hiera('puppet::agent::server'),
-  $report_server  = hiera('puppet::agent::server'),
+  $server         = hiera('puppet::agent::server', 'puppet'),
+  $ca_server      = hiera('puppet::agent::server', 'puppet'),
+  $report_server  = hiera('puppet::agent::server', 'puppet'),
   $manage_service = undef,
   $method         = 'cron',
 ) {
