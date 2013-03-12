@@ -12,10 +12,9 @@
 #
 class puppet::passenger {
   include ruby::dev
-  include apache::ssl
+  include apache::mod::ssl
   include ::passenger
   include passenger::params
-  include ::rack
 
   file { ['/etc/puppet/rack', '/etc/puppet/rack/public', '/etc/puppet/rack/tmp']:
       owner  => 'puppet',
@@ -27,7 +26,7 @@ class puppet::passenger {
     owner  => 'puppet',
     group  => 'puppet',
     mode   => '0644',
-    source => 'puppet:///modules/puppet/config.ru',
+    source => 'puppet:///modules/puppet/config.ru.passenger',
   }
 
   apache::vhost{ 'puppetmaster':

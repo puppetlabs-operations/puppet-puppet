@@ -1,0 +1,8 @@
+$0 = "master"
+
+# if you want debugging:
+# ARGV << "--debug"
+
+ARGV << "--rack"
+require 'puppet/application/master'
+run Puppet::Application[:master].run
