@@ -1,4 +1,4 @@
-LoadModule passenger_module <%= scope.lookupvar('::passenger::params::gem_path') %>passenger-<%= scope.lookupvar('::passenger::params::passenger_version') %>/ext/apache2/mod_passenger.so
+LoadModule passenger_module <%= scope.lookupvar('::passenger::params::gem_path') %>/passenger-<%= scope.lookupvar('::passenger::params::passenger_version') %>/ext/apache2/mod_passenger.so
 PassengerRoot <%= scope.lookupvar('::passenger::params::gem_path') %>passenger-<%= scope.lookupvar('::passenger::params::passenger_version') %>
 PassengerRuby /usr/bin/ruby
 
