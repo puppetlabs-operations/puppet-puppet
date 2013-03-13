@@ -4,12 +4,16 @@
 #   - http://puppetlabs.com/blog/git-workflow-and-puppet-environments/
 modulepath = <%= modulepath %>
 manifest   = <%= manifest %>
+<% if ca -%>
 ca         = <%= ca %>
+<% end -%>
 
 <% if servertype == 'standalone' -%>
 bindaddress              = <%= bindaddress %>
 <% end -%>
+<% if config_version_cmd -%>
 config_version           = "<%= config_version_cmd %>"
+<% end -%>
 
 <% if @ssl_client_header -%>
 ssl_client_header        = <%= ssl_client_header %>
