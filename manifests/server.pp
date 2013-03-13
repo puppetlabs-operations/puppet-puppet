@@ -44,31 +44,38 @@ class puppet::server (
     $bindaddress        = '::',
     $enc                = '',
     $enc_exec           = '',
-    $monitor_server = hiera('puppet_server_monitor', 'true'),
+    $monitor_server     = hiera('puppet_server_monitor', 'true'),
+    $backup_server      = hiera('puppet_server_backup', 'true')
   ) {
 
   include puppet
   include puppet::params
 
   # ---
-  # The site.pp is set in the puppet.conf, remove site.pp here to avoid confusion
-  file { "${puppet::params::puppet_confdir}/manifests/site.pp": ensure => absent; }
+  # The site.pp is set in the puppet.conf, remove site.pp here to avoid confusion.
+  # Unless the manifest that was passed in is the default site.pp.
+  if ($manifest != "${puppet::params::puppet_confdir}/manifests/site.pp") {
+    file { "${puppet::params::puppet_confdir}/manifests/site.pp": ensure => absent; }
+  }
 
   # ---
   # Application-server specific SSL configuration
   case $servertype {
     "passenger": {
       include puppet::server::passenger
+      include puppet::server::standalone_off
       $ssl_client_header        = "SSL_CLIENT_S_DN"
       $ssl_client_verify_header = "SSL_CLIENT_VERIFY"
     }
     "unicorn": {
       include puppet::server::unicorn
+      include puppet::server::standalone_off
       $ssl_client_header        = "HTTP_X_CLIENT_DN"
       $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
     }
     "thin": {
       include puppet::server::thin
+      include puppet::server::standalone_off
       $ssl_client_header        = "HTTP_X_CLIENT_DN"
       $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
     }
@@ -98,8 +105,8 @@ class puppet::server (
   #
   # Use a real boolean after hiera 1.0 is out
   #
-  $backup_server = hiera('puppet_server_backup', 'true')
   if $backup_server == 'true' { include puppet::server::backup }
+  if $monitor_server == 'true' { include puppet::server::monitor }
 
   # ---
   # Used only for platforms that seperate the master and agent packages
@@ -131,50 +138,6 @@ class puppet::server (
           /^2.7/ => 'puppet:///modules/puppet/config.ru/99-run-2.7.rb',
           /^3.[0|1]/ => 'puppet:///modules/puppet/config.ru/99-run-3.0.rb',
         },
-      }
-    }
-  }
-
-  if $monitor_server == 'true' {
-    @@nagios_service { "check_puppetmaster_${hostname}":
-      use                 => 'generic-service',
-      check_command       => 'check_puppetmaster',
-      host_name           => $fqdn,
-      service_description => "check_puppetmaster_${hostname}",
-      target              => '/etc/nagios3/conf.d/nagios_service.cfg',
-      notify              => Service[$nagios::params::nagios_service],
-    }
-
-    @@nagios_servicedependency {"check_puppetmaster_${hostname}":
-      host_name                     => "$fqdn",
-      service_description           => "check_ping_${hostname}",
-      dependent_host_name           => "$fqdn",
-      dependent_service_description => "check_puppetmaster_${hostname}",
-      execution_failure_criteria    => "n",
-      notification_failure_criteria => "w,u,c",
-      ensure                        => present,
-      target                        => '/etc/nagios3/conf.d/nagios_servicedep.cfg',
-    }
-
-    if $ca == true {
-      @@nagios_service { "check_certs_${hostname}":
-        use                 => 'generic-service',
-        check_command       => 'check_nrpe_1arg!check_certs',
-        host_name           => $fqdn,
-        service_description => "check_certs_${hostname}",
-        target              => '/etc/nagios3/conf.d/nagios_service.cfg',
-        notify              => Service[$nagios::params::nagios_service],
-      }
-
-      @@nagios_servicedependency {"check_certs_${hostname}":
-        host_name                     => "$fqdn",
-        service_description           => "check_ping_${hostname}",
-        dependent_host_name           => "$fqdn",
-        dependent_service_description => "check_certs_${hostname}",
-        execution_failure_criteria    => "n",
-        notification_failure_criteria => "w,u,c",
-        ensure                        => present,
-        target                        => '/etc/nagios3/conf.d/nagios_servicedep.cfg',
       }
     }
   }
