@@ -1,4 +1,6 @@
-class puppet::agent::service {
+class puppet::agent::service (
+  $start_on_boot = true
+) {
   include puppet::params
   # ----
   # Puppet agent management
@@ -17,10 +19,10 @@ class puppet::agent::service {
   case $kernel {
     linux: {
       file { $puppet::params::agent_defaults:
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-        source => "puppet:///modules/puppet/${puppet::params::agent_defaults}",
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => template("puppet${puppet::params::agent_defaults}.erb"),
       }
     }
     darwin: {
