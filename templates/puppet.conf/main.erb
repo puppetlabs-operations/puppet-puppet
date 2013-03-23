@@ -9,12 +9,6 @@ vardir = <%= @puppet_vardir %>
 ssldir = <%= @puppet_ssldir %>
 rundir = <%= @puppet_rundir %>
 
-<% if @operatingsystem == "Ubuntu" -%>
-prerun_command  = /etc/puppet/etckeeper-commit-pre
-postrun_command = /etc/puppet/etckeeper-commit-post
-<% end -%>
-
 <% if report_format -%>
 report_serialization_format = <%= report_format %>
 <% end -%>
-
