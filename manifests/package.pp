@@ -12,5 +12,4 @@ class puppet::package($ensure = 'latest') {
     # Fixes a bug. #12813
     class { '::puppet::package::patches': }
   }
-
 }

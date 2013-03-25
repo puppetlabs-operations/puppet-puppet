@@ -92,7 +92,7 @@ class puppet::server (
   # Storeconfigs
   if $storeconfigs {
     class { "puppet::storeconfig":
-      backend    => $storeconfigs,
+      backend => $storeconfigs,
     }
   }
 
@@ -105,7 +105,7 @@ class puppet::server (
   #
   # Use a real boolean after hiera 1.0 is out
   #
-  if $backup_server == 'true' { include puppet::server::backup }
+  if $backup_server  == 'true' { include puppet::server::backup }
   if $monitor_server == 'true' { include puppet::server::monitor }
 
   # ---
@@ -118,27 +118,5 @@ class puppet::server (
     order   => '05',
     target  => $puppet::params::puppet_conf,
     content => template("puppet/puppet.conf/master.erb");
-  }
-
-  # ---
-  # If the server type is rack based, configure the config.ru
-  case $servertype {
-    'unicorn', 'thin': {
-      concat { "${::puppet::params::puppet_confdir}/config.ru":
-        owner  => 'puppet',
-        group  => 'puppet',
-        mode   => '0644',
-        notify => Nginx::Vhost['puppetmaster'],
-      }
-
-      concat::fragment { "run-puppet-master":
-        order  => '99',
-        target => "${::puppet::params::puppet_confdir}/config.ru",
-        source => $puppetversion ? {
-          /^2.7/ => 'puppet:///modules/puppet/config.ru/99-run-2.7.rb',
-          /^3.[0|1]/ => 'puppet:///modules/puppet/config.ru/99-run-3.0.rb',
-        },
-      }
-    }
   }
 }

@@ -1,6 +1,7 @@
 class puppet::server::thin {
 
   include puppet::params
+  include puppet::server::rack
 
   $servers = $::processorcount
   nginx::vhost { "puppetmaster":
