@@ -62,5 +62,4 @@ class puppet::agent(
     target  => $puppet::params::puppet_conf,
     content => template("puppet/puppet.conf/agent.erb");
   }
-
 }
