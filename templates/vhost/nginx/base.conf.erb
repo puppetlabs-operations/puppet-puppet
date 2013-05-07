@@ -7,7 +7,7 @@ server {
     listen   [::]:8140 default ipv6only=on;
 <% end -%>
 
-  client_max_body_size 8m;  # Increase max body size for dashboard reports.
+  client_max_body_size 16m;  # Increase max body size for dashboard reports.
 
   proxy_connect_timeout 300s; # 5 minutes a piece, as puppet runs can take a while.
   proxy_read_timeout    300s; # See http://wiki.nginx.org/NginxHttpProxyModule#proxy_read_timeout
