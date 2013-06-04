@@ -19,7 +19,7 @@ class puppet::server::rack {
     target => "${::puppet::params::puppet_confdir}/config.ru",
     source => $puppetversion ? {
       /^2.7/ => 'puppet:///modules/puppet/config.ru/99-run-2.7.rb',
-      /^3.[0|1]/ => 'puppet:///modules/puppet/config.ru/99-run-3.0.rb',
+      /^3.[0-2]/ => 'puppet:///modules/puppet/config.ru/99-run-3.0.rb',
     },
   }
 }
