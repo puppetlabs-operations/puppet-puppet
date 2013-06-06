@@ -23,6 +23,32 @@ class puppet::storeconfig (
 
   #$puppet::storeconfigs = 'true' # called from puppet::server only if storeconfigs is on
 
+  Ini_setting {
+    ensure  => 'present',
+    section => 'master',
+    path    => $puppet::params::puppet_conf,
+  }
+
+  if $backend != '' {
+    ini_setting {
+      'storeconfigs':
+        setting => 'storeconfigs',
+        value   => 'true';
+      'thin_storeconfigs':
+        setting => 'thin_storeconfigs',
+        value   => 'true';
+    }
+  } else {
+    ini_setting {
+      'storeconfigs':
+        setting => 'storeconfigs',
+        value   => 'false';
+      'thin_storeconfigs':
+        ensure  => 'absent',
+        setting => 'thin_storeconfigs';
+    }
+  }
+
   case $backend {
     "mysql","postgresql","sqlite": {
       package { "gem-activerecord":
@@ -60,11 +86,5 @@ class puppet::storeconfig (
       class {'::puppet::storeconfig::puppetdb': }
     }
     default: { err("Target storeconfigs backend \"$backend\" not implemented") }
-  }
-
-  concat::fragment { 'puppet.conf-master-storeconfig':
-    order   => '06',
-    target  => $puppet::params::puppet_conf,
-    content => template("puppet/puppet.conf/master-storeconfigs.erb");
   }
 }

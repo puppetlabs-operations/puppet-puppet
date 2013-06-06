@@ -50,6 +50,7 @@ class puppet::server (
 
   include puppet
   include puppet::params
+  include puppet::server::config
 
   # ---
   # The site.pp is set in the puppet.conf, remove site.pp here to avoid confusion.
@@ -112,11 +113,5 @@ class puppet::server (
   # Used only for platforms that seperate the master and agent packages
   if $puppet::params::master_package != '' {
     package { $puppet::params::master_package: ensure => present; }
-  }
-
-  concat::fragment { 'puppet.conf-master':
-    order   => '05',
-    target  => $puppet::params::puppet_conf,
-    content => template("puppet/puppet.conf/master.erb");
   }
 }
