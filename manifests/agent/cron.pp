@@ -1,9 +1,9 @@
-class puppet::agent::cron($interval = 3, $manage_service = false) {
+class puppet::agent::cron($manage_service = false) {
   include puppet::params
 
   cron { "puppet agent":
     command => "${puppet::params::puppet_cmd} agent --confdir ${puppet::params::puppet_confdir} --onetime --no-daemonize >/dev/null",
-    minute  => interval($interval, 60),
+    minute  => fqdn_rand( 60 ),
   }
 
   class { "::puppet::agent::monitor": enable => false; }
