@@ -1,5 +1,5 @@
 class puppet::server::monitor (
-  $ca = true 
+  $ca = true
 ) {
   if $ca == true {
     @@nagios_service { "check_puppetmaster_${::hostname}":
