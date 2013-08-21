@@ -10,7 +10,7 @@ class puppet::agent::monitor (
   if defined(Class["nagios"]) {
     include nagios::params
 
-    @@nagios_service { "check_puppetd_${hostname}":
+    @@nagios_service { "check_puppetd_${fqdn}":
       ensure         => $ensure,
       use            => 'generic-service',
       host_name      => "$fqdn",
@@ -21,16 +21,16 @@ class puppet::agent::monitor (
           default => 'check_nrpe!check_proc!1:1 puppet',
         },
       },
-      service_description => "check_puppetd_${hostname}",
+      service_description => "check_puppetd_${fqdn}",
       target              => '/etc/nagios3/conf.d/nagios_service.cfg',
       notify              => Service[$::nagios::params::nagios_service],
     }
 
-    @@nagios_servicedependency {"check_puppetd_${hostname}":
+    @@nagios_servicedependency {"check_puppetd_${fqdn}":
       host_name                     => "$fqdn",
-      service_description           => "check_ping_${hostname}",
+      service_description           => "check_ping_${fqdn}",
       dependent_host_name           => "$fqdn",
-      dependent_service_description => "check_puppetd_${hostname}",
+      dependent_service_description => "check_puppetd_${fqdn}",
       execution_failure_criteria    => "n",
       notification_failure_criteria => "w,u,c",
       ensure                        => present,
