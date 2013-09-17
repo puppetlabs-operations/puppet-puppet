@@ -59,7 +59,7 @@ class puppet::agent(
   # ----
   # puppet.conf management
   concat::fragment { 'puppet.conf-agent':
-    order   => '00',
+    order   => '03',
     target  => $puppet::params::puppet_conf,
     content => template("puppet/puppet.conf/agent.erb");
   }

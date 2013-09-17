@@ -12,6 +12,14 @@ class puppet {
   include concat::setup
 
   # ----
+  # puppet.conf management
+  concat::fragment { 'puppet.conf-agent':
+    order   => '00',
+    target  => $puppet::params::puppet_conf,
+    content => template("puppet/puppet.conf/main.erb");
+  }
+
+  # ----
   # collect the puppet.conf fragments
   concat { $puppet::params::puppet_conf:
     mode => '0644',
