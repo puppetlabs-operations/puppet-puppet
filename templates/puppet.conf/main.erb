@@ -4,10 +4,10 @@ ca_server     = <%= @ca_server %>
 report_server = <%= @report_server %>
 pluginsync    = true
 
-logdir = <%= @puppet::params::puppet_logdir %>
-vardir = <%= @puppet::params::puppet_vardir %>
-ssldir = <%= @puppet::params::puppet_ssldir %>
-rundir = <%= @puppet::params::puppet_rundir %>
+logdir = <%= @puppet_logdir %>
+vardir = <%= @puppet_vardir %>
+ssldir = <%= @puppet_ssldir %>
+rundir = <%= @puppet_rundir %>
 
 <% if @operatingsystem == "Ubuntu" -%>
 prerun_command  = /etc/puppet/etckeeper-commit-pre
