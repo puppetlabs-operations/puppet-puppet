@@ -32,9 +32,9 @@
 #  }
 #
 class puppet::agent(
-  $server         = hiera('puppet::agent::server', 'puppet'),
-  $ca_server      = hiera('puppet::agent::server', 'puppet'),
-  $report_server  = hiera('puppet::agent::server', 'puppet'),
+  $server         = 'puppet',
+  $ca_server      = 'puppet',
+  $report_server  = 'puppet',
   $manage_repos   = true,
   $manage_service = undef,
   $method         = 'cron',
@@ -49,6 +49,7 @@ class puppet::agent(
   case $method {
     cron:    { class { 'puppet::agent::cron': manage_service => $manage_service } }
     service: { include puppet::agent::service }
+    none:    { }
     default: {
       notify { "Agent run method \"${method}\" is not supported by ${module_name}, defaulting to cron": loglevel => warning }
       class { 'puppet::agent::cron': manage_service => $manage_service }
@@ -58,7 +59,7 @@ class puppet::agent(
   # ----
   # puppet.conf management
   concat::fragment { 'puppet.conf-agent':
-    order   => '00',
+    order   => '03',
     target  => $puppet::params::puppet_conf,
     content => template("puppet/puppet.conf/agent.erb");
   }

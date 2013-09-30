@@ -2,39 +2,39 @@
 # For the implementation of dynamic environments, see the following:
 #   - http://hunnur.com/blog/2010/10/dynamic-git-branch-puppet-environments/
 #   - http://puppetlabs.com/blog/git-workflow-and-puppet-environments/
-modulepath = <%= modulepath %>
-manifest   = <%= manifest %>
-<% if ca -%>
-ca         = <%= ca %>
+modulepath = <%= @modulepath %>
+manifest   = <%= @manifest %>
+<% if @ca -%>
+ca         = <%= @ca %>
 <% end -%>
 
-<% if servertype == 'standalone' -%>
-bindaddress              = <%= bindaddress %>
+<% if @servertype == 'standalone' -%>
+bindaddress              = <%= @bindaddress %>
 <% end -%>
-<% if config_version_cmd -%>
-config_version           = "<%= config_version_cmd %>"
+<% if @config_version_cmd -%>
+config_version           = "<%= @config_version_cmd %>"
 <% end -%>
 
 <% if @ssl_client_header -%>
-ssl_client_header        = <%= ssl_client_header %>
-ssl_client_verify_header = <%= ssl_client_verify_header %>
+ssl_client_header        = <%= @ssl_client_header %>
+ssl_client_verify_header = <%= @ssl_client_verify_header %>
 <% end -%>
 
 <% if @report -%>
-report               = <%= report %>
-reporturl            = <%= reporturl %>
+report               = <%= @report %>
+reporturl            = <%= @reporturl %>
 reporturl_ssl_verify = true
 reporturl_ssl_cert   = /etc/ssl/certs/ca-certificates.crt
 <% end -%>
-<% if reports.is_a? Array and reports.size > 0 -%>
-reports              = <%= reports.join(", ") %>
+<% if @reports.is_a? Array and @reports.size > 0 -%>
+reports              = <%= @reports.join(", ") %>
 <% else -%>
-reports              = <%= reports %>
+reports              = <%= @reports %>
 <% end -%>
 
 <% if @enc == 'exec' -%>
 node_terminus = exec
-external_nodes = <%= enc_exec %>
+external_nodes = <%= @enc_exec %>
 <% end -%>
 
 

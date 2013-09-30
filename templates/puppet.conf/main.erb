@@ -1,0 +1,16 @@
+[main]
+server        = <%= @server %>
+ca_server     = <%= @ca_server %>
+report_server = <%= @report_server %>
+pluginsync    = true
+
+logdir = <%= @puppet_logdir %>
+vardir = <%= @puppet_vardir %>
+ssldir = <%= @puppet_ssldir %>
+rundir = <%= @puppet_rundir %>
+
+<% if @operatingsystem == "Ubuntu" -%>
+prerun_command  = /etc/puppet/etckeeper-commit-pre
+postrun_command = /etc/puppet/etckeeper-commit-post
+<% end -%>
+
