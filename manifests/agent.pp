@@ -32,12 +32,13 @@
 #  }
 #
 class puppet::agent(
-  $server         = hiera('puppet::agent::server', 'puppet'),
-  $ca_server      = hiera('puppet::agent::server', 'puppet'),
-  $report_server  = hiera('puppet::agent::server', 'puppet'),
-  $manage_repos   = true,
-  $manage_service = undef,
-  $method         = 'cron',
+  $server                      = hiera('puppet::agent::server', 'puppet'),
+  $ca_server                   = hiera('puppet::agent::server', 'puppet'),
+  $report_server               = hiera('puppet::agent::server', 'puppet'),
+  $report_serialization_format = hiera('puppet::reports::format', undef ),
+  $manage_repos                = true,
+  $manage_service              = undef,
+  $method                      = 'cron',
 ) {
 
   include puppet

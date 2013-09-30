@@ -3,6 +3,9 @@ server        = <%= server %>
 ca_server     = <%= ca_server %>
 report_server = <%= report_server %>
 pluginsync    = true
+<% if report_serialization_format -%>
+report_serialization_format = <%= report_serialization_format %>
+<% end -%>
 
 logdir = <%= scope.lookupvar('puppet::params::puppet_logdir') %>
 vardir = <%= scope.lookupvar('puppet::params::puppet_vardir') %>
