@@ -5,6 +5,20 @@ class puppet::storeconfig::puppetdb(
 ) {
   include puppet::params
 
+  # ---
+  # PupeptDB backend settings
+  Ini_setting {
+    ensure  => 'present',
+    section => 'master',
+    path    => $puppet::params::puppet_conf,
+  }
+
+  ini_setting {
+    'storeconfigs_backend':
+      setting => 'storeconfigs_backend',
+      value   => 'puppetdb',
+  }
+
   file { "${::puppet::params::puppet_confdir}/puppetdb.conf":
     ensure  => present,
     mode    => 0644,

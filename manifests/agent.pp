@@ -41,6 +41,7 @@ class puppet::agent(
 ) {
 
   include puppet
+  include puppet::agent::config
 
   if $manage_repos {
     require puppet::package
@@ -53,13 +54,5 @@ class puppet::agent(
       notify { "Agent run method \"${method}\" is not supported by ${module_name}, defaulting to cron": loglevel => warning }
       class { 'puppet::agent::cron': manage_service => $manage_service }
     }
-  }
-
-  # ----
-  # puppet.conf management
-  concat::fragment { 'puppet.conf-agent':
-    order   => '00',
-    target  => $puppet::params::puppet_conf,
-    content => template("puppet/puppet.conf/agent.erb");
   }
 }

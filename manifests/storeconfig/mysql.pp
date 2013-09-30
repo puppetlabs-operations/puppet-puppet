@@ -6,6 +6,35 @@ class puppet::storeconfig::mysql (
   include puppet::params
 
   # ---
+  # MySQL backend settings
+  Ini_setting {
+    ensure  => 'present',
+    section => 'master',
+    path    => $puppet::params::puppet_conf,
+  }
+
+  ini_setting {
+    'dbadapter':
+      setting => 'dbadapter',
+      value   => 'mysql';
+    'dbmigrate':
+      setting => 'dbmigrate',
+      value   => 'true';
+    'dbuser':
+      setting => 'dbuser',
+      value   => $dbuser;
+    'dbpassword':
+      setting => 'dbpassword',
+      value   => $dbpassword;
+    'dbserver':
+      setting => 'dbserver',
+      value   => $puppet::storeconfig::dbserver;
+    'dbsocket':
+      setting => 'dbsocket',
+      value   => $puppet::storeconfig::dbsocket;
+  }
+
+  # ---
   # Install the mysql gem
   package { "gem-mysql":
     name => $operatingsystem ? {
@@ -38,6 +67,4 @@ class puppet::storeconfig::mysql (
     privileges => [all],
     require    => [ Database['puppet'], Database_user['puppet@localhost'] ],
   }
-
-
 }
