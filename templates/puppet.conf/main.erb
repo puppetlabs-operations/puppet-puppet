@@ -14,3 +14,7 @@ prerun_command  = /etc/puppet/etckeeper-commit-pre
 postrun_command = /etc/puppet/etckeeper-commit-post
 <% end -%>
 
+<% if report_format -%>
+report_serialization_format = <%= report_format %>
+<% end -%>
+

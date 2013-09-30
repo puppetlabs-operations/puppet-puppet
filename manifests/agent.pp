@@ -35,6 +35,7 @@ class puppet::agent(
   $server         = 'puppet',
   $ca_server      = 'puppet',
   $report_server  = 'puppet',
+  $report_format  = undef,
   $manage_repos   = true,
   $manage_service = undef,
   $method         = 'cron',
