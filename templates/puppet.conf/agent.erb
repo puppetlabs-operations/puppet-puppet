@@ -1,3 +1,22 @@
+[main]
+server        = <%= server %>
+ca_server     = <%= ca_server %>
+report_server = <%= report_server %>
+pluginsync    = true
+<% if report_serialization_format -%>
+report_serialization_format = <%= report_serialization_format %>
+<% end -%>
+
+logdir = <%= scope.lookupvar('puppet::params::puppet_logdir') %>
+vardir = <%= scope.lookupvar('puppet::params::puppet_vardir') %>
+ssldir = <%= scope.lookupvar('puppet::params::puppet_ssldir') %>
+rundir = <%= scope.lookupvar('puppet::params::puppet_rundir') %>
+
+<% if operatingsystem == "Ubuntu" -%>
+prerun_command  = /etc/puppet/etckeeper-commit-pre
+postrun_command = /etc/puppet/etckeeper-commit-post
+<% end -%>
+
 [agent]
 certname      = <%= @clientcert %>
 report        = true
