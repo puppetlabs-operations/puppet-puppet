@@ -32,22 +32,22 @@
 #  }
 #
 class puppet::server (
-    $modulepath         = '$confdir/modules/site:$confdir/env/$environment/dist',
-    $manifest           = '$confdir/modules/site/site.pp',
-    $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
-    $storeconfigs       = undef,
-    $report             = 'true',
-    $reports            = ["store", "https"],
-    $reporturl          = "http://$fqdn/reports",
-    $servertype         = "unicorn",
-    $ca                 = false,
-    $bindaddress        = '::',
-    $enc                = '',
-    $enc_exec           = '',
-    $monitor_server     = hiera('puppet_server_monitor', 'true'),
-    $backup_server      = hiera('puppet_server_backup', 'true')
-    $ensure             = 'present',
-  ) {
+  $modulepath         = '$confdir/modules/site:$confdir/env/$environment/dist',
+  $manifest           = '$confdir/modules/site/site.pp',
+  $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
+  $storeconfigs       = undef,
+  $report             = 'true',
+  $reports            = ["store", "https"],
+  $reporturl          = "http://$fqdn/reports",
+  $servertype         = "unicorn",
+  $ca                 = false,
+  $bindaddress        = '::',
+  $enc                = '',
+  $enc_exec           = '',
+  $monitor_server     = hiera('puppet_server_monitor', 'true'),
+  $backup_server      = hiera('puppet_server_backup', 'true')
+  $ensure             = 'present',
+) {
 
   include puppet
   include puppet::params
