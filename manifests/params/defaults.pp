@@ -80,17 +80,4 @@ class puppet::params::defaults {
     }
     default: { fail("Sorry, $operatingsystem is not supported") }
   }
-
-  # Behold, the list of platforms that have horrible package mangement!
-  if $kernel == 'Darwin' or $kernel == 'SunOS' or $kernel == 'FreeBSD' or $operatingsystem == 'SLES' {
-    $update_puppet = undef
-  }
-  else {
-    # FIXME
-    # http://projects.puppetlabs.com/issues/10590
-    # err: Could not retrieve catalog from remote server: Error 400 on SERVER: can't clone TrueClass
-    #
-    # Use a real boolean after hiera 1.0 is out
-    $update_puppet = 'true'
-  }
 }

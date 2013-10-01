@@ -46,6 +46,7 @@ class puppet::server (
     $enc_exec           = '',
     $monitor_server     = hiera('puppet_server_monitor', 'true'),
     $backup_server      = hiera('puppet_server_backup', 'true')
+    $ensure             = 'present',
   ) {
 
   include puppet
@@ -111,7 +112,7 @@ class puppet::server (
   # ---
   # Used only for platforms that seperate the master and agent packages
   if $puppet::params::master_package != '' {
-    package { $puppet::params::master_package: ensure => present; }
+    package { $puppet::params::master_package: ensure => $ensure; }
   }
 
   concat::fragment { 'puppet.conf-master':
