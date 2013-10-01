@@ -4,6 +4,7 @@ class puppet::params::defaults {
   case $operatingsystem {
     'debian', 'ubuntu': {
       $puppet_cmd         = '/usr/bin/puppet'
+      $agent_package      = 'puppet'
       $agent_service      = 'puppet'
       $agent_defaults     = '/etc/default/puppet'
       $master_package     = 'puppetmaster'
@@ -17,8 +18,9 @@ class puppet::params::defaults {
     }
     'freebsd': {
       $puppet_cmd         = '/usr/local/bin/puppet'
+      $agent_package      = 'puppet'
       $agent_service      = 'puppet'
-      $master_package     = ''
+      $master_package     = 'puppet'
       $master_service     = 'puppetmaster'
       $puppet_conf        = '/usr/local/etc/puppet/puppet.conf'
       $puppet_confdir     = '/usr/local/etc/puppet'
@@ -29,6 +31,7 @@ class puppet::params::defaults {
     }
     'darwin': {
       $puppet_cmd     = '/opt/local/bin/puppet'
+      $agent_package  = 'puppet'
       $agent_service  = 'com.puppetlabs.puppet'
       $master_package = ''
       $master_service = ''
@@ -41,6 +44,7 @@ class puppet::params::defaults {
     }
    'centos', 'redhat', 'fedora', 'sles': {
       $puppet_cmd         = '/usr/bin/puppet'
+      $agent_package      = 'puppet'
       $agent_service      = 'puppet'
       $agent_defaults     = '/etc/sysconfig/puppet'
       $master_package     = 'puppet-server'
@@ -54,6 +58,7 @@ class puppet::params::defaults {
     }
     'gentoo': {
       $puppet_cmd         = '/usr/bin/puppet'
+      $agent_package      = 'app-admin/puppet'
       $agent_service      = 'puppet'
       $master_package     = 'app-admin/puppet'
       $master_service     = 'puppetmaster'

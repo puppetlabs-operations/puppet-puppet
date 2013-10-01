@@ -111,7 +111,7 @@ class puppet::server (
 
   # ---
   # Used only for platforms that seperate the master and agent packages
-  if $puppet::params::master_package != '' {
+  if $puppet::params::master_package != $puppet::params::agent_package {
     package { $puppet::params::master_package: ensure => $ensure; }
   }
 
