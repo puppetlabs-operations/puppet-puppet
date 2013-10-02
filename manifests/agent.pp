@@ -40,7 +40,7 @@ class puppet::agent(
   $manage_service = undef,
   $method         = 'cron',
   $ensure         = 'present',
-) {
+) inherits puppet::params {
 
   include puppet
 
@@ -56,6 +56,14 @@ class puppet::agent(
       notify { "Agent run method \"${method}\" is not supported by ${module_name}, defaulting to cron": loglevel => warning }
       class { 'puppet::agent::cron': manage_service => $manage_service }
     }
+  }
+
+  # ----
+  # puppet.conf management
+  concat::fragment { 'puppet.conf-main':
+    order   => '00',
+    target  => $puppet::params::puppet_conf,
+    content => template("puppet/puppet.conf/main.erb");
   }
 
   # ----
