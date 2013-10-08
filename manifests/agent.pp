@@ -39,12 +39,13 @@ class puppet::agent(
   $manage_repos   = true,
   $manage_service = undef,
   $method         = 'cron',
+  $ensure         = 'present',
 ) {
 
   include puppet
 
   if $manage_repos {
-    require puppet::package
+    include puppet::package
   }
 
   case $method {

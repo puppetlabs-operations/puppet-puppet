@@ -32,21 +32,22 @@
 #  }
 #
 class puppet::server (
-    $modulepath         = '$confdir/modules/site:$confdir/env/$environment/dist',
-    $manifest           = '$confdir/modules/site/site.pp',
-    $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
-    $storeconfigs       = undef,
-    $report             = 'true',
-    $reports            = ["store", "https"],
-    $reporturl          = "http://$fqdn/reports",
-    $servertype         = "unicorn",
-    $ca                 = false,
-    $bindaddress        = '::',
-    $enc                = '',
-    $enc_exec           = '',
-    $monitor_server     = hiera('puppet_server_monitor', 'true'),
-    $backup_server      = hiera('puppet_server_backup', 'true')
-  ) {
+  $modulepath         = '$confdir/modules/site:$confdir/env/$environment/dist',
+  $manifest           = '$confdir/modules/site/site.pp',
+  $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
+  $storeconfigs       = undef,
+  $report             = 'true',
+  $reports            = ["store", "https"],
+  $reporturl          = "http://$fqdn/reports",
+  $servertype         = "unicorn",
+  $ca                 = false,
+  $bindaddress        = '::',
+  $enc                = '',
+  $enc_exec           = '',
+  $monitor_server     = hiera('puppet_server_monitor', 'true'),
+  $backup_server      = hiera('puppet_server_backup', 'true')
+  $ensure             = 'present',
+) {
 
   include puppet
   include puppet::params
@@ -110,8 +111,8 @@ class puppet::server (
 
   # ---
   # Used only for platforms that seperate the master and agent packages
-  if $puppet::params::master_package != '' {
-    package { $puppet::params::master_package: ensure => present; }
+  if $puppet::params::master_package != $puppet::params::agent_package {
+    package { $puppet::params::master_package: ensure => $ensure; }
   }
 
   concat::fragment { 'puppet.conf-master':
