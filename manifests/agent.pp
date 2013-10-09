@@ -25,7 +25,7 @@
 #   Default: false
 # [*environment*]
 #   What environment the agent should be part of.
-#   Default: production
+#   Default: $::environment
 #
 # == Example:
 #
@@ -44,7 +44,7 @@ class puppet::agent(
   $method          = 'cron',
   $ensure          = 'present',
   $monitor_service = false,
-  $environment     = 'production',
+  $environment     = "$::environment",
 ) {
 
   include puppet
