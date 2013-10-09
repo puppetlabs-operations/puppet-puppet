@@ -56,12 +56,22 @@ class puppet::agent(
   class { '::puppet::agent::monitor': enable => $monitor_service }
 
   case $method {
-    cron:    { include puppet::agent::cron }
-    service: { include puppet::agent::service }
-    none:    { }
+    cron: {
+      include puppet::agent::cron
+      class { 'puppet::agent::service': enable => false }
+    }
+    service: {
+      include puppet::agent::service
+      class { 'puppet::agent::cron': enable => false }
+    }
+    none: {
+      class { 'puppet::agent::service': enable => false }
+      class { 'puppet::agent::cron': enable => false }
+    }
     default: {
       notify { "Agent run method \"${method}\" is not supported by ${module_name}, defaulting to cron": loglevel => warning }
       include puppet::agent::cron
+      class { 'puppet::agent::service': enable => false }
     }
   }
 
