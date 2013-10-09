@@ -23,11 +23,13 @@ class puppet::agent::service (
   # Special things for special kernels
   case $kernel {
     linux: {
-      file { $puppet::params::agent_defaults:
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-        source => template("puppet:///modules/puppet/${puppet::params::agent_defaults}.erb"),
+      if $puppet::params::agent_service_conf {
+        file { "puppet_agent_service_conf":
+          mode   => '0644',
+          owner  => 'root',
+          group  => 'root',
+          source => template("puppet:///modules/puppet/agent_service.erb"),
+        }
       }
     }
     darwin: {
