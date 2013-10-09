@@ -23,10 +23,11 @@ something that scales a bit more.
 
     class service::puppet::master($servertype, $ca = false) {
 
-      $modulepath = hiera_array('puppet_modulepath')
-
       class { "::puppet::server":
-        modulepath   => inline_template("<%= modulepath.join(':') %>"),
+        modulepath   => [
+          '$confdir/modules/site',
+          '$confdir/env/$environment/dist',
+        ],
         storeconfigs => "puppetdb",
         reporturl    => "https://my.puppet.dashboard/reports",
         servertype   => 'unicorn',

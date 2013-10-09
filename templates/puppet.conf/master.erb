@@ -2,7 +2,7 @@
 # For the implementation of dynamic environments, see the following:
 #   - http://hunnur.com/blog/2010/10/dynamic-git-branch-puppet-environments/
 #   - http://puppetlabs.com/blog/git-workflow-and-puppet-environments/
-modulepath = <%= @modulepath %>
+modulepath = <%= @modulepath.join(":") %>
 manifest   = <%= @manifest %>
 <% if @ca -%>
 ca         = <%= @ca %>
