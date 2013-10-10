@@ -12,7 +12,7 @@ class puppet::server::config {
   ini_setting {
     'modulepath':
       setting => 'modulepath',
-      value   => $puppet::server::modulepath;
+      value   => join($puppet::server::modulepath, ':');
     'manifest':
       setting => 'manifest',
       value   => $puppet::server::manifest;
