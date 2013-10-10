@@ -13,7 +13,5 @@ class puppet (
   $ssldir = $puppet::params::puppet_ssldir,
   $rundir = $puppet::params::puppet_rundir,
 ) inherits puppet::params {
-  include puppet::params
-  include concat::setup
 
 }

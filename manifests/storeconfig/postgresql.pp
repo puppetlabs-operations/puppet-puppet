@@ -1,7 +1,7 @@
 class puppet::storeconfig::postgresql (
-    $dbuser,
-    $dbpassword
-  ){
+  $dbuser,
+  $dbpassword
+) {
 
   include puppet::params
 
