@@ -49,10 +49,7 @@ class puppet::agent(
 
   include puppet
   include puppet::agent::config
-
-  if $manage_repos {
-    include puppet::package
-  }
+  include puppet::package
 
   class { '::puppet::agent::monitor': enable => $monitor_service }
 
