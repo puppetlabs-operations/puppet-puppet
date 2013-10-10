@@ -47,10 +47,9 @@ class puppet::server (
   $monitor_server     = hiera('puppet_server_monitor', 'true'),
   $backup_server      = hiera('puppet_server_backup', 'true'),
   $ensure             = 'present',
-) {
+) inherits puppet::params {
 
   include puppet
-  include puppet::params
   include puppet::server::config
 
   # ---

@@ -45,7 +45,7 @@ class puppet::agent(
   $ensure          = 'present',
   $monitor_service = false,
   $environment     = "$::environment",
-) {
+) inherits puppet::params {
 
   include puppet
   include puppet::agent::config
