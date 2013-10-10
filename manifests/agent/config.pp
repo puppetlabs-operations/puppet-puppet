@@ -25,6 +25,12 @@ class puppet::agent::config {
     value   => $puppet::agent::report_server,
   }
 
+  ini_setting { 'report_format':
+    section => 'main',
+    setting => 'report_format',
+    value   => $puppet::agent::report_format,
+  }
+
   ini_setting { 'pluginsync':
     section => 'main',
     setting => 'pluginsync',
