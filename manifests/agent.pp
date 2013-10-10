@@ -48,6 +48,7 @@ class puppet::agent(
 ) {
 
   include puppet
+  include puppet::agent::config
 
   if $manage_repos {
     include puppet::package
@@ -73,13 +74,5 @@ class puppet::agent(
       include puppet::agent::cron
       class { 'puppet::agent::service': enable => false }
     }
-  }
-
-  # ----
-  # puppet.conf management
-  concat::fragment { 'puppet.conf-agent':
-    order   => '03',
-    target  => $puppet::params::puppet_conf,
-    content => template("puppet/puppet.conf/agent.erb");
   }
 }
