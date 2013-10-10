@@ -77,7 +77,7 @@ class puppet::server::config {
     if is_array($puppet::server::reports) {
       ini_setting { 'reports':
         setting => 'reports',
-        value   => join($puppet::server::reports, ","),
+        value   => join($puppet::server::reports, ", "),
       }
     } else {
       ini_setting { 'reports':

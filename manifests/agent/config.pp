@@ -4,7 +4,6 @@ class puppet::agent::config {
   Ini_setting {
     path    => $puppet::params::puppet_conf,
     ensure  => 'present',
-    #require => File[$puppet::params::puppet_conf],
   }
 
   ini_setting { 'server':

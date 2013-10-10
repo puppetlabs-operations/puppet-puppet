@@ -45,7 +45,7 @@ class puppet::server (
   $enc                = '',
   $enc_exec           = '',
   $monitor_server     = hiera('puppet_server_monitor', 'true'),
-  $backup_server      = hiera('puppet_server_backup', 'true')
+  $backup_server      = hiera('puppet_server_backup', 'true'),
   $ensure             = 'present',
 ) {
 
