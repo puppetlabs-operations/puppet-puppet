@@ -1,3 +1,15 @@
+<% if osfamily == 'Debian' -%>
+# Only used on debian. Defaults for puppet - sourced by /etc/init.d/puppet
+
+# Start puppet on boot?
+<% if enable -%>
+START=yes
+<% else -%>
+START=no
+<% end -%>
+<% elsif osfamily == 'RedHat' or osfamily == 'Suse' -%>
+# Startup options
+DAEMON_OPTS=""
 # The puppetmaster server
 #PUPPET_SERVER=puppet
 
@@ -9,4 +21,4 @@
 
 # You may specify other parameters to the puppet client here
 #PUPPET_EXTRA_OPTS=--waitforcert=500
-
+<% end -%>

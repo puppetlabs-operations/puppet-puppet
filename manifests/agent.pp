@@ -15,13 +15,17 @@
 # [*manage_repos*]
 #   Whether to manage Puppet Labs APT or YUM package repos.
 #   Default: true
-# [*manage_service*]
-#   Whether to manage the puppet agent service when using the cron run method.
-#   Default: undef
 # [*method*]
 #   The mechanism for performing puppet runs.
 #   Supported methods: [cron, service]
 #   Default: cron
+# [*monitor_service*]
+#   Whether or not to monitor the puppet service.
+#   Should not be mixed when method is cron.
+#   Default: false
+# [*environment*]
+#   What environment the agent should be part of.
+#   Default: $::environment
 #
 # == Example:
 #
@@ -32,14 +36,15 @@
 #  }
 #
 class puppet::agent(
-  $server         = 'puppet',
-  $ca_server      = 'puppet',
-  $report_server  = 'puppet',
-  $report_format  = undef,
-  $manage_repos   = true,
-  $manage_service = undef,
-  $method         = 'cron',
-  $ensure         = 'present',
+  $server          = 'puppet',
+  $ca_server       = 'puppet',
+  $report_server   = 'puppet',
+  $report_format   = undef,
+  $manage_repos    = true,
+  $method          = 'cron',
+  $ensure          = 'present',
+  $monitor_service = false,
+  $environment     = "$::environment",
 ) {
 
   include puppet
@@ -48,13 +53,25 @@ class puppet::agent(
     include puppet::package
   }
 
+  class { '::puppet::agent::monitor': enable => $monitor_service }
+
   case $method {
-    cron:    { class { 'puppet::agent::cron': manage_service => $manage_service } }
-    service: { include puppet::agent::service }
-    none:    { }
+    cron: {
+      include puppet::agent::cron
+      class { 'puppet::agent::service': enable => false }
+    }
+    service: {
+      include puppet::agent::service
+      class { 'puppet::agent::cron': enable => false }
+    }
+    none: {
+      class { 'puppet::agent::service': enable => false }
+      class { 'puppet::agent::cron': enable => false }
+    }
     default: {
       notify { "Agent run method \"${method}\" is not supported by ${module_name}, defaulting to cron": loglevel => warning }
-      class { 'puppet::agent::cron': manage_service => $manage_service }
+      include puppet::agent::cron
+      class { 'puppet::agent::service': enable => false }
     }
   }
 

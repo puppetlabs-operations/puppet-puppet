@@ -1,26 +1,35 @@
-class puppet::agent::service {
+class puppet::agent::service (
+  $enable = true
+) {
   include puppet::params
+
+  if $enable {
+    $ensure = running
+  } else {
+    $ensure = stopped
+  }
+
   # ----
   # Puppet agent management
   service { "puppet_agent":
     name       => $puppet::params::agent_service,
-    ensure     => running,
-    enable     => true,
+    ensure     => $ensure,
+    enable     => $enable,
     hasstatus  => true,
     hasrestart => true,
   }
-
-  class { "::puppet::agent::monitor": enable => true; }
 
   # ----
   # Special things for special kernels
   case $kernel {
     linux: {
-      file { $puppet::params::agent_defaults:
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-        source => "puppet:///modules/puppet/${puppet::params::agent_defaults}",
+      if $puppet::params::agent_service_conf {
+        file { "puppet_agent_service_conf":
+          mode   => '0644',
+          owner  => 'root',
+          group  => 'root',
+          source => template("puppet:///modules/puppet/agent_service.erb"),
+        }
       }
     }
     darwin: {
