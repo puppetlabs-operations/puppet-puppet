@@ -7,6 +7,6 @@ class puppet::server::standalone($enabled = true) {
     ensure    => $enabled ? {true => running, false => stopped},
     enable    => $enabled,
     hasstatus => true,
-    require   => File[$puppet::params::puppet_conf];
+    require   => Class['puppet::server::config'];
   }
 }
