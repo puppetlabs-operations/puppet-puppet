@@ -29,6 +29,7 @@ class puppet::agent::service (
           owner   => 'root',
           group   => 'root',
           content => template("puppet/agent_service.erb"),
+          path    => $puppet::params::agent_service_conf,
         }
       }
     }
