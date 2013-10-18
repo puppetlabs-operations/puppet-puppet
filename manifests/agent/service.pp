@@ -25,10 +25,11 @@ class puppet::agent::service (
     linux: {
       if $puppet::params::agent_service_conf {
         file { "puppet_agent_service_conf":
-          mode   => '0644',
-          owner  => 'root',
-          group  => 'root',
-          source => template("puppet:///modules/puppet/agent_service.erb"),
+          mode    => '0644',
+          owner   => 'root',
+          group   => 'root',
+          content => template("puppet/agent_service.erb"),
+          path    => $puppet::params::agent_service_conf,
         }
       }
     }
