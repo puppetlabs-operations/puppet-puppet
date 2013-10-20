@@ -71,6 +71,19 @@ class puppet::params {
       $puppet_ssldir      = '/var/lib/puppet/ssl'
       $puppet_rundir      = '/var/run/puppet'
     }
+    'openbsd': {
+      $puppet_cmd         = '/usr/local/bin/puppet'
+      $agent_package      = 'ruby-puppet'
+      $agent_service      = 'puppetd'
+      $master_package     = 'puppet'
+      $master_service     = 'puppetmasterd'
+      $puppet_conf        = '/etc/puppet/puppet.conf'
+      $puppet_confdir     = '/etc/puppet'
+      $puppet_logdir      = '/var/puppet/log'
+      $puppet_vardir      = '/var/puppet'
+      $puppet_ssldir      = '/etc/puppet/ssl'
+      $puppet_rundir      = '/var/puppet/run'
+    }
 
     # This stops the puppet class breaking. But really, we only have very
     # limited support for Solaris. And only through OpenCSW
