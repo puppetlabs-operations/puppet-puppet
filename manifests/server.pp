@@ -47,11 +47,15 @@ class puppet::server (
   $monitor_server     = hiera('puppet_server_monitor', 'true'),
   $backup_server      = hiera('puppet_server_backup', 'true'),
   $ensure             = 'present',
-) {
+  $gentoo_use         = $puppet::params::master_use,
+  $gentoo_keywords    = $puppet::params::master_keywords,
+) inherits puppet::params {
+
+  $master = true
 
   include puppet
-  include puppet::params
   include puppet::server::config
+  include puppet::package
 
   # ---
   # The site.pp is set in the puppet.conf, remove site.pp here to avoid confusion.
@@ -109,10 +113,4 @@ class puppet::server (
   #
   if $backup_server  == 'true' { include puppet::server::backup }
   if $monitor_server == 'true' { include puppet::server::monitor }
-
-  # ---
-  # Used only for platforms that seperate the master and agent packages
-  if $puppet::params::master_package != $puppet::params::agent_package {
-    package { $puppet::params::master_package: ensure => $ensure; }
-  }
 }

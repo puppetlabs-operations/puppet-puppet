@@ -45,14 +45,13 @@ class puppet::agent(
   $ensure          = 'present',
   $monitor_service = false,
   $environment     = "$::environment",
-) {
+  $gentoo_use      = $puppet::params::agent_use,
+  $gentoo_keywords = $puppet::params::agent_keywords,
+) inherits puppet::params {
 
   include puppet
   include puppet::agent::config
-
-  if $manage_repos {
-    include puppet::package
-  }
+  include puppet::package
 
   class { '::puppet::agent::monitor': enable => $monitor_service }
 

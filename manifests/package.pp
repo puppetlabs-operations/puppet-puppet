@@ -1,10 +1,23 @@
 class puppet::package {
 
   include puppet::params
-  include puppet::package::repository
 
-  package { $puppet::params::agent_package:
+  if $puppet::agent::manage_repos {
+    include puppet::package::repository
+  }
+
+  if $::operatingsystem == 'gentoo' {
+    include puppet::package::gentoo
+  } else {
+    package { $puppet::params::agent_package:
       ensure => $puppet::agent::ensure;
+    }
+
+    if $puppet::server::master and $puppet::params::master_package != $puppet::params::agent_package {
+      package { $puppet::params::master_package:
+        ensure => $puppet::server::ensure;
+      }
+    }
   }
 
   # Fixes a bug. #12813
