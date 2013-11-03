@@ -46,6 +46,7 @@ class puppet::server (
   $enc_exec           = '',
   $monitor_server     = hiera('puppet_server_monitor', 'true'),
   $backup_server      = hiera('puppet_server_backup', 'true'),
+  $servername         = undef,
   $ensure             = 'present',
   $gentoo_use         = $puppet::params::master_use,
   $gentoo_keywords    = $puppet::params::master_keywords,
