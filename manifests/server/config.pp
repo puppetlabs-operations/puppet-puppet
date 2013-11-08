@@ -70,6 +70,9 @@ class puppet::server::config {
       'reporturl_ssl_cert':
         setting => 'reporturl_ssl_cert',
         value   => '/etc/ssl/certs/ca-certificates.crt';
+      'reportfrom':
+        setting => 'reportfrom',
+        value   => $puppet::server::reportfrom;
     }
   }
 
