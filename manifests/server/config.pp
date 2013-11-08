@@ -27,7 +27,7 @@ class puppet::server::config {
   if $puppet::server::ca {
     ini_setting { 'ca':
       setting => 'ca',
-      value   => $puppet::master::ca,
+      value   => $puppet::server::ca,
     }
   }
 
