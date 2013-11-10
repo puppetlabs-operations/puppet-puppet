@@ -37,8 +37,8 @@
 #
 class puppet::agent(
   $server          = 'puppet',
-  $ca_server       = 'puppet',
-  $report_server   = 'puppet',
+  $ca_server       = undef,
+  $report_server   = undef,
   $report_format   = undef,
   $manage_repos    = true,
   $method          = 'cron',
@@ -50,8 +50,21 @@ class puppet::agent(
 ) inherits puppet::params {
 
   include puppet
-  include puppet::agent::config
   include puppet::package
+
+  if $report_server {
+    $real_report_server = $report_server
+  } else {
+    $real_report_server = $server
+  }
+
+  if $ca_server {
+    $real_ca_server = $ca_server
+  } else {
+    $real_ca_server = $server
+  }
+
+  include puppet::agent::config
 
   class { '::puppet::agent::monitor': enable => $monitor_service }
 

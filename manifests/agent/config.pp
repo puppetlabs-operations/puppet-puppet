@@ -15,13 +15,13 @@ class puppet::agent::config {
   ini_setting { 'ca_server':
     section => 'main',
     setting => 'ca_server',
-    value   => $puppet::agent::ca_server,
+    value   => $puppet::agent::real_ca_server,
   }
 
   ini_setting { 'report_server':
     section => 'main',
     setting => 'report_server',
-    value   => $puppet::agent::report_server,
+    value   => $puppet::agent::real_report_server,
   }
 
   ini_setting { 'report_format':
@@ -58,20 +58,6 @@ class puppet::agent::config {
     section => 'main',
     setting => 'rundir',
     value   => $puppet::puppet_rundir,
-  }
-
-  if $::operatingsystem == 'Ubuntu' {
-    ini_setting { 'prerun_command':
-      section => 'main',
-      setting => 'prerun_command',
-      value   => '/etc/puppet/etckeeper-commit-pre'
-    }
-
-    ini_setting { 'postrun_command':
-      section => 'main',
-      setting => 'postrun_command',
-      value   => '/etc/puppet/etckeeper-commit-post'
-    }
   }
 
   ini_setting { 'certname':
