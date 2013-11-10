@@ -24,52 +24,54 @@ class puppet::agent::config {
     value   => $puppet::agent::real_report_server,
   }
 
-  ini_setting { 'report_format':
-    section => 'main',
-    setting => 'report_format',
-    value   => $puppet::agent::report_format,
+  if $puppet::agent::report_format {
+    ini_setting { 'report_format':
+      section => 'main',
+      setting => 'report_format',
+      value   => $puppet::agent::report_format,
+    }
   }
 
   ini_setting { 'pluginsync':
     section => 'main',
     setting => 'pluginsync',
-    value   => 'true'
+    value   => $puppet::agent::pluginsync,
   }
 
   ini_setting { 'logdir':
     section => 'main',
     setting => 'logdir',
-    value   => $puppet::puppet_logdir,
+    value   => $puppet::agent::logdir,
   }
 
   ini_setting { 'vardir':
     section => 'main',
     setting => 'vardir',
-    value   => $puppet::puppet_vardir,
+    value   => $puppet::agent::vardir,
   }
 
   ini_setting { 'ssldir':
     section => 'main',
     setting => 'ssldir',
-    value   => $puppet::puppet_ssldir,
+    value   => $puppet::agent::ssldir,
   }
 
   ini_setting { 'rundir':
     section => 'main',
     setting => 'rundir',
-    value   => $puppet::puppet_rundir,
+    value   => $puppet::agent::rundir,
   }
 
   ini_setting { 'certname':
     section => 'agent',
     setting => 'certname',
-    value   => $::clientcert,
+    value   => $puppet::agent::certname,
   }
 
   ini_setting { 'report':
     section => 'agent',
     setting => 'report',
-    value   => 'true',
+    value   => $puppet::agent::report,
   }
 
   ini_setting { 'environment':
@@ -81,18 +83,18 @@ class puppet::agent::config {
   ini_setting { 'show_diff':
     section => 'agent',
     setting => 'show_diff',
-    value   => 'true',
+    value   => $puppet::agent::showdiff,
   }
 
   ini_setting { 'splay':
     section => 'agent',
     setting => 'splay',
-    value   => 'false',
+    value   => $puppet::agent::splay,
   }
 
   ini_setting { 'configtimeout':
     section => 'agent',
     setting => 'configtimeout',
-    value   => '360',
+    value   => $puppet::agent::configtimeout,
   }
 }
