@@ -100,4 +100,12 @@ class puppet::server::config {
         value   => $puppet::server::enc_exec;
     }
   }
+
+  if $puppet::server::parser {
+    ini_setting { 'parser':
+        setting => 'parser',
+        value   => $puppet::server::parser,
+    }
+  }
+
 }
