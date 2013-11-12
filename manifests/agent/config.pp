@@ -15,25 +15,27 @@ class puppet::agent::config {
   ini_setting { 'ca_server':
     section => 'main',
     setting => 'ca_server',
-    value   => $puppet::agent::ca_server,
+    value   => $puppet::agent::real_ca_server,
   }
 
   ini_setting { 'report_server':
     section => 'main',
     setting => 'report_server',
-    value   => $puppet::agent::report_server,
+    value   => $puppet::agent::real_report_server,
   }
 
-  ini_setting { 'report_format':
-    section => 'main',
-    setting => 'report_format',
-    value   => $puppet::agent::report_format,
+  if $puppet::agent::report_format {
+    ini_setting { 'report_format':
+      section => 'main',
+      setting => 'report_format',
+      value   => $puppet::agent::report_format,
+    }
   }
 
   ini_setting { 'pluginsync':
     section => 'main',
     setting => 'pluginsync',
-    value   => 'true'
+    value   => $puppet::agent::pluginsync,
   }
 
   ini_setting { 'logdir':
@@ -60,30 +62,16 @@ class puppet::agent::config {
     value   => $puppet::puppet_rundir,
   }
 
-  if $::operatingsystem == 'Ubuntu' {
-    ini_setting { 'prerun_command':
-      section => 'main',
-      setting => 'prerun_command',
-      value   => '/etc/puppet/etckeeper-commit-pre'
-    }
-
-    ini_setting { 'postrun_command':
-      section => 'main',
-      setting => 'postrun_command',
-      value   => '/etc/puppet/etckeeper-commit-post'
-    }
-  }
-
   ini_setting { 'certname':
     section => 'agent',
     setting => 'certname',
-    value   => $::clientcert,
+    value   => $puppet::agent::certname,
   }
 
   ini_setting { 'report':
     section => 'agent',
     setting => 'report',
-    value   => 'true',
+    value   => $puppet::agent::report,
   }
 
   ini_setting { 'environment':
@@ -95,18 +83,18 @@ class puppet::agent::config {
   ini_setting { 'show_diff':
     section => 'agent',
     setting => 'show_diff',
-    value   => 'true',
+    value   => $puppet::agent::showdiff,
   }
 
   ini_setting { 'splay':
     section => 'agent',
     setting => 'splay',
-    value   => 'false',
+    value   => $puppet::agent::splay,
   }
 
   ini_setting { 'configtimeout':
     section => 'agent',
     setting => 'configtimeout',
-    value   => '360',
+    value   => $puppet::agent::configtimeout,
   }
 }
