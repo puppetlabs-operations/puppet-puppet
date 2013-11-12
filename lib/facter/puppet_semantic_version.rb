@@ -8,7 +8,11 @@ semantic_version_values.each_index do |index|
   fact_name = semantic_version_values[index]
   Facter.add(fact_name) do
     setcode do
-      Integer(Facter.value(:puppetversion).split('.')[index])
+      if Facter.value(:puppetversion) =~ / /
+        Integer(Facter.value(:puppetversion).split(' ').first.split('.')[index])
+      else
+        Integer(Facter.value(:puppetversion).split('.')[index])
+      end
     end
   end
 end
