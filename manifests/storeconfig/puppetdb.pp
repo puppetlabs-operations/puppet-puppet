@@ -8,24 +8,31 @@ class puppet::storeconfig::puppetdb(
   # ---
   # PupeptDB backend settings
   Ini_setting {
-    ensure  => 'present',
-    section => 'master',
-    path    => $puppet::params::puppet_conf,
-  }
-
-  ini_setting {
-    'storeconfigs_backend':
-      setting => 'storeconfigs_backend',
-      value   => 'puppetdb',
-  }
-
-  file { "${::puppet::params::puppet_confdir}/puppetdb.conf":
-    ensure  => present,
-    mode    => 0644,
-    owner   => 'puppet',
-    group   => 'puppet',
-    content => template('puppet/puppetdb.conf.erb'),
     notify => Class['puppet::server'],
+  }
+
+  ini_setting { 'storeconfigs_backend':
+    ensure  => 'present',
+    path    => $puppet::params::puppet_conf,
+    section => 'master',
+    setting => 'storeconfigs_backend',
+    value   => 'puppetdb',
+  }
+
+  ini_setting { 'puppetdb_server':
+    ensure  => 'present',
+    path    => "${::puppet::params::puppet_confdir}/puppetdb.conf",
+    section => 'main',
+    setting => 'server',
+    value   => $server,
+  }
+
+  ini_setting { 'puppetdb_port':
+    ensure  => 'present',
+    path    => "${::puppet::params::puppet_confdir}/puppetdb.conf",
+    section => 'main',
+    setting => 'port',
+    value   => $port,
   }
 
   package { 'puppetdb-terminus':
