@@ -72,19 +72,16 @@ class puppet::server (
   case $servertype {
     "passenger": {
       include puppet::server::passenger
-      include puppet::server::standalone_off
       $ssl_client_header        = "SSL_CLIENT_S_DN"
       $ssl_client_verify_header = "SSL_CLIENT_VERIFY"
     }
     "unicorn": {
       include puppet::server::unicorn
-      include puppet::server::standalone_off
       $ssl_client_header        = "HTTP_X_CLIENT_DN"
       $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
     }
     "thin": {
       include puppet::server::thin
-      include puppet::server::standalone_off
       $ssl_client_header        = "HTTP_X_CLIENT_DN"
       $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
     }

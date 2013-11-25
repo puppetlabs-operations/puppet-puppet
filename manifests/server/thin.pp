@@ -3,6 +3,8 @@ class puppet::server::thin {
   include puppet::params
   include puppet::server::rack
 
+  class { 'puppet::server::standalone': enabled => false }
+
   $servers = $::processorcount
   nginx::vhost { "puppetmaster":
     port     => 8140,
