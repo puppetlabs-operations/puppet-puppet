@@ -42,7 +42,7 @@ class puppet::params::defaults {
       $puppet_ssldir  = '/etc/puppet/ssl'
       $puppet_rundir  = '/var/run'
     }
-   'centos', 'redhat', 'fedora', 'sles': {
+   'centos', 'redhat', 'fedora', 'sles', 'opensuse': {
       $puppet_cmd         = '/usr/bin/puppet'
       $agent_package      = 'puppet'
       $agent_service      = 'puppet'
