@@ -11,11 +11,9 @@
 # Sample Usage:
 #
 class puppet::passenger {
-  include ruby::dev
   include apache
   include apache::mod::ssl
-  include ::passenger
-  include passenger::params
+  include apache::mod::passenger
 
   file { ['/etc/puppet/rack', '/etc/puppet/rack/public', '/etc/puppet/rack/tmp']:
       owner  => 'puppet',
