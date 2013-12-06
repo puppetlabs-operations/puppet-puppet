@@ -104,6 +104,25 @@ class puppet::params {
       $agent_service      = 'svc:/network/cswpuppetd'
       $default_method     = 'cron'
     }
+    'windows': {
+      $puppet_cmd         = 'C:/Program Files (x86)/Puppet Labs/Puppet/bin/puppet.bat'
+      $agent_package      = 'Puppet'
+      $agent_service      = 'puppet'
+      # I don't think these are applicable to Windows
+      # $agent_service_conf = '/etc/default/puppet'
+      # $master_package     = 'puppetmaster'
+      # $master_service     = 'puppetmaster'
+
+      # Note this is only going to work for 2008 and later
+      # The correct value is %APPDATA% (or something similar)
+      $puppet_conf        = 'C:/ProgramData/PuppetLabs/puppet/etc/puppet.conf'
+      $puppet_confdir     = 'C:/ProgramData/PuppetLabs/puppet/etc'
+      $puppet_logdir      = 'C:/ProgramData/PuppetLabs/puppet/var/log'
+      $puppet_vardir      = 'C:/ProgramData/PuppetLabs/puppet/var'
+      $puppet_ssldir      = 'C:/ProgramData/PuppetLabs/puppet/etc/ssl'
+      $puppet_rundir      = 'C:/ProgramData/PuppetLabs/puppet/var/run'
+      $default_method     = 'only_service'
+    }
     default: { fail("Sorry, $operatingsystem is not supported") }
   }
 }
