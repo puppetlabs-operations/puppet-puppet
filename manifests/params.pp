@@ -15,6 +15,7 @@ class puppet::params {
       $puppet_vardir      = '/var/lib/puppet'
       $puppet_ssldir      = '/var/lib/puppet/ssl'
       $puppet_rundir      = '/var/run/puppet'
+      $default_method     = 'cron'
     }
     'freebsd': {
       $puppet_cmd         = '/usr/local/bin/puppet'
@@ -28,6 +29,7 @@ class puppet::params {
       $puppet_vardir      = '/var/puppet'
       $puppet_ssldir      = '/var/puppet/ssl'
       $puppet_rundir      = '/var/run/puppet'
+      $default_method     = 'cron'
     }
     'darwin': {
       $puppet_cmd     = '/opt/local/bin/puppet'
@@ -41,6 +43,7 @@ class puppet::params {
       $puppet_vardir  = '/var/lib/puppet'
       $puppet_ssldir  = '/etc/puppet/ssl'
       $puppet_rundir  = '/var/run'
+      $default_method = 'cron'
     }
    'centos', 'redhat', 'fedora', 'sles', 'opensuse': {
       $puppet_cmd         = '/usr/bin/puppet'
@@ -55,6 +58,7 @@ class puppet::params {
       $puppet_vardir      = '/var/lib/puppet'
       $puppet_ssldir      = '/var/lib/puppet/ssl'
       $puppet_rundir      = '/var/run/puppet'
+      $default_method     = 'cron'
     }
     'gentoo': {
       $puppet_cmd         = '/usr/bin/puppet'
@@ -70,8 +74,22 @@ class puppet::params {
       $puppet_vardir      = '/var/lib/puppet'
       $puppet_ssldir      = '/var/lib/puppet/ssl'
       $puppet_rundir      = '/var/run/puppet'
+      $default_method     = 'cron'
     }
-
+    'openbsd': {
+      $puppet_cmd         = '/usr/local/bin/puppet'
+      $agent_package      = 'puppet'
+      $agent_service      = 'puppetd'
+      $master_package     = 'puppet'
+      $master_service     = 'puppetmasterd'
+      $puppet_conf        = '/etc/puppet/puppet.conf'
+      $puppet_confdir     = '/etc/puppet'
+      $puppet_logdir      = '/var/puppet/log'
+      $puppet_vardir      = '/var/puppet'
+      $puppet_ssldir      = '/etc/puppet/ssl'
+      $puppet_rundir      = '/var/puppet/run'
+      $default_method     = 'service'
+    }
     # This stops the puppet class breaking. But really, we only have very
     # limited support for Solaris. And only through OpenCSW
     # Taken from: '/opt/csw/bin/puppet config print ...'
@@ -84,6 +102,7 @@ class puppet::params {
       $puppet_ssldir      = '/etc/puppet/ssl'
       $puppet_rundir      = '/var/lib/puppet/run/'
       $agent_service      = 'svc:/network/cswpuppetd'
+      $default_method     = 'cron'
     }
     default: { fail("Sorry, $operatingsystem is not supported") }
   }

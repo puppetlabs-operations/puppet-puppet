@@ -36,14 +36,13 @@
 #  }
 #
 class puppet::agent(
+  $ensure            = 'present',
   $server            = 'puppet',
   $ca_server         = undef,
   $report            = true,
   $report_server     = undef,
   $report_format     = undef,
   $manage_repos      = true,
-  $method            = 'cron',
-  $ensure            = 'present',
   $monitor_service   = false,
   $environment       = $::environment,
   $pluginsync        = true,
@@ -52,6 +51,7 @@ class puppet::agent(
   $splay             = false,
   $configtimeout     = 360,
   $usecacheonfailure = true,
+  $method            = $puppet::params::default_method,
   $gentoo_use        = $puppet::params::agent_use,
   $gentoo_keywords   = $puppet::params::agent_keywords,
 ) inherits puppet::params {
