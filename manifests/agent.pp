@@ -84,6 +84,9 @@ class puppet::agent(
       include puppet::agent::service
       class { 'puppet::agent::cron': enable => false }
     }
+    only_service: {
+      include puppet::agent::service
+    }
     none: {
       class { 'puppet::agent::service': enable => false }
       class { 'puppet::agent::cron': enable => false }
