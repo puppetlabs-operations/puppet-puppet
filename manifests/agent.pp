@@ -54,10 +54,13 @@ class puppet::agent(
   $method            = $puppet::params::default_method,
   $gentoo_use        = $puppet::params::agent_use,
   $gentoo_keywords   = $puppet::params::agent_keywords,
+  $manage_package    = true,
 ) inherits puppet::params {
 
   include puppet
-  include puppet::package
+  if $manage_package {
+    include puppet::package
+  }
 
   if $report_server {
     $real_report_server = $report_server
