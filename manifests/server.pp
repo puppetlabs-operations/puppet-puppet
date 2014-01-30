@@ -52,13 +52,16 @@ class puppet::server (
   $parser             = undef,
   $gentoo_use         = $puppet::params::master_use,
   $gentoo_keywords    = $puppet::params::master_keywords,
+  $manage_package     = true,
 ) inherits puppet::params {
 
   $master = true
 
   include puppet
   include puppet::server::config
-  include puppet::package
+  if $manage_package {
+    include puppet::package
+  }
 
   # ---
   # The site.pp is set in the puppet.conf, remove site.pp here to avoid confusion.
