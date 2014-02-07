@@ -24,11 +24,9 @@ class puppet::server::config {
       value   => 'puppet';
   }
 
-  if $puppet::server::ca {
-    ini_setting { 'ca':
-      setting => 'ca',
-      value   => $puppet::server::ca,
-    }
+  ini_setting { 'ca':
+    setting => 'ca',
+    value   => $puppet::server::ca,
   }
 
   if $puppet::server::servertype == 'standalone' {
