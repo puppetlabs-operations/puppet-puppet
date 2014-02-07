@@ -15,7 +15,7 @@ class puppet::package {
     ensure => $puppet::agent::ensure;
   }
 
-  if $puppet::server::master and $puppet::params::master_package != $puppet::params::agent_package {
+  if $puppet::server::master and ($puppet::params::master_package != $puppet::params::agent_package) {
     package { $puppet::params::master_package:
       ensure => $puppet::server::ensure;
     }
