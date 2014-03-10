@@ -7,19 +7,26 @@
 # class.
 #
 class puppet::server::rack {
-  concat { "${::puppet::params::puppet_confdir}/config.ru":
+
+  # Template variables for concat fragment
+  $puppet_confdir = $::puppet::params::puppet_confdir
+  $puppet_vardir  = $::puppet::params::puppet_vardir
+  
+  concat { "${puppet_confdir}/config.ru":
     owner  => 'puppet',
     group  => 'puppet',
     mode   => '0644',
     notify => Nginx::Vhost['puppetmaster'],
   }
 
+  $run_template = $puppetversion ? {
+    /^2.7/      => 'puppet/config.ru/99-run-2.7.erb',
+    /^3.[0-4]/  => 'puppet/config.ru/99-run-3.0.erb',
+  }
+
   concat::fragment { "run-puppet-master":
-    order  => '99',
-    target => "${::puppet::params::puppet_confdir}/config.ru",
-    source => $puppetversion ? {
-      /^2.7/ => 'puppet:///modules/puppet/config.ru/99-run-2.7.rb',
-      /^3.[0-4]/ => 'puppet:///modules/puppet/config.ru/99-run-3.0.rb',
-    },
+    order   => '99',
+    target  => "${puppet_confdir}/config.ru",
+    content => template($run_template),
   }
 }
