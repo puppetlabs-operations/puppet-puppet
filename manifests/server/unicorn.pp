@@ -26,5 +26,6 @@ class puppet::server::unicorn {
     user            => 'puppet',
     group           => 'puppet',
     before          => Service['nginx'],
+    subscribe       => Concat["${::puppet::params::puppet_confdir}/config.ru"],
   }
 }

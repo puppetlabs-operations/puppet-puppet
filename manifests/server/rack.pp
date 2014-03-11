@@ -11,7 +11,6 @@ class puppet::server::rack {
     owner  => 'puppet',
     group  => 'puppet',
     mode   => '0644',
-    notify => Nginx::Vhost['puppetmaster'],
   }
 
   concat::fragment { "run-puppet-master":
