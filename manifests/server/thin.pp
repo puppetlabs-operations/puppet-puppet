@@ -18,9 +18,10 @@ class puppet::server::thin {
   }
 
   thin::app { 'puppetmaster':
-    user    => 'puppet',
-    group   => 'puppet',
-    rackup  => "${::puppet::params::puppet_confdir}/config.ru",
-    chdir   => $puppet::params::puppet_confdir,
+    user      => 'puppet',
+    group     => 'puppet',
+    rackup    => "${::puppet::params::puppet_confdir}/config.ru",
+    chdir     => $puppet::params::puppet_confdir,
+    subscribe => Concat["${::puppet::params::puppet_confdir}/config.ru"],
   }
 }
