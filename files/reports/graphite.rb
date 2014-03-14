@@ -35,6 +35,6 @@ Puppet::Reports.register_report(:graphite) do
       }
     }
 
-    sent_metric payload.flatten.join("\n")
+    send_metric payload.flatten.join("\n")
   end
 end
