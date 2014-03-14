@@ -9,7 +9,7 @@ Puppet::Reports.register_report(:graphite) do
   raise(Puppet::ParseError, "Graphite report config file #{configfile} not readable") unless File.exist?(configfile)
   config = YAML.load_file(configfile)
   GRAPHITE_SERVER = config[:graphite_server]
-  GRAPHITE_PORT = config[:graphite_port]
+  GRAPHITE_PORT   = config[:graphite_port]
   GRAPHITE_PREFIX = config[:graphite_prefix]
 
   desc <<-DESC
@@ -28,7 +28,7 @@ Puppet::Reports.register_report(:graphite) do
     epochtime = Time.now.utc.to_i
     payload = self.metrics.map { |metric,data|
       data.values.map { |val|
-        name = "#{prefix}.puppet.#{val[1]}_#{metric}"
+        name = "#{prefix}.puppet.#{val[0]}_#{metric}"
         value = val[2]
 
         "#{name} #{value} #{epochtime}"
