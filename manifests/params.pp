@@ -51,7 +51,7 @@ class puppet::params {
       $agent_service      = 'puppet'
       $agent_service_conf = '/etc/sysconfig/puppet'
       $master_package     = 'puppet-server'
-      $master_service     = 'puppetmasterd'
+      $master_service     = 'puppetmaster'
       $puppet_conf        = '/etc/puppet/puppet.conf'
       $puppet_confdir     = '/etc/puppet'
       $puppet_logdir      = '/var/log/puppet'
