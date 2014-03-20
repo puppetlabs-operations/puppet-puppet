@@ -45,7 +45,6 @@ class puppet::server (
   $bindaddress        = '::',
   $enc                = '',
   $enc_exec           = '',
-  $monitor_server     = hiera('puppet_server_monitor', 'true'),
   $backup_server      = hiera('puppet_server_backup', 'true'),
   $servername         = undef,
   $ensure             = 'present',
@@ -115,5 +114,4 @@ class puppet::server (
   # Use a real boolean after hiera 1.0 is out
   #
   if $backup_server  == 'true' { include puppet::server::backup }
-  if $monitor_server == 'true' { include puppet::server::monitor }
 }
