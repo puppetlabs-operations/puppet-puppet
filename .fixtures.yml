@@ -1,0 +1,13 @@
+fixtures:
+  repositories:
+    stdlib: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
+    puppetlabs_yum: "git://github.com/stahnma/puppet-module-puppetlabs_yum"
+    puppetlabs_apt: "git://github.com/puppetlabs-operations/puppet-puppetlabs_apt.git"
+    interval: "git://github.com/puppetlabs-operations/puppet-interval.git"
+    unicorn: "git://github.com/puppetlabs-operations/puppet-unicorn.git"
+    inifile: "git://github.com/puppetlabs/puppetlabs-inifile.git"
+    apache: "git://github.com/puppetlabs/puppetlabs-apache.git"
+    portage: "git://github.com/gentoo/puppet-portage.git"
+  symlinks:
+    puppet: "#{source_dir}"
+
