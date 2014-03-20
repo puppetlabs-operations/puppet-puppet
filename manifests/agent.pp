@@ -19,10 +19,6 @@
 #   The mechanism for performing puppet runs.
 #   Supported methods: [cron, service]
 #   Default: cron
-# [*monitor_service*]
-#   Whether or not to monitor the puppet service.
-#   Should not be mixed when method is cron.
-#   Default: false
 # [*environment*]
 #   What environment the agent should be part of.
 #   Default: $::environment
@@ -43,7 +39,6 @@ class puppet::agent(
   $report_server     = undef,
   $report_format     = undef,
   $manage_repos      = true,
-  $monitor_service   = false,
   $environment       = $::environment,
   $pluginsync        = true,
   $certname          = $::clientcert,
@@ -75,8 +70,6 @@ class puppet::agent(
   }
 
   include puppet::agent::config
-
-  class { '::puppet::agent::monitor': enable => $monitor_service }
 
   case $method {
     cron: {
