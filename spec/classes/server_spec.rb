@@ -105,38 +105,6 @@ describe 'puppet::server' do
       :modulepath   => ['/etc/puppet/environments/production/modules'],
       :ca           => true,
     }}
-    context 'CentOS/RedHat' do
-      ['RedHat', 'CentOS'].each do |operatingsystem|
-        let(:facts) {{
-          :operatingsystem => operatingsystem,
-          :operatingsystemrelease => '6',
-          :osfamily => 'redhat',
-          :puppetversion => '3.4.2',
-          :concat_basedir => '/foo'
-        }}
-        # Tests common to all systems
-        it { should compile.with_all_deps }
-
-        # tests common to all puppet masters
-        it { should contain_class('puppet::server') }
-        it { should contain_class('puppet::package') }
-        it { should contain_class('puppet::agent') }
-        it { should contain_class('puppet::params') }
-        it { should contain_class('puppet::server::config') }
-        it { should contain_ini_setting('modulepath').with_value('/etc/puppet/environments/production/modules') }
-        it { should contain_ini_setting('ca').with_value(true) }
-        it { should contain_package('puppet-server') }
-
-        # Tests specific to passenger server
-        it { should contain_class('puppet::unicorn') }
-
-        it do
-          should contain_service('puppetmaster').with({
-            :ensure => "stopped"
-          })
-        end
-      end
-    end
     context 'Debian' do
       let(:facts) {{
         :operatingsystem => 'debian',
@@ -157,14 +125,20 @@ describe 'puppet::server' do
       it { should contain_class('puppet::server::config') }
       it { should contain_ini_setting('modulepath').with_value('/etc/puppet/environments/production/modules') }
       it { should contain_ini_setting('ca').with_value(true) }
-      it { should contain_package('puppet-server') }
+      it { should contain_package('puppetmaster') }
 
       # Tests specific to passenger server
-      it { should contain_class('puppet::unicorn') }
+      it { should contain_class('puppet::server::unicorn') }
 
       it do
         should contain_service('puppetmaster').with({
           :ensure => "stopped"
+        })
+        should contain_service('nginx').with({
+          :ensure => "running"
+        })
+        should contain_service('unicorn_puppetmaster').with({
+          :ensure => "running"
         })
       end
     end
