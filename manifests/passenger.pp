@@ -15,7 +15,7 @@ class puppet::passenger {
   include apache::mod::ssl
   include apache::mod::passenger
 
-  file { ['/etc/puppet/rack', '/etc/puppet/rack/public', '/etc/puppet/rack/tmp']:
+  file { ['/etc/puppet/rack', '/etc/puppet/rack/public/', '/etc/puppet/rack/tmp']:
       owner  => 'puppet',
       group  => 'puppet',
       ensure => directory,
