@@ -12,6 +12,7 @@ hosts.each do |host|
 
   puppetfile = <<-EOS
 mod 'stdlib',         :git => 'git://github.com/puppetlabs/puppetlabs-stdlib.git'
+mod 'apt',         :git => 'git://github.com/puppetlabs/puppetlabs-apt.git'
 mod 'concat',         :git => 'git://github.com/puppetlabs/puppetlabs-concat.git'
 mod 'ruby',           :git => 'git://github.com/puppetlabs/puppetlabs-ruby.git'
 mod 'puppetlabs_yum', :git => 'git://github.com/stahnma/puppet-module-puppetlabs_yum'
@@ -42,7 +43,7 @@ RSpec.configure do |c|
     # It would be much more elegant to do this using the Modulefile and r10k or librarian-puppet
     puppet_module_install(:source => proj_root, :module_name => 'puppet')
     hosts.each do |host|
-      on host, puppet('module', 'install', 'puppetlabs-apt'), { :acceptable_exit_codes => [0,1] }
+#      on host, puppet('module', 'install', 'puppetlabs-apt'), { :acceptable_exit_codes => [0,1] }
     end
   end
 end
