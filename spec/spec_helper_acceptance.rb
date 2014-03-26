@@ -4,11 +4,19 @@ require 'beaker-rspec/helpers/serverspec'
 hosts.each do |host|
   # Install Puppet
   install_puppet
+end
+agents = hosts_as :agent
+agents.each do |host|
+  on host, 'touch /tmp/agent_test'
+end
+
+masters = hosts_as :master
+masters.each do |host|
 
   # Install r10k for installing modules from github
   install_package host, 'rubygems'
   install_package host, 'git'
-  on host, 'gem install r10k --no-ri --no-rdoc'
+  on host, 'hash r10k || gem install r10k --no-ri --no-rdoc'
 
   puppetfile = <<-EOS
 mod 'stdlib',         :git => 'git://github.com/puppetlabs/puppetlabs-stdlib.git'
@@ -45,5 +53,11 @@ RSpec.configure do |c|
     hosts.each do |host|
 #      on host, puppet('module', 'install', 'puppetlabs-apt'), { :acceptable_exit_codes => [0,1] }
     end
+    #shell(:node => 'second.foo.vm', :command => 'touch /tmp/second.foo.vm')
+    #shell(:node => 'main.foo.vm', :command => 'touch /tmp/main.foo.vm')
+    #test_command_master = "/usr/bin/touch /root/master"
+    #test_command_agent = "/usr/bin/touch /root/agent"
+    #on(ubuntu-server-12042-x64-master, test_command_master) { assert_equal(0, exit_code) }
+    #on(ubuntu-server-12042-x64-agent, test_command_agent) { assert_equal(0, exit_code) }
   end
 end
