@@ -114,12 +114,14 @@ describe 'puppet::server' do
     }}
     context 'Debian' do
       let(:facts) {{
-        :operatingsystem => 'debian',
+        :operatingsystem        => 'debian',
         :operatingsystemrelease => '7',
-        :osfamily => 'redhat',
-        :puppetversion => '3.4.2',
-        :concat_basedir => '/foo',
-        :kernel         => 'linux',
+        :osfamily               => 'debian',
+        :puppetversion          => '3.4.2',
+        :concat_basedir         => '/foo',
+        :kernel                 => 'linux',
+        :lsbdistid              => 'debian',
+        :lsbdistcodename        => 'wheezy',
       }}
       it_behaves_like "all puppet master types"
       it_behaves_like "basic puppetmaster config"
