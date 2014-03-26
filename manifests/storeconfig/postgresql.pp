@@ -37,15 +37,15 @@ class puppet::storeconfig::postgresql (
   # ---
   # Install the pg gem
   package { 'pg':
-    name => $operatingsystem ? {
-      FreeBSD => "databases/rubygem-pg",
-      default   => "pg",
+    ensure   => installed,
+    name     => $::operatingsystem ? {
+      FreeBSD => 'databases/rubygem-pg',
+      default => 'pg',
     },
-    provider => $operatingsystem ? {
-      FreeBSD   => undef,
-      default   => gem,
+    provider => $::operatingsystem ? {
+      FreeBSD => undef,
+      default => gem,
     },
-    ensure => installed,
   }
 
   # ---

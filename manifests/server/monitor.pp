@@ -12,13 +12,13 @@ class puppet::server::monitor (
     }
 
     @@nagios_servicedependency {"check_puppetmaster_${::fqdn}":
-      host_name                     => "$::fqdn",
-      service_description           => "check_ping_${::fqdn}",
-      dependent_host_name           => "$::fqdn",
-      dependent_service_description => "check_puppetmaster_${::fqdn}",
-      execution_failure_criteria    => "n",
-      notification_failure_criteria => "w,u,c",
       ensure                        => present,
+      host_name                     => $::fqdn,
+      service_description           => "check_ping_${::fqdn}",
+      dependent_host_name           => $::fqdn,
+      dependent_service_description => "check_puppetmaster_${::fqdn}",
+      execution_failure_criteria    => 'n',
+      notification_failure_criteria => 'w,u,c',
       target                        => '/etc/nagios3/conf.d/nagios_servicedep.cfg',
     }
 
@@ -32,13 +32,13 @@ class puppet::server::monitor (
     }
 
     @@nagios_servicedependency {"check_certs_${::fqdn}":
-      host_name                     => "$::fqdn",
-      service_description           => "check_ping_${::fqdn}",
-      dependent_host_name           => "$fqdn",
-      dependent_service_description => "check_certs_${::fqdn}",
-      execution_failure_criteria    => "n",
-      notification_failure_criteria => "w,u,c",
       ensure                        => present,
+      host_name                     => $::fqdn,
+      service_description           => "check_ping_${::fqdn}",
+      dependent_host_name           => $::fqdn,
+      dependent_service_description => "check_certs_${::fqdn}",
+      execution_failure_criteria    => 'n',
+      notification_failure_criteria => 'w,u,c',
       target                        => '/etc/nagios3/conf.d/nagios_servicedep.cfg',
     }
   }

@@ -36,18 +36,18 @@ class puppet::storeconfig::mysql (
 
   # ---
   # Install the mysql gem
-  package { "gem-mysql":
-    name => $operatingsystem ? {
-      "Debian" => "libmysql-ruby",
-      "Darwin" => "rb-mysql",
+  package { 'gem-mysql':
+    ensure   => installed,
+    name     => $::operatingsystem ? {
+      'Debian' => 'libmysql-ruby',
+      'Darwin' => 'rb-mysql',
       default  => mysql,
     },
-    provider => $operatingsystem ? {
-      "Debian" => apt,
-      "Darwin" => macports,
+    provider => $::operatingsystem ? {
+      'Debian' => apt,
+      'Darwin' => macports,
       default  => gem,
     },
-    ensure => installed,
   }
 
   # ---
@@ -57,7 +57,7 @@ class puppet::storeconfig::mysql (
     charset => 'utf8',
   }
 
-  database_user{"$dbuser@localhost":
+  database_user{"${dbuser}@localhost":
     ensure        => present,
     password_hash => mysql_password($dbpassword),
     require       => Database['puppet'],

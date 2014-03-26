@@ -6,7 +6,9 @@ class puppet::server::standalone (
   include puppet::server
 
   service { $puppet::params::master_service:
-    ensure    => $enabled ? {true => running, false => stopped},
+    ensure    => $enabled ? {
+      true  => running,
+      false => stopped},
     enable    => $enabled,
     hasstatus => true,
     require   => Class['puppet::server::config'];
