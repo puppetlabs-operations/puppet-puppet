@@ -9,6 +9,11 @@ shared_examples_for "all puppet master types" do
   it { should contain_class('puppet::server::config') }
 end
 
+shared_examples_for "basic puppetmaster config" do
+  it { should contain_ini_setting('modulepath').with_value('/etc/puppet/environments/production/modules') }
+  it { should contain_ini_setting('ca').with_value(true) }
+end
+
 describe 'puppet::server' do
   describe "webrick puppet::server" do
     let(:params) {{
@@ -18,8 +23,6 @@ describe 'puppet::server' do
       :ca         => true,
     }}
     shared_examples_for "all standalone masters" do
-      it { should contain_ini_setting('modulepath').with_value('/etc/puppet/environments/production/modules') }
-      it { should contain_ini_setting('ca').with_value(true) }
       it { should contain_class('puppet::server::standalone') }
     end
 
@@ -30,6 +33,7 @@ describe 'puppet::server' do
 
           it_behaves_like "all puppet master types"
           it_behaves_like "all standalone masters"
+          it_behaves_like "basic puppetmaster config"
 
           # RHEL-specific examples
           it { should contain_package('puppet-server') }
@@ -49,6 +53,7 @@ describe 'puppet::server' do
 
           it_behaves_like "all puppet master types"
           it_behaves_like "all standalone masters"
+          it_behaves_like "basic puppetmaster config"
 
           # Debian-specific examples
           it { should contain_package('puppetmaster') }
@@ -79,9 +84,7 @@ describe 'puppet::server' do
           :concat_basedir => '/foo'
         }}
         it_behaves_like "all puppet master types"
-
-        it { should contain_ini_setting('modulepath').with_value('/etc/puppet/environments/production/modules') }
-        it { should contain_ini_setting('ca').with_value(true) }
+        it_behaves_like "basic puppetmaster config"
 
         # Tests specific to passenger server
         it { should contain_class('puppet::passenger') }
@@ -119,9 +122,8 @@ describe 'puppet::server' do
         :kernel         => 'linux',
       }}
       it_behaves_like "all puppet master types"
+      it_behaves_like "basic puppetmaster config"
 
-      it { should contain_ini_setting('modulepath').with_value('/etc/puppet/environments/production/modules') }
-      it { should contain_ini_setting('ca').with_value(true) }
       it { should contain_package('puppetmaster') }
 
       # Tests specific to passenger server
