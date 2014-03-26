@@ -45,13 +45,13 @@ class puppet::params {
       $puppet_rundir  = '/var/run'
       $default_method = 'cron'
     }
-   'centos', 'redhat', 'fedora', 'sles', 'opensuse': {
+    'centos', 'redhat', 'fedora', 'sles', 'opensuse': {
       $puppet_cmd         = '/usr/bin/puppet'
       $agent_package      = 'puppet'
       $agent_service      = 'puppet'
       $agent_service_conf = '/etc/sysconfig/puppet'
       $master_package     = 'puppet-server'
-      $master_service     = 'puppetmasterd'
+      $master_service     = 'puppetmaster'
       $puppet_conf        = '/etc/puppet/puppet.conf'
       $puppet_confdir     = '/etc/puppet'
       $puppet_logdir      = '/var/log/puppet'

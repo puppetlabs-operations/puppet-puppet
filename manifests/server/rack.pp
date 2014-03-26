@@ -11,7 +11,7 @@ class puppet::server::rack {
   # Template variables for concat fragment
   $puppet_confdir = $::puppet::params::puppet_confdir
   $puppet_vardir  = $::puppet::params::puppet_vardir
-  
+
   concat { "${puppet_confdir}/config.ru":
     owner  => 'puppet',
     group  => 'puppet',
