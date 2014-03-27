@@ -36,11 +36,11 @@ class puppet::server (
   $manifest           = '$confdir/modules/site/site.pp',
   $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
   $storeconfigs       = undef,
-  $report             = 'true',
-  $reports            = ["store", "https"],
-  $reporturl          = "http://$fqdn/reports",
+  $report             = true,
+  $reports            = ['store', 'https'],
+  $reporturl          = "http://${::fqdn}/reports",
   $reportfrom         = undef,
-  $servertype         = "unicorn",
+  $servertype         = 'unicorn',
   $ca                 = false,
   $bindaddress        = '::',
   $enc                = '',
@@ -66,40 +66,41 @@ class puppet::server (
   # The site.pp is set in the puppet.conf, remove site.pp here to avoid confusion.
   # Unless the manifest that was passed in is the default site.pp.
   if ($manifest != "${puppet::params::puppet_confdir}/manifests/site.pp") {
-    file { "${puppet::params::puppet_confdir}/manifests/site.pp": ensure => absent; }
+    file { "${puppet::params::puppet_confdir}/manifests/site.pp":
+      ensure => absent; }
   }
 
   # ---
   # Application-server specific SSL configuration
   case $servertype {
-    "passenger": {
+    'passenger': {
       include puppet::server::passenger
-      $ssl_client_header        = "SSL_CLIENT_S_DN"
-      $ssl_client_verify_header = "SSL_CLIENT_VERIFY"
+      $ssl_client_header        = 'SSL_CLIENT_S_DN'
+      $ssl_client_verify_header = 'SSL_CLIENT_VERIFY'
     }
-    "unicorn": {
+    'unicorn': {
       include puppet::server::unicorn
-      $ssl_client_header        = "HTTP_X_CLIENT_DN"
-      $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
+      $ssl_client_header        = 'HTTP_X_CLIENT_DN'
+      $ssl_client_verify_header = 'HTTP_X_CLIENT_VERIFY'
     }
-    "thin": {
+    'thin': {
       include puppet::server::thin
-      $ssl_client_header        = "HTTP_X_CLIENT_DN"
-      $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
+      $ssl_client_header        = 'HTTP_X_CLIENT_DN'
+      $ssl_client_verify_header = 'HTTP_X_CLIENT_VERIFY'
     }
-    "standalone": {
+    'standalone': {
       include puppet::server::standalone
     }
     default: {
       err('Only "passenger", "thin", and "unicorn" are valid options for servertype')
-      fail("Servertype \"$servertype\" not implemented")
+      fail("Servertype \"${servertype}\" not implemented")
     }
   }
 
   # ---
   # Storeconfigs
   if $storeconfigs {
-    class { "puppet::storeconfig":
+    class { 'puppet::storeconfig':
       backend => $storeconfigs,
     }
   }

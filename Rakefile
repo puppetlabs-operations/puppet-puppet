@@ -10,6 +10,9 @@ rescue LoadError
 end
 
 PuppetLint.configuration.send("disable_80chars")
+
+# Quoted booleans are used legitimately in ini settings
+PuppetLint.configuration.send("disable_quoted_booleans")
 PuppetLint.configuration.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
 PuppetLint.configuration.fail_on_warnings = false
 

@@ -18,12 +18,12 @@ class puppet::server::rack {
     mode   => '0644',
   }
 
-  $run_template = $puppetversion ? {
+  $run_template = $::puppetversion ? {
     /^2.7/      => 'puppet/config.ru/99-run-2.7.erb',
     /^3.[0-4]/  => 'puppet/config.ru/99-run-3.0.erb',
   }
 
-  concat::fragment { "run-puppet-master":
+  concat::fragment { 'run-puppet-master':
     order   => '99',
     target  => "${puppet_confdir}/config.ru",
     content => template($run_template),

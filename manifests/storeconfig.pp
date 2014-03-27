@@ -50,16 +50,16 @@ class puppet::storeconfig (
   }
 
   case $backend {
-    "mysql","postgresql","sqlite": {
-      package { "gem-activerecord":
-        name => $operatingsystem ? {
-          "Debian" => "libactiverecord-ruby",
-          "Darwin" => "rb-activerecord",
+    'mysql','postgresql','sqlite': {
+      package { 'gem-activerecord':
+        name     => $::operatingsystem ? {
+          'Debian' => 'libactiverecord-ruby',
+          'Darwin' => 'rb-activerecord',
           default  => activerecord,
         },
-        provider => $operatingsystem ? {
-          "Debian" => apt,
-          "Darwin" => macports,
+        provider => $::operatingsystem ? {
+          'Debian' => apt,
+          'Darwin' => macports,
           default  => gem,
         },
       }
@@ -71,13 +71,13 @@ class puppet::storeconfig (
       include puppet::storeconfig::sqlite
     }
     'mysql': {
-      class { "puppet::storeconfig::mysql":
+      class { 'puppet::storeconfig::mysql':
           dbuser     => $dbuser,
           dbpassword => $dbpassword,
       }
     }
     'postgresql': {
-      class { "puppet::storeconfig::postgresql":
+      class { 'puppet::storeconfig::postgresql':
           dbuser     => $dbuser,
           dbpassword => $dbpassword,
       }
@@ -85,6 +85,6 @@ class puppet::storeconfig (
     'puppetdb': {
       class {'::puppet::storeconfig::puppetdb': }
     }
-    default: { err("Target storeconfigs backend \"$backend\" not implemented") }
+    default: { err("Target storeconfigs backend \"${backend}\" not implemented") }
   }
 }
