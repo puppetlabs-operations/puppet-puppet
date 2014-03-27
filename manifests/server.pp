@@ -115,5 +115,5 @@ class puppet::server (
   #
   # Use a real boolean after hiera 1.0 is out
   #
-  if $backup_server  == true { include puppet::server::backup }
+  if $backup_server  == 'true' { include puppet::server::backup }
 }
