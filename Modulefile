@@ -1,5 +1,5 @@
 name 'ploperations-puppet'
-version '0.11.0'
+version '0.12.0'
 author 'Puppet Labs Operations'
 license 'Apache 2'
 
