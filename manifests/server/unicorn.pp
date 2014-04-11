@@ -12,7 +12,7 @@ class puppet::server::unicorn {
     ],
   }
 
-  $servername     = pick($::puppet::server::servername, $::clientcert)
+  $servername     = pick($::puppet::server::servername, $::clientcert, $::fqdn)
   $unicorn_socket = "${puppet::params::puppet_rundir}/puppetmaster_unicorn.sock"
 
   nginx::unicorn { "puppetmaster":
