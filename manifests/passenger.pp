@@ -45,6 +45,7 @@ class puppet::passenger {
     docroot           => '/etc/puppet/rack/public/',
     ssl               => true,
     ssl_cipher        => $puppet::server::ssl_ciphers,
+    ssl_protocol      => $puppet::server::ssl_protocols,
     ssl_cert          => "${puppet::ssldir}/certs/${puppet::server::servername}.pem",
     ssl_key           => "${puppet::ssldir}/private_keys/${puppet::server::servername}.pem",
     ssl_chain         => "${puppet::ssldir}/certs/ca.pem",
