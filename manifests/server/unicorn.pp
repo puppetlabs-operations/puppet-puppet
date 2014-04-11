@@ -26,8 +26,8 @@ class puppet::server::unicorn {
     ssl_key           => "${::puppet::ssldir}/private_keys/${servername}.pem",
     ssl_ca            => "${::puppet::ssldir}/certs/ca.pem",
     ssl_crl_path      => "${::puppet::ssldir}/crl.pem",
-    ssl_ciphers       => "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS",
-    ssl_protocols     => "TLSv1.2 TLSv1.1 TLSv1 SSLv3",
+    ssl_ciphers       => $::puppet::server::ssl_ciphers,
+    ssl_protocols     => $::puppet::server::ssl_protocols,
     ssl_verify_client => "optional",
     magic             => "proxy_connect_timeout 300s;\n  proxy_read_timeout 300s;",
   }
