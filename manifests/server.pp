@@ -41,6 +41,8 @@ class puppet::server (
   $reporturl          = "http://$fqdn/reports",
   $reportfrom         = undef,
   $servertype         = "unicorn",
+  $serverssl_protos   = undef,
+  $serverssl_ciphers  = undef,
   $ca                 = false,
   $bindaddress        = '::',
   $enc                = '',
@@ -76,16 +78,22 @@ class puppet::server (
       include puppet::server::passenger
       $ssl_client_header        = "SSL_CLIENT_S_DN"
       $ssl_client_verify_header = "SSL_CLIENT_VERIFY"
+      $ssl_protocols            = pick($serverssl_protos, '-ALL +TLSv1.2 +TLSv1.1 +TLSv1 +SSLv3')
+      $ssl_ciphers              = pick($serverssl_ciphers, 'ALL:!ADH:!EXP:!LOW:+RC4:+HIGH:+MEDIUM:!SSLv2:+SSLv3:+TLSv1:+eNULL')
     }
     "unicorn": {
       include puppet::server::unicorn
       $ssl_client_header        = "HTTP_X_CLIENT_DN"
       $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
+      $ssl_protocols            = pick($serverssl_protos, 'TLSv1.2 TLSv1.1 TLSv1 SSLv3')
+      $ssl_ciphers              = pick($serverssl_ciphers, 'HIGH:!aNULL:!MD5')
     }
     "thin": {
       include puppet::server::thin
       $ssl_client_header        = "HTTP_X_CLIENT_DN"
       $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
+      $ssl_protocols            = pick($serverssl_protos, 'TLSv1.2 TLSv1.1 TLSv1 SSLv3')
+      $ssl_ciphers              = pick($serverssl_ciphers, 'HIGH:!aNULL:!MD5')
     }
     "standalone": {
       include puppet::server::standalone
