@@ -19,7 +19,7 @@ class puppet::storeconfig::puppetdb(
     value   => 'puppetdb',
   }
 
-  ini_setting { 'puppetdb_server':
+  ini_setting { 'puppetdb_conf_server':
     ensure  => 'present',
     path    => "${::puppet::params::puppet_confdir}/puppetdb.conf",
     section => 'main',
@@ -27,7 +27,7 @@ class puppet::storeconfig::puppetdb(
     value   => $server,
   }
 
-  ini_setting { 'puppetdb_port':
+  ini_setting { 'puppetdb_conf_port':
     ensure  => 'present',
     path    => "${::puppet::params::puppet_confdir}/puppetdb.conf",
     section => 'main',
