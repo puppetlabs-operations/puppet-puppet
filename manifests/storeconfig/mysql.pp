@@ -19,7 +19,7 @@ class puppet::storeconfig::mysql (
       value   => 'mysql';
     'dbmigrate':
       setting => 'dbmigrate',
-      value   => 'true';
+      value   => true;
     'dbuser':
       setting => 'dbuser',
       value   => $dbuser;
@@ -36,18 +36,21 @@ class puppet::storeconfig::mysql (
 
   # ---
   # Install the mysql gem
-  package { "gem-mysql":
-    name => $operatingsystem ? {
-      "Debian" => "libmysql-ruby",
-      "Darwin" => "rb-mysql",
-      default  => mysql,
-    },
-    provider => $operatingsystem ? {
-      "Debian" => apt,
-      "Darwin" => macports,
-      default  => gem,
-    },
-    ensure => installed,
+  $package_name = $::operatingsystem ? {
+    'Debian' => 'libmysql-ruby',
+    'Darwin' => 'rb-mysql',
+    default  => mysql,
+  }
+  $package_provider = $::operatingsystem ? {
+    'Debian' => 'apt',
+    'Darwin' => 'macports',
+    default  => 'gem',
+  }
+
+  package { 'gem-mysql':
+    ensure   => installed,
+    name     => $package_name,
+    provider => $package_provider,
   }
 
   # ---
@@ -57,13 +60,13 @@ class puppet::storeconfig::mysql (
     charset => 'utf8',
   }
 
-  database_user{"$dbuser@localhost":
+  database_user{ "${dbuser}@localhost":
     ensure        => present,
     password_hash => mysql_password($dbpassword),
     require       => Database['puppet'],
   }
 
-  database_grant{ 'puppet@localhost/puppet':
+  database_grant { 'puppet@localhost/puppet':
     privileges => [all],
     require    => [ Database['puppet'], Database_user['puppet@localhost'] ],
   }

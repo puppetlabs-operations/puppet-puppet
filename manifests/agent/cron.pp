@@ -9,9 +9,9 @@ class puppet::agent::cron(
     $ensure = absent
   }
 
-  cron { "puppet agent":
+  cron { 'puppet agent':
+    ensure  => $ensure,
     command => "${puppet::params::puppet_cmd} agent --confdir ${puppet::params::puppet_confdir} --onetime --no-daemonize >/dev/null",
     minute  => fqdn_rand(60),
-    ensure  => $ensure,
   }
 }

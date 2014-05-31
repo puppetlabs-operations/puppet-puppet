@@ -27,17 +27,6 @@ class puppet::agent::service (
   # ----
   # Special things for special kernels
   case $::kernel {
-    linux: {
-      if $puppet::params::agent_service_conf {
-        file { 'puppet_agent_service_conf':
-          mode    => '0644',
-          owner   => 'root',
-          group   => 'root',
-          content => template('puppet/agent_service.erb'),
-          path    => $puppet::params::agent_service_conf,
-        }
-      }
-    }
     darwin: {
       file { 'com.puppetlabs.puppet.plist':
         owner   => 'root',
@@ -45,6 +34,22 @@ class puppet::agent::service (
         mode    => '0640',
         source  => 'puppet:///modules/puppet/com.puppetlabs.puppet.plist',
         path    => '/Library/LaunchDaemons/com.puppetlabs.puppet.plist',
+      }
+    }
+    default: {
+
+      $file_ensure = $puppet::params::agent_service_conf ? {
+        undef   => 'absent',
+        default => 'present',
+      }
+
+      file { 'puppet_agent_service_conf':
+        ensure  => $file_ensure,
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => template('puppet/agent_service.erb'),
+        path    => $puppet::params::agent_service_conf,
       }
     }
   }

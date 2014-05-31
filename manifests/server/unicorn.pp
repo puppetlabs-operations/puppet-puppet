@@ -15,7 +15,7 @@ class puppet::server::unicorn {
   $servername     = pick($::puppet::server::servername, $::clientcert, $::fqdn)
   $unicorn_socket = "${puppet::params::puppet_rundir}/puppetmaster_unicorn.sock"
 
-  nginx::unicorn { "puppetmaster":
+  nginx::unicorn { 'puppetmaster':
     servername        => $servername,
     path              => $::puppet::params::puppet_confdir,
     unicorn_socket    => $unicorn_socket,
@@ -28,11 +28,11 @@ class puppet::server::unicorn {
     ssl_crl_path      => "${::puppet::ssldir}/crl.pem",
     ssl_ciphers       => $::puppet::server::ssl_ciphers,
     ssl_protocols     => $::puppet::server::ssl_protocols,
-    ssl_verify_client => "optional",
+    ssl_verify_client => 'optional',
     magic             => "proxy_connect_timeout 300s;\n  proxy_read_timeout 300s;",
   }
 
-  unicorn::app { "puppetmaster":
+  unicorn::app { 'puppetmaster':
     approot         => $::puppet::params::puppet_confdir,
     config_file     => "${::puppet::params::puppet_confdir}/unicorn.conf",
     pidfile         => "${::puppet::params::puppet_rundir}/puppetmaster_unicorn.pid",
