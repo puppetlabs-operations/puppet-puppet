@@ -1,7 +1,7 @@
 # Default puppet data
 class puppet::params {
 
-  case $operatingsystem {
+  case $::operatingsystem {
     'debian', 'ubuntu': {
       $puppet_cmd         = '/usr/bin/puppet'
       $agent_package      = 'puppet'
@@ -123,6 +123,6 @@ class puppet::params {
       $puppet_rundir      = 'C:/ProgramData/PuppetLabs/puppet/var/run'
       $default_method     = 'only_service'
     }
-    default: { fail("Sorry, $operatingsystem is not supported") }
+    default: { fail("Sorry, ${::operatingsystem} is not supported") }
   }
 }
