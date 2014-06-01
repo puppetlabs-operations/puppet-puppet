@@ -16,19 +16,21 @@ class puppet::passenger {
   include apache::mod::passenger
 
   file { ['/etc/puppet/rack', '/etc/puppet/rack/public/', '/etc/puppet/rack/tmp']:
+      ensure => directory,
       owner  => 'puppet',
       group  => 'puppet',
-      ensure => directory,
+  }
+
+  $source   = $::puppetversion ? {
+    /^2.7/ => 'puppet:///modules/puppet/config.ru.passenger.27',
+    /^3./  => 'puppet:///modules/puppet/config.ru.passenger.3',
   }
 
   file { '/etc/puppet/rack/config.ru':
     owner    => 'puppet',
     group    => 'puppet',
     mode     => '0644',
-    source   => $puppetversion ? {
-      /^2.7/ => 'puppet:///modules/puppet/config.ru.passenger.27',
-      /^3./  => 'puppet:///modules/puppet/config.ru.passenger.3',
-    }
+    source   => $source,
   }
 
   if $puppet::server::bindaddress == '::' {
@@ -43,6 +45,7 @@ class puppet::passenger {
     port              => '8140',
     priority          => '10',
     docroot           => '/etc/puppet/rack/public/',
+    rack_base_uris    => '/',
     ssl               => true,
     ssl_cipher        => $puppet::server::ssl_ciphers,
     ssl_protocol      => $puppet::server::ssl_protocols,

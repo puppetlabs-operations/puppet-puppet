@@ -9,7 +9,17 @@ describe 'puppet::agent' do
     }}
     context 'CentOS, RedHat, Debian, Ubuntu' do
       ['RedHat', 'CentOS', 'Debian', 'Ubuntu'].each do |operatingsystem|
-        let(:facts) {{ :operatingsystem => operatingsystem }}
+
+        osfamily   = 'Redhat'  if ['RedHat', 'CentOS'].include? operatingsystem
+        osfamily ||= 'Debian'
+
+        let(:facts) {{
+          :osfamily        => osfamily,
+          :operatingsystem => operatingsystem,
+          :lsbdistid       => operatingsystem,
+          :lsbdistcodename => 'lolwut'
+        }}
+
         it { should contain_class('puppet::package') }
         it { should contain_class('puppet::agent') }
 

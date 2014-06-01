@@ -10,17 +10,25 @@ shared_examples_for "all puppet master types" do
 end
 
 shared_examples_for "basic puppetmaster config" do
-  it { should contain_ini_setting('modulepath').with_value('/etc/puppet/environments/production/modules') }
   it { should contain_ini_setting('ca').with_value(true) }
+  it { should contain_ini_setting('modulepath').with_value('/etc/puppet/environments/production/modules') }
+  it { should contain_ini_setting('environmentpath').with_ensure('absent') }
+end
+
+shared_examples_for "basic puppetmaster environment config" do
+  it { should contain_ini_setting('ca').with_value(true) }
+  it { should contain_ini_setting('environmentpath').with_value('$confdir/environments') }
+  it { should contain_ini_setting('modulepath').with_ensure('absent') }
 end
 
 describe 'puppet::server' do
   describe "webrick puppet::server" do
     let(:params) {{
-      :servertype => 'standalone',
-      :manifest   => '/etc/puppet/manifests/site.pp',
-      :modulepath => ['/etc/puppet/environments/production/modules'],
-      :ca         => true,
+      :servertype      => 'standalone',
+      :manifest        => '/etc/puppet/manifests/site.pp',
+      :modulepath      => ['/etc/puppet/environments/production/modules'],
+      :environmentpath => '$confdir/environments',
+      :ca              => true,
     }}
     shared_examples_for "all standalone masters" do
       it { should contain_class('puppet::server::standalone') }
@@ -29,11 +37,14 @@ describe 'puppet::server' do
     context 'RedHat-derived Distros' do
       ['RedHat', 'CentOS'].each do |operatingsystem|
         context "#{operatingsystem}" do
-          let(:facts) {{ :operatingsystem => operatingsystem }}
+          let(:facts) {{
+            :osfamily        => 'redhat',
+            :operatingsystem => operatingsystem,
+          }}
 
           it_behaves_like "all puppet master types"
           it_behaves_like "all standalone masters"
-          it_behaves_like "basic puppetmaster config"
+          it_behaves_like "basic puppetmaster environment config"
 
           # RHEL-specific examples
           it { should contain_package('puppet-server') }
@@ -49,11 +60,16 @@ describe 'puppet::server' do
     context 'Debian-derived distros' do
       ['Debian','Ubuntu'].each do |operatingsystem|
         context "#{operatingsystem}" do
-          let(:facts) {{ :operatingsystem => operatingsystem }}
+          let(:facts) {{
+            :operatingsystem => operatingsystem,
+            :osfamily        => 'debian',
+            :lsbdistid       => operatingsystem,
+            :lsbdistcodename => 'lolwut',
+          }}
 
           it_behaves_like "all puppet master types"
           it_behaves_like "all standalone masters"
-          it_behaves_like "basic puppetmaster config"
+          it_behaves_like "basic puppetmaster environment config"
 
           # Debian-specific examples
           it { should contain_package('puppetmaster') }

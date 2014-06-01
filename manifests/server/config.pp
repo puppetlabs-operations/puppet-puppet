@@ -9,13 +9,31 @@ class puppet::server::config {
     section => 'master',
   }
 
+  if $puppet::server::environmentpath {
+    $env_ensure = 'present'
+    $mod_ensure = 'absent'
+  } else {
+    $env_ensure = 'absent'
+    $mod_ensure = 'present'
+  }
+
   ini_setting {
+    'environmentpath':
+      ensure  => $env_ensure,
+      section => 'main',
+      setting => 'environmentpath',
+      value   => $puppet::server::environmentpath;
+
     'modulepath':
+      ensure  => $mod_ensure,
       setting => 'modulepath',
       value   => join($puppet::server::modulepath, ':');
+
     'manifest':
+      ensure  => $mod_ensure,
       setting => 'manifest',
       value   => $puppet::server::manifest;
+
     'user':
       setting => 'user',
       value   => 'puppet';
@@ -38,6 +56,7 @@ class puppet::server::config {
 
   if $puppet::server::config_version_cmd {
     ini_setting { 'config_version':
+      ensure  => $mod_ensure,
       setting => 'config_version',
       value   => $puppet::server::config_version_cmd,
     }
@@ -80,16 +99,9 @@ class puppet::server::config {
   }
 
   unless empty($puppet::server::reports) {
-    if is_array($puppet::server::reports) {
-      ini_setting { 'reports':
-        setting => 'reports',
-        value   => join($puppet::server::reports, ", "),
-      }
-    } else {
-      ini_setting { 'reports':
-        setting => 'reports',
-        value   => $puppet::server::reports,
-      }
+    ini_setting { 'reports':
+      setting => 'reports',
+      value   => join(flatten([ $puppet::server::reports ]), ', '),
     }
   }
 
