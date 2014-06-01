@@ -37,7 +37,10 @@ describe 'puppet::server' do
     context 'RedHat-derived Distros' do
       ['RedHat', 'CentOS'].each do |operatingsystem|
         context "#{operatingsystem}" do
-          let(:facts) {{ :operatingsystem => operatingsystem }}
+          let(:facts) {{
+            :osfamily        => 'redhat',
+            :operatingsystem => operatingsystem,
+          }}
 
           it_behaves_like "all puppet master types"
           it_behaves_like "all standalone masters"
@@ -57,7 +60,12 @@ describe 'puppet::server' do
     context 'Debian-derived distros' do
       ['Debian','Ubuntu'].each do |operatingsystem|
         context "#{operatingsystem}" do
-          let(:facts) {{ :operatingsystem => operatingsystem }}
+          let(:facts) {{
+            :operatingsystem => operatingsystem,
+            :osfamily        => 'debian',
+            :lsbdistid       => operatingsystem,
+            :lsbdistcodename => 'lolwut',
+          }}
 
           it_behaves_like "all puppet master types"
           it_behaves_like "all standalone masters"
