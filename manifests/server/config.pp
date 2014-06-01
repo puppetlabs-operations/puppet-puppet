@@ -56,6 +56,7 @@ class puppet::server::config {
 
   if $puppet::server::config_version_cmd {
     ini_setting { 'config_version':
+      ensure  => $mod_ensure,
       setting => 'config_version',
       value   => $puppet::server::config_version_cmd,
     }
