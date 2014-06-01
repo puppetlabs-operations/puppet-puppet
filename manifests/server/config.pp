@@ -9,13 +9,31 @@ class puppet::server::config {
     section => 'master',
   }
 
+  if $puppet::server::environmentpath {
+    $env_ensure = 'present'
+    $mod_ensure = 'absent'
+  } else {
+    $env_ensure = 'absent'
+    $mod_ensure = 'present'
+  }
+
   ini_setting {
+    'environmentpath':
+      ensure  => $env_ensure,
+      section => 'main',
+      setting => 'manifest',
+      value   => $puppet::server::environmentpath;
+
     'modulepath':
+      ensure  => $mod_ensure,
       setting => 'modulepath',
       value   => join($puppet::server::modulepath, ':');
+
     'manifest':
+      ensure  => $mod_ensure,
       setting => 'manifest',
       value   => $puppet::server::manifest;
+
     'user':
       setting => 'user',
       value   => 'puppet';
