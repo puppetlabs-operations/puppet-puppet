@@ -48,7 +48,6 @@ class puppet::server (
   $bindaddress        = '::',
   $enc                = '',
   $enc_exec           = '',
-  $backup_server      = hiera('puppet_server_backup', 'true'),
   $servername         = undef,
   $ensure             = 'present',
   $parser             = undef,
@@ -113,14 +112,4 @@ class puppet::server (
     }
   }
 
-  # ---
-  # Backups
-  #
-  # FIXME
-  # http://projects.puppetlabs.com/issues/10590
-  # err: Could not retrieve catalog from remote server: Error 400 on SERVER: can't clone TrueClass
-  #
-  # Use a real boolean after hiera 1.0 is out
-  #
-  if $backup_server  == 'true' { include puppet::server::backup }
 }
