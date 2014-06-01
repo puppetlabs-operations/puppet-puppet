@@ -43,6 +43,7 @@ class puppet::passenger {
     port              => '8140',
     priority          => '10',
     docroot           => '/etc/puppet/rack/public/',
+    rack_base_uris    => '/',
     ssl               => true,
     ssl_cipher        => $puppet::server::ssl_ciphers,
     ssl_protocol      => $puppet::server::ssl_protocols,
