@@ -21,7 +21,7 @@ class puppet::server::config {
     'environmentpath':
       ensure  => $env_ensure,
       section => 'main',
-      setting => 'manifest',
+      setting => 'environmentpath',
       value   => $puppet::server::environmentpath;
 
     'modulepath':
