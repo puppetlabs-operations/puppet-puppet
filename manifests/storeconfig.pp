@@ -29,39 +29,46 @@ class puppet::storeconfig (
     path    => $puppet::params::puppet_conf,
   }
 
-  if $backend != '' {
-    ini_setting {
-      'storeconfigs':
-        setting => 'storeconfigs',
-        value   => 'true';
-      'thin_storeconfigs':
-        setting => 'thin_storeconfigs',
-        value   => 'true';
-    }
-  } else {
-    ini_setting {
-      'storeconfigs':
-        setting => 'storeconfigs',
-        value   => 'false';
-      'thin_storeconfigs':
-        ensure  => 'absent',
-        setting => 'thin_storeconfigs';
-    }
+  # if no backend was selected
+  $thin_enable = $backend ? {
+    ''      => true,
+    default => false,
+  }
+  $thin_ensure = $backend ? {
+    ''      => 'present',
+    default => 'absent',
+  }
+
+  # use thin_storageconfigs
+  ini_setting {
+    'storeconfigs':
+      setting => 'storeconfigs',
+      value   => $thin_enable;
+    'thin_storeconfigs':
+      ensure  => $thin_ensure,
+      setting => 'thin_storeconfigs',
+      value   => $thin_enable;
   }
 
   case $backend {
-    "mysql","postgresql","sqlite": {
-      package { "gem-activerecord":
-        name => $operatingsystem ? {
-          "Debian" => "libactiverecord-ruby",
-          "Darwin" => "rb-activerecord",
-          default  => activerecord,
-        },
-        provider => $operatingsystem ? {
-          "Debian" => apt,
-          "Darwin" => macports,
-          default  => gem,
-        },
+    'mysql','postgresql','sqlite': {
+
+      # this is not pretty, and could be put into params..
+
+      $package_name = $::operatingsystem ? {
+        'Debian' => 'libactiverecord-ruby',
+        'Darwin' => 'rb-activerecord',
+        default  => 'activerecord',
+      }
+      $package_provider = $::operatingsystem ? {
+        'Debian' => 'apt',
+        'Darwin' => 'macports',
+        default  => 'gem',
+      }
+
+      package { 'gem-activerecord':
+        name     => $package_name,
+        provider => $package_provider,
       }
     }
   }
@@ -71,13 +78,13 @@ class puppet::storeconfig (
       include puppet::storeconfig::sqlite
     }
     'mysql': {
-      class { "puppet::storeconfig::mysql":
+      class { 'puppet::storeconfig::mysql':
           dbuser     => $dbuser,
           dbpassword => $dbpassword,
       }
     }
     'postgresql': {
-      class { "puppet::storeconfig::postgresql":
+      class { 'puppet::storeconfig::postgresql':
           dbuser     => $dbuser,
           dbpassword => $dbpassword,
       }
@@ -85,6 +92,6 @@ class puppet::storeconfig (
     'puppetdb': {
       class {'::puppet::storeconfig::puppetdb': }
     }
-    default: { err("Target storeconfigs backend \"$backend\" not implemented") }
+    default: { err('Target storeconfigs backend "$backend" not implemented') }
   }
 }

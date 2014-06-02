@@ -11,11 +11,6 @@
 #
 # * modulepath
 # * storeconfigs
-# * dbadapter
-# * dbuser
-# * dbpassword
-# * dbserver
-# * dbsocket
 # * servertype
 #
 # == Example
@@ -36,18 +31,18 @@ class puppet::server (
   $manifest           = '$confdir/modules/site/site.pp',
   $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
   $storeconfigs       = undef,
-  $report             = 'true',
-  $reports            = ["store", "https"],
-  $reporturl          = "http://$fqdn/reports",
+  $report             = true,
+  $reports            = ['store', 'https'],
+  $reporturl          = "http://${::fqdn}/reports",
   $reportfrom         = undef,
-  $servertype         = "unicorn",
+  $servertype         = 'unicorn',
   $serverssl_protos   = undef,
   $serverssl_ciphers  = undef,
   $ca                 = false,
   $bindaddress        = '::',
   $enc                = '',
   $enc_exec           = '',
-  $backup_server      = hiera('puppet_server_backup', 'true'),
+  $backup_server      = hiera('puppet_server_backup', true),
   $servername         = undef,
   $ensure             = 'present',
   $parser             = undef,
@@ -74,40 +69,40 @@ class puppet::server (
   # ---
   # Application-server specific SSL configuration
   case $servertype {
-    "passenger": {
+    'passenger': {
       include puppet::server::passenger
-      $ssl_client_header        = "SSL_CLIENT_S_DN"
-      $ssl_client_verify_header = "SSL_CLIENT_VERIFY"
+      $ssl_client_header        = 'SSL_CLIENT_S_DN'
+      $ssl_client_verify_header = 'SSL_CLIENT_VERIFY'
       $ssl_protocols            = pick($serverssl_protos, '-ALL +TLSv1.2 +TLSv1.1 +TLSv1 +SSLv3')
       $ssl_ciphers              = pick($serverssl_ciphers, 'ALL:!ADH:!EXP:!LOW:+RC4:+HIGH:+MEDIUM:!SSLv2:+SSLv3:+TLSv1:+eNULL')
     }
-    "unicorn": {
+    'unicorn': {
       include puppet::server::unicorn
-      $ssl_client_header        = "HTTP_X_CLIENT_DN"
-      $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
+      $ssl_client_header        = 'HTTP_X_CLIENT_DN'
+      $ssl_client_verify_header = 'HTTP_X_CLIENT_VERIFY'
       $ssl_protocols            = pick($serverssl_protos, 'TLSv1.2 TLSv1.1 TLSv1 SSLv3')
       $ssl_ciphers              = pick($serverssl_ciphers, 'HIGH:!aNULL:!MD5')
     }
-    "thin": {
+    'thin': {
       include puppet::server::thin
-      $ssl_client_header        = "HTTP_X_CLIENT_DN"
-      $ssl_client_verify_header = "HTTP_X_CLIENT_VERIFY"
+      $ssl_client_header        = 'HTTP_X_CLIENT_DN'
+      $ssl_client_verify_header = 'HTTP_X_CLIENT_VERIFY'
       $ssl_protocols            = pick($serverssl_protos, 'TLSv1.2 TLSv1.1 TLSv1 SSLv3')
       $ssl_ciphers              = pick($serverssl_ciphers, 'HIGH:!aNULL:!MD5')
     }
-    "standalone": {
+    'standalone': {
       include puppet::server::standalone
     }
     default: {
       err('Only "passenger", "thin", and "unicorn" are valid options for servertype')
-      fail("Servertype \"$servertype\" not implemented")
+      fail('Servertype "$servertype" not implemented')
     }
   }
 
   # ---
   # Storeconfigs
   if $storeconfigs {
-    class { "puppet::storeconfig":
+    class { 'puppet::storeconfig':
       backend => $storeconfigs,
     }
   }
@@ -115,11 +110,5 @@ class puppet::server (
   # ---
   # Backups
   #
-  # FIXME
-  # http://projects.puppetlabs.com/issues/10590
-  # err: Could not retrieve catalog from remote server: Error 400 on SERVER: can't clone TrueClass
-  #
-  # Use a real boolean after hiera 1.0 is out
-  #
-  if $backup_server  == 'true' { include puppet::server::backup }
+  if $backup_server { include puppet::server::backup }
 }

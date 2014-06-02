@@ -14,7 +14,7 @@ class puppet::storeconfig::sqlite {
       value   => 'sqlite3';
     'dbmigrate':
       setting => 'dbmigrate',
-      value   => 'true';
+      value   => true;
   }
 
   # ---

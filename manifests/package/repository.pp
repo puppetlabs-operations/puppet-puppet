@@ -13,16 +13,14 @@
 # If used on apt based distributions, this requires the puppetlabs/apt module.
 #
 class puppet::package::repository($devel = false) {
-  case $osfamily {
-    Redhat: {
-      class { "puppetlabs_yum":
-        enable_devel   => $devel,
-      }
-    }
-    Debian: {
-      class { 'puppetlabs_apt':
-        enable_devel => $devel,
-      }
-    }
+
+  case $::osfamily {
+    Redhat: { $repo_class = 'puppetlabs_yum' }
+    Debian: { $repo_class = 'puppetlabs_apt' }
+    default: { fail("Puppetlabs does not offer a package repository for ${::osfamily}") }
+  }
+
+  class { $repo_class:
+    enable_devel   => $devel,
   }
 }
