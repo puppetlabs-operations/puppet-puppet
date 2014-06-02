@@ -1,13 +1,13 @@
-<% if osfamily == 'Debian' -%>
+<% if @osfamily == 'Debian' -%>
 # Only used on debian. Defaults for puppet - sourced by /etc/init.d/puppet
 
 # Start puppet on boot?
-<% if enable -%>
+<% if @enable -%>
 START=yes
 <% else -%>
 START=no
 <% end -%>
-<% elsif osfamily == 'RedHat' or osfamily == 'Suse' -%>
+<% elsif @osfamily == 'RedHat' or @osfamily == 'Suse' -%>
 # Startup options
 DAEMON_OPTS=""
 # The puppetmaster server
