@@ -25,13 +25,13 @@ class puppet::dashboard (
   $db_host   = 'localhost',
   $db_name   = 'puppet_dashboard',
   $manage_db = true,
-  $site      = "dashboard.${domain}",
+  $site      = "dashboard.${::domain}",
   $allowip   = ''
 ) {
 
   include ruby::dev
 
-  $allow_all_ips  = "${allowip},${ipaddress}"
+  $allow_all_ips  = "${allowip},${::ipaddress}"
   $approot        = '/usr/share/puppet-dashboard'
   $dashboard_site = $site
 
@@ -64,7 +64,7 @@ class puppet::dashboard (
 
   if $manage_db {
     # FIXME THIS IS NOT COMPATIBLE WITH THE NEW MYSQL MODULE
-    mysql::db { "dashboard_production":
+    mysql::db { 'dashboard_production':
       db_user => $db_user,
       db_pw   => $db_pw;
     }
@@ -97,9 +97,9 @@ class puppet::dashboard (
       "${approot}/public/stylesheets",
       "${approot}/public/javascript"
   ]:
-    mode => 0755,
-    owner => 'www-data',
-    group => 'www-data',
+    mode    => '0755',
+    owner   => 'www-data',
+    group   => 'www-data',
     require => Package['puppet-dashboard'],
   }
 }
