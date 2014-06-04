@@ -10,7 +10,7 @@
 At an absolute minimum, you need the following.
 
 ``` Puppet
-class { "puppet::server":
+class { 'puppet::server':
   servertype   => 'standalone',
   manifest     => '/etc/puppet/manifests/site.pp',
   ca           => true,
@@ -26,13 +26,13 @@ something that scales a bit more.
 ``` Puppet
 class service::puppet::master($servertype, $ca = false) {
 
-  class { "::puppet::server":
+  class { '::puppet::server':
     modulepath   => [
       '$confdir/modules/site',
       '$confdir/env/$environment/dist',
     ],
-    storeconfigs => "puppetdb",
-    reporturl    => "https://my.puppet.dashboard/reports",
+    storeconfigs => 'puppetdb',
+    reporturl    => 'https://my.puppet.dashboard/reports',
     servertype   => 'unicorn',
     manifest     => '$confdir/environments/$environment/site.pp',
     ca           => $ca,
