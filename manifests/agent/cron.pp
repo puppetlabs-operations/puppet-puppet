@@ -1,5 +1,6 @@
-class puppet::agent::cron(
-  $enable = true,
+class puppet::agent::cron (
+  $enable   = true,
+  $run_noop = false,
 ) {
   include puppet::params
 
@@ -9,9 +10,15 @@ class puppet::agent::cron(
     $ensure = absent
   }
 
+  if $run_noop {
+    $cmd = "${puppet::params::puppet_cmd} agent --confdir ${puppet::params::puppet_confdir} --onetime --no-daemonize --noop >/dev/null"
+  } else {
+    $cmd = "${puppet::params::puppet_cmd} agent --confdir ${puppet::params::puppet_confdir} --onetime --no-daemonize >/dev/null"
+  }
+
   cron { 'puppet agent':
     ensure  => $ensure,
-    command => "${puppet::params::puppet_cmd} agent --confdir ${puppet::params::puppet_confdir} --onetime --no-daemonize >/dev/null",
+    command => $cmd,
     minute  => fqdn_rand(60),
   }
 }
