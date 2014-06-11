@@ -43,7 +43,6 @@ class puppet::server (
   $bindaddress        = '::',
   $enc                = '',
   $enc_exec           = '',
-  $backup_server      = hiera('puppet_server_backup', true),
   $servername         = undef,
   $ensure             = 'present',
   $parser             = undef,
@@ -108,8 +107,4 @@ class puppet::server (
     }
   }
 
-  # ---
-  # Backups
-  #
-  if $backup_server { include puppet::server::backup }
 }
