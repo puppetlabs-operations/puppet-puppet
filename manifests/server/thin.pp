@@ -7,6 +7,21 @@ class puppet::server::thin {
   class { '::thin': }
   class { 'nginx::server': }
 
+  Ini_setting {
+    ensure  => 'present',
+    section => 'master',
+    path    => $puppet::params::puppet_conf,
+  }
+
+  ini_setting {
+    'ssl_client_header':
+      ensure  => 'absent',
+      setting => 'ssl_client_header';
+    'ssl_client_verify_header':
+      ensure  => 'absent',
+      setting => 'ssl_client_verify_header';
+  }
+
   $servers = $::processorcount
   nginx::vhost { 'puppetmaster':
     port     => 8140,
