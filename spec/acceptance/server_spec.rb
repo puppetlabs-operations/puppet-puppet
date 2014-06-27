@@ -117,4 +117,43 @@ describe 'server', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) d
     end
   end
 
+  context 'running on thin' do
+    after(:all) do
+      cleanup_server()
+    end
+
+    it 'should run with no errors' do
+      pp = <<-EOS
+        class { "puppet::server":
+          servertype   => 'thin',
+          ca           => true,
+        }
+      EOS
+
+      # Run it twice and test for idempotency
+      apply_manifest(pp, :catch_failures => true)
+      expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
+    end
+
+    describe package('thin') do
+      it {
+        should be_installed.by('gem')
+      }
+    end
+
+    describe service('thin-puppetmaster') do
+      it {
+        should be_enabled
+      }
+      it {
+        should be_running
+      }
+    end
+
+    describe port(8140) do
+      it {
+        should be_listening
+      }
+    end
+  end
 end
