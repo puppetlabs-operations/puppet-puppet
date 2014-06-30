@@ -1,7 +1,7 @@
 # nginx configuration for a puppetmaster running on thin
 
 upstream puppetmaster_upstream {
-<% (0...servers.to_i).each do |count| %>
+<% (0...@servers.to_i).each do |count| %>
   server unix:/var/run/thin/puppetmaster.<%= count %>.sock max_fails=0 fail_timeout=0s;
 <% end -%>
 }

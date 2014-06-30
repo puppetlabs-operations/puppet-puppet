@@ -51,6 +51,9 @@ mod 'nginx',          :git => 'git://github.com/puppetlabs-operations/puppet-ngi
 mod 'inifile',        :git => 'git://github.com/puppetlabs/puppetlabs-inifile.git'
 mod 'apache',         :git => 'git://github.com/puppetlabs/puppetlabs-apache.git'
 mod 'portage',        :git => 'git://github.com/gentoo/puppet-portage.git'
+mod 'thin',           :git => 'git://github.com/danieldreier/puppet-thin.git'
+
+
   EOS
   on host, "echo \"#{puppetfile}\" > /etc/puppet/Puppetfile"
   on host, "cd /etc/puppet; r10k puppetfile install"
