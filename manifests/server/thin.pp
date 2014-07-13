@@ -3,7 +3,10 @@ class puppet::server::thin {
   include puppet::params
   include puppet::server::rack
 
-  class { 'puppet::server::standalone': enabled => false }
+  class { 'puppet::server::standalone':
+    enabled => false,
+    before  => Class['nginx'],
+  }
   class { '::thin': }
   class { 'nginx': }
 
