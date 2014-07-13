@@ -11,9 +11,12 @@ class puppet::server::thin {
     loglevel => 'warning',
   }
 
-  class { 'puppet::server::standalone': enabled => false }
-  class { '::thin': }
-  class { 'nginx': }
+  class { 'puppet::server::standalone':
+    enabled => false,
+    before  => Class['nginx'],
+  }
+  include '::thin'
+  include nginx
 
   Ini_setting {
     ensure  => 'present',
