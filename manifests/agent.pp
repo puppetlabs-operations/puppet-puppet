@@ -69,7 +69,9 @@ class puppet::agent(
     $real_ca_server = $server
   }
 
-  include puppet::agent::config
+  if $ensure == 'present' {
+    include puppet::agent::config
+  }
 
   case $method {
     cron: {
