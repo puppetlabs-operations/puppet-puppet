@@ -38,18 +38,20 @@ class puppet::agent::service (
     }
     default: {
 
-      $file_ensure = $puppet::params::agent_service_conf ? {
-        undef   => 'absent',
-        default => 'present',
-      }
+      if $puppet::params::agent_service_conf {
+        $file_ensure = $puppet::params::agent_service_conf ? {
+          undef   => 'absent',
+          default => 'present',
+        }
 
-      file { 'puppet_agent_service_conf':
-        ensure  => $file_ensure,
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-        content => template('puppet/agent_service.erb'),
-        path    => $puppet::params::agent_service_conf,
+        file { 'puppet_agent_service_conf':
+          ensure  => $file_ensure,
+          mode    => '0644',
+          owner   => 'root',
+          group   => 'root',
+          content => template('puppet/agent_service.erb'),
+          path    => $puppet::params::agent_service_conf,
+        }
       }
     }
   }
