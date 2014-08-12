@@ -3,6 +3,15 @@ class puppet::agent::config {
   include puppet::agent
   include puppet::params
 
+  file { $puppet::params::puppet_conf:
+    ensure => $puppet::agent::ensure ? {
+                  'present' => 'file',
+                  'absent'  => 'absent',
+                  default   => 'absent'
+                },
+    mode   => 644,
+  }
+
   Ini_setting {
     path    => $puppet::params::puppet_conf,
     ensure  => 'present',
