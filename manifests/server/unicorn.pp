@@ -4,12 +4,6 @@ class puppet::server::unicorn {
   include puppet::server::rack
   class { 'nginx': }
 
-  file { '/etc/puppet':
-    ensure => 'directory',
-    owner  => 'puppet',
-    group  => 'puppet',
-  }
-
   class { 'puppet::server::standalone':
     enabled => false,
     before  => [
