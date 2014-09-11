@@ -15,8 +15,8 @@
 class puppet::package::repository($devel = false) {
 
   case $::osfamily {
-    Redhat: { $repo_class = 'puppetlabs_yum' }
-    Debian: { $repo_class = 'puppetlabs_apt' }
+    'Redhat': { $repo_class = 'puppetlabs_yum' }
+    'Debian': { $repo_class = 'puppetlabs_apt' }
     default: { fail("Puppetlabs does not offer a package repository for ${::osfamily}") }
   }
 
