@@ -3,6 +3,14 @@ class puppet::server::thin {
   include puppet::params
   include puppet::server::rack
 
+  notify { 'Thin Support Pending Removal':
+    message  => 'Thin support  on the Puppet Master may be removed from the
+    puppet-puppet module!  Please see
+    https://github.com/puppetlabs-operations/puppet-puppet/issues/110 for more
+    detail.  Support will be removed if no users of the feature speak up.',
+    loglevel => 'warning',
+  }
+
   class { 'puppet::server::standalone': enabled => false }
   class { '::thin': }
   class { 'nginx::server': }
