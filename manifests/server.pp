@@ -40,7 +40,7 @@ class puppet::server (
   $serverssl_protos   = undef,
   $serverssl_ciphers  = undef,
   $ca                 = false,
-  $bindaddress        = '::',
+  $bindaddress        = '0.0.0.0',
   $enc                = '',
   $enc_exec           = '',
   $servername         = undef,
