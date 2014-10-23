@@ -7,8 +7,8 @@ class puppet::server::thin {
     enabled => false,
     before  => Class['nginx'],
   }
-  class { '::thin': }
-  class { 'nginx': }
+  include ::thin
+  include nginx
 
   Ini_setting {
     ensure  => 'present',
