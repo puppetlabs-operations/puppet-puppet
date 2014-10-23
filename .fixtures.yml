@@ -11,7 +11,9 @@ fixtures:
     unicorn: "git://github.com/puppetlabs-operations/puppet-unicorn.git"
     rack: "git://github.com/puppetlabs-operations/puppet-rack.git"
     bundler: "git://github.com/puppetlabs-operations/puppet-bundler.git"
-    nginx: "git://github.com/jfryman/puppet-nginx.git"
+    nginx:
+      repo: "git://github.com/jfryman/puppet-nginx.git"
+      ref: "v0.0.10"
     inifile: "git://github.com/puppetlabs/puppetlabs-inifile.git"
     apache: "git://github.com/puppetlabs/puppetlabs-apache.git"
     portage: "git://github.com/gentoo/puppet-portage.git"
