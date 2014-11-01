@@ -83,18 +83,11 @@ class puppet::server (
       $ssl_protocols            = pick($serverssl_protos, 'TLSv1.2 TLSv1.1 TLSv1 SSLv3')
       $ssl_ciphers              = pick($serverssl_ciphers, 'HIGH:!aNULL:!MD5')
     }
-    'thin': {
-      include puppet::server::thin
-      $ssl_client_header        = 'HTTP_X_CLIENT_DN'
-      $ssl_client_verify_header = 'HTTP_X_CLIENT_VERIFY'
-      $ssl_protocols            = pick($serverssl_protos, 'TLSv1.2 TLSv1.1 TLSv1 SSLv3')
-      $ssl_ciphers              = pick($serverssl_ciphers, 'HIGH:!aNULL:!MD5')
-    }
     'standalone': {
       include puppet::server::standalone
     }
     default: {
-      err('Only "passenger", "thin", and "unicorn" are valid options for servertype')
+      err('Only "passenger" and  "unicorn" are valid options for servertype')
       fail('Servertype "$servertype" not implemented')
     }
   }
