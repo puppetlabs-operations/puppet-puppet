@@ -160,45 +160,4 @@ describe 'puppet::server' do
       end
     end
   end
-  describe "thin puppet::server" do
-    let(:params) {{
-      :servertype   => 'thin',
-      :storeconfigs => 'puppetdb',
-      :manifest     => '/etc/puppet/manifests/site.pp',
-      :modulepath   => ['/etc/puppet/environments/production/modules'],
-      :ca           => true,
-    }}
-    context 'Debian' do
-      let(:facts) {{
-        :operatingsystem        => 'debian',
-        :operatingsystemrelease => '7',
-        :osfamily               => 'debian',
-        :puppetversion          => '3.4.2',
-        :concat_basedir         => '/foo',
-        :kernel                 => 'linux',
-        :lsbdistid              => 'debian',
-        :lsbdistcodename        => 'wheezy',
-      }}
-      it_behaves_like "all puppet master types"
-      it_behaves_like "basic puppetmaster config"
-
-      it { should contain_package('puppetmaster') }
-
-      # Tests specific to passenger server
-      it { should contain_class('puppet::server::thin') }
-
-      it do
-        should contain_service('puppetmaster').with({
-          :ensure => "stopped"
-        })
-        should contain_service('nginx').with({
-          :ensure => "running"
-        })
-        should contain_service('thin-puppetmaster').with({
-          :ensure => "running"
-        })
-        should contain_file('/etc/thin.d/puppetmaster.yml')
-      end
-    end
-  end
 end
