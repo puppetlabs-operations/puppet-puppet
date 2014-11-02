@@ -201,4 +201,72 @@ describe 'puppet::server' do
       end
     end
   end
+  describe "puppetserver puppet::server" do
+    let(:params) {{
+      :servertype      => 'puppetserver',
+      :manifest        => '/etc/puppet/manifests/site.pp',
+      :modulepath      => ['/etc/puppet/environments/production/modules'],
+      :environmentpath => '$confdir/environments',
+      :ca              => true,
+    }}
+    shared_examples_for "all puppetserver masters" do
+      it { should contain_class('puppet::server::puppetserver') }
+    end
+
+    context 'RedHat-derived Distros' do
+      ['RedHat', 'CentOS'].each do |operatingsystem|
+        context "#{operatingsystem}" do
+          let(:facts) {{
+            :osfamily        => 'redhat',
+            :operatingsystem => operatingsystem,
+            :processorcount  => 4
+          }}
+
+          it_behaves_like "all puppet master types"
+          it_behaves_like "all puppetserver masters"
+          it_behaves_like "basic puppetmaster environment config"
+
+          # RHEL-specific examples
+          it { should contain_package('puppet-server') }
+          it do
+            should contain_service('puppetserver').with({
+              :ensure => "running"
+            })
+            should contain_service('puppetmaster').with({
+              :ensure => "stopped"
+            })
+          end
+        end
+      end
+    end
+
+    context 'Debian-derived distros' do
+      ['Debian','Ubuntu'].each do |operatingsystem|
+        context "#{operatingsystem}" do
+          let(:facts) {{
+            :operatingsystem => operatingsystem,
+            :osfamily        => 'debian',
+            :lsbdistid       => operatingsystem,
+            :lsbdistcodename => 'lolwut',
+          }}
+
+          it_behaves_like "all puppet master types"
+          it_behaves_like "all puppetserver masters"
+          it_behaves_like "basic puppetmaster environment config"
+
+          # Debian-specific examples
+          it { should contain_package('puppetserver') }
+          it do
+            should contain_service('puppetserver').with({
+              :ensure => "running"
+            })
+            should contain_service('puppetmaster').with({
+              :ensure => "stopped"
+            })
+          end
+        end
+      end
+    end
+  end
+
 end
