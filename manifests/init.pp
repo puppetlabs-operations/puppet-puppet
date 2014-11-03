@@ -8,10 +8,16 @@
 # This module should not be directly included.
 #
 class puppet (
-  $logdir = $puppet::params::puppet_logdir,
-  $vardir = $puppet::params::puppet_vardir,
-  $ssldir = $puppet::params::puppet_ssldir,
-  $rundir = $puppet::params::puppet_rundir,
+  $logdir  = $puppet::params::puppet_logdir,
+  $vardir  = $puppet::params::puppet_vardir,
+  $ssldir  = $puppet::params::puppet_ssldir,
+  $rundir  = $puppet::params::puppet_rundir,
+  $confdir = $puppet::params::puppet_confdir,
 ) inherits puppet::params {
 
+  file { $confdir:
+    ensure => 'directory',
+    owner  => 'puppet',
+    group  => 'puppet',
+  }
 }
