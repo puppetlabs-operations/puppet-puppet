@@ -20,7 +20,7 @@ class puppet::server::rack {
 
   $run_template = $::puppetversion ? {
     /^2.7/      => 'puppet/config.ru/99-run-2.7.erb',
-    /^3.[0-6]/  => 'puppet/config.ru/99-run-3.0.erb',
+    /^3.[0-7]/  => 'puppet/config.ru/99-run-3.0.erb',
   }
 
   concat::fragment { 'run-puppet-master':
