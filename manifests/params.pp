@@ -125,4 +125,14 @@ class puppet::params {
     }
     default: { fail("Sorry, ${::operatingsystem} is not supported") }
   }
+
+  $puppet_user = $::osfamily ? {
+    'OpenBSD' => '_puppet',
+    default   => 'puppet',
+  }
+
+  $puppet_group = $::osfamily ? {
+    'OpenBSD' => '_puppet',
+    default   => 'puppet',
+  }
 }
