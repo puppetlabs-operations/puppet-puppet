@@ -13,11 +13,13 @@ class puppet (
   $ssldir  = $puppet::params::puppet_ssldir,
   $rundir  = $puppet::params::puppet_rundir,
   $confdir = $puppet::params::puppet_confdir,
+  $user    = $puppet::params::puppet_user,
+  $group   = $puppet::params::puppet_group,
 ) inherits puppet::params {
 
   file { $confdir:
     ensure => 'directory',
-    owner  => 'puppet',
-    group  => 'puppet',
+    owner  => $user,
+    group  => $group,
   }
 }
