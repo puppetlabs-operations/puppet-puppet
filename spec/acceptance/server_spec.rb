@@ -94,6 +94,11 @@ describe 'server', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) d
       apply_manifest(pp, :catch_failures => true)
       expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
     end
+  describe command('puppet agent --test --server puppet') do
+    its(:exit_status) { should eq 0 }
+    its(:stderr) { should_not match /Forbidden request:/ }
+    its(:stderr) { should_not match /Error:/ }
+  end
 
     describe package('nginx') do
       it {

@@ -33,6 +33,7 @@ masters.each do |host|
   install_package host, 'rubygems'
   install_package host, 'git'
   on host, 'hash r10k || gem install r10k --no-ri --no-rdoc'
+  on host, 'echo "$(facter ipaddress) puppet" >> /etc/hosts'
 
   puppetfile = <<-EOS
 mod 'stdlib',         :git => 'git://github.com/puppetlabs/puppetlabs-stdlib.git'
@@ -47,7 +48,7 @@ mod 'interval',       :git => 'git://github.com/puppetlabs-operations/puppet-int
 mod 'unicorn',        :git => 'git://github.com/puppetlabs-operations/puppet-unicorn.git'
 mod 'rack',           :git => 'git://github.com/puppetlabs-operations/puppet-rack.git'
 mod 'bundler',        :git => 'git://github.com/puppetlabs-operations/puppet-bundler.git'
-mod 'nginx',          :git => 'git://github.com/jfryman/puppet-nginx.git'
+mod 'nginx',          :git => 'git://github.com/jfryman/puppet-nginx.git', :ref => 'v0.0.10'
 mod 'inifile',        :git => 'git://github.com/puppetlabs/puppetlabs-inifile.git'
 mod 'apache',         :git => 'git://github.com/puppetlabs/puppetlabs-apache.git'
 mod 'portage',        :git => 'git://github.com/gentoo/puppet-portage.git'
