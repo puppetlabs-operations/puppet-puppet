@@ -2,7 +2,7 @@ require 'spec_helper_acceptance'
 
 describe 'agent', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
   context 'with default parameters' do
-    it 'should run with no errors' do
+    it 'should run with no errors', :agent do
       pp = <<-EOS
       class { 'puppet::agent': }
       EOS

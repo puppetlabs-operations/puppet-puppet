@@ -58,6 +58,9 @@ mod 'thin',           :git => 'git://github.com/danieldreier/puppet-thin.git'
   EOS
   on host, "echo \"#{puppetfile}\" > /etc/puppet/Puppetfile"
   on host, "cd /etc/puppet; r10k puppetfile install"
+  on host, "mkdir -p /etc/puppet/environments/production/modules"
+  on host, "puppet config set --section master environmentpath '$confdir/environments'"
+  on host, "puppet config set --section master basemodulepath '$confdir/modules'"
 
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
   puppet_module_install(:source => proj_root, :module_name => 'puppet')
