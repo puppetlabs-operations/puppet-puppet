@@ -70,3 +70,32 @@ mod 'thin',           :git => 'git://github.com/danieldreier/puppet-thin.git'
   on host, "rm -rf /var/lib/puppet/ssl; puppet cert --generate $HOSTNAME"
 
 end
+
+shared_examples_for "basic working puppetmaster" do
+  describe command('puppet agent --test --server puppet') do
+    its(:exit_status) { should eq 0 }
+    its(:stderr) { should_not match /Forbidden request:/ }
+    its(:stderr) { should_not match /Error:/ }
+  end
+  describe port(8140) do
+    it {
+      should be_listening
+    }
+  end
+end
+
+shared_examples_for "nginx-based webserver" do
+  describe package('nginx') do
+    it { should be_installed }
+  end
+
+  describe service('nginx') do
+    it { should be_enabled }
+    it { should be_running }
+  end
+
+  describe service('puppetmaster') do
+    it { should_not be_enabled }
+    it { should_not be_running }
+  end
+end
