@@ -123,6 +123,16 @@ class puppet::params {
       $puppet_rundir      = 'C:/ProgramData/PuppetLabs/puppet/var/run'
       $default_method     = 'only_service'
     }
+    'junos': {
+      $puppet_cmd         = '/opt/sdk/juniper/bin/puppet'
+      $puppet_conf        = '/var/home/puppet/.puppet/puppet.conf'
+      $puppet_confdir     = '/var/home/puppet/.puppet/'
+      $puppet_logdir      = '/var/home/puppet/.puppet/var/log'
+      $puppet_vardir      = '/var/home/puppet/.puppet/var'
+      $puppet_ssldir      = '/var/home/puppet/.puppet/ssl'
+      $puppet_rundir      = '/var/home/puppet/.puppet/var/run'
+      $default_method     = 'cron'
+    }
     default: { fail("Sorry, ${::operatingsystem} is not supported") }
   }
 
