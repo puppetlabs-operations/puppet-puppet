@@ -27,30 +27,31 @@
 #  }
 #
 class puppet::server (
-  $modulepath         = ['$confdir/modules/site', '$confdir/env/$environment/dist'],
-  $manifest           = '$confdir/modules/site/site.pp',
-  $environmentpath    = undef,
-  $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
-  $storeconfigs       = undef,
-  $report             = true,
-  $reports            = ['store', 'https'],
-  $reporturl          = "http://${::fqdn}/reports",
-  $reportfrom         = undef,
-  $servertype         = 'unicorn',
-  $serverssl_protos   = undef,
-  $serverssl_ciphers  = undef,
-  $ca                 = false,
+  $autosign           = undef,
   $bindaddress        = '0.0.0.0',
+  $ca                 = false,
+  $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
+  $dns_alt_names      = undef,
   $enc                = '',
   $enc_exec           = '',
-  $servername         = undef,
   $ensure             = 'present',
-  $parser             = undef,
-  $gentoo_use         = $puppet::params::master_use,
+  $environmentpath    = undef,
   $gentoo_keywords    = $puppet::params::master_keywords,
+  $gentoo_use         = $puppet::params::master_use,
   $manage_package     = true,
-  $dns_alt_names      = undef,
-  $autosign           = undef,
+  $manifest           = '$confdir/modules/site/site.pp',
+  $modulepath         = ['$confdir/modules/site', '$confdir/env/$environment/dist'],
+  $parser             = undef,
+  $manage_puppetdb    = undef,
+  $report             = true,
+  $reportfrom         = undef,
+  $reports            = ['store', 'https'],
+  $reporturl          = "http://${::fqdn}/reports",
+  $servername         = undef,
+  $serverssl_ciphers  = undef,
+  $serverssl_protos   = undef,
+  $servertype         = 'unicorn',
+  $storeconfigs       = undef,
 ) inherits puppet::params {
 
   $master = true
@@ -104,9 +105,19 @@ class puppet::server (
   # ---
   # Storeconfigs
   if $storeconfigs {
+    notify { 'storeconfigs is deprecated. Use manage_puppetdb setting.': }
     class { 'puppet::storeconfig':
       backend => $storeconfigs,
     }
+  }
+
+  # enable basic puppetdb using the puppetlabs-puppetdb module
+  # this will also install postgresql
+  # for more detailed control over puppetdb settings, use the puppetdb
+  # module directly rather than having puppet-puppet include it.
+  if $manage_puppetdb == true {
+    include puppetdb
+    include puppetdb::master::config
   }
 
 }

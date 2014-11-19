@@ -18,6 +18,7 @@ fixtures:
     apache: "git://github.com/puppetlabs/puppetlabs-apache.git"
     portage: "git://github.com/gentoo/puppet-portage.git"
     thin: "git://github.com/danieldreier/puppet-thin.git"
+    puppetdb: "https://github.com/puppetlabs/puppetlabs-puppetdb.git"
   symlinks:
     puppet: "#{source_dir}"
 
