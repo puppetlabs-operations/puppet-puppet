@@ -26,29 +26,38 @@ If, however, the moon is in the next phase then you probably want to use
 something that scales a bit more.
 
 ``` Puppet
-class service::puppet::master($servertype, $ca = false) {
+class { '::puppet::server':
+  modulepath   => [
+    '$confdir/modules/site',
+    '$confdir/env/$environment/dist',
+  ],
+  storeconfigs => 'puppetdb',
+  reporturl    => "https://${::fqdn}/reports",
+  servertype   => 'unicorn',
+  manifest     => '$confdir/environments/$environment/site.pp',
+  ca           => true,
+  reports      => [
+    'https',
+    'graphite',
+    'irccat',
+    'store',
+  ],
+}
 
-  class { '::puppet::server':
-    modulepath   => [
-      '$confdir/modules/site',
-      '$confdir/env/$environment/dist',
-    ],
-    storeconfigs => 'puppetdb',
-    reporturl    => 'https://my.puppet.dashboard/reports',
-    servertype   => 'unicorn',
-    manifest     => '$confdir/environments/$environment/site.pp',
-    ca           => $ca,
-    reports      => [
-      'https',
-      'graphite',
-      'irccat',
-      'store',
-    ],
-  }
+# in a real environment, you'll probably populate parameters on these
+# report classes from hiera. For this example, it's specified inline so that
+# the manifest works as-is
 
-  include puppet::deploy
-  include puppet::reports::irccat
-  include puppet::reports::graphite
+class { 'puppet::reports::graphite':
+  server => $::fqdn,
+  port   => 2003,
+  prefix => 'puppetmaster'
+}
+
+class { 'puppet::reports::irccat':
+  host      => $::fqdn,
+  githuburl => 'https://github.com/example/foo',
+  dashboard => 'https://dashboard.example.com',
 }
 ```
 
