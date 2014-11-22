@@ -23,7 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     PUPPETMASTER_IP = '192.168.37.23'
 
     config.vm.define :package_install do |node|
-      node.vm.box = 'puppetlabs/debian-7.4-64-nocm'
+      node.vm.box = 'puppetlabs/debian-7.6-64-nocm'
       node.vm.hostname = 'debian7.boxnet'
       node.vm.network :private_network, ip: PUPPETMASTER_IP
 
