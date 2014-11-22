@@ -58,6 +58,9 @@ mod 'thin',           :git => 'git://github.com/danieldreier/puppet-thin.git'
   EOS
   on host, "echo \"#{puppetfile}\" > /etc/puppet/Puppetfile"
   on host, "cd /etc/puppet; r10k puppetfile install"
+  on host, "mkdir -p /etc/puppet/environments/production/modules"
+  on host, "puppet config set --section master environmentpath '$confdir/environments'"
+  on host, "puppet config set --section master basemodulepath '$confdir/modules'"
 
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
   puppet_module_install(:source => proj_root, :module_name => 'puppet')
@@ -66,4 +69,33 @@ mod 'thin',           :git => 'git://github.com/danieldreier/puppet-thin.git'
   # within the scope of the puppet module
   on host, "rm -rf /var/lib/puppet/ssl; puppet cert --generate $HOSTNAME"
 
+end
+
+shared_examples_for "basic working puppetmaster" do
+  describe command('puppet agent --test --server puppet') do
+    its(:exit_status) { should eq 0 }
+    its(:stderr) { should_not match /Forbidden request:/ }
+    its(:stderr) { should_not match /Error:/ }
+  end
+  describe port(8140) do
+    it {
+      should be_listening
+    }
+  end
+end
+
+shared_examples_for "nginx-based webserver" do
+  describe package('nginx') do
+    it { should be_installed }
+  end
+
+  describe service('nginx') do
+    it { should be_enabled }
+    it { should be_running }
+  end
+
+  describe service('puppetmaster') do
+    it { should_not be_enabled }
+    it { should_not be_running }
+  end
 end

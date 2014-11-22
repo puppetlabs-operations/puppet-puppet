@@ -1,25 +1,47 @@
 Testing
 =======
 
-Tests on the puppet-puppet module can be run via `rake`.
+Puppet-puppet is tested via beaker and rspec-puppet. Rspec-puppet tests are run
+automatically for pull requests via travis-ci, or can be triggered manually
+by running `rake spec` after doing a `bundle install`.
 
-#### Beaker acceptance tests
-```
-BEAKER_destroy=no BEAKER_provision=onpass rake acceptance
+Beaker tests are run slightly differently for puppet-puppet than for other
+beaker-tested projects because the test suite should be run independently for
+each test case to prevent contamination between environments. For example,
+running the apache-passenger based puppet master test case will cause obvious
+conflicts if the nginx-unicorn puppet master is subsequently built on the same
+virtual machine. Rspec tags are used to accomplish this in the test cases.
+
+Running beaker tests for unicorn puppetmaster on the default nodeset (debian 7):
+```bash
+rspec . --tag servertype:unicorn --pattern "spec/acceptance/**/*_spec.rb"
 ```
 
-Run beaker acceptance tests on debian 7:
+Same as above, but only only destroying the VM if the build is successful, to
+help troubleshooting:
 ```
-BEAKER_set=debian-73-x64 BEAKER_destroy=onpass BEAKER_provision=no rake acceptance
+BEAKER_destroy=onpass BEAKER_provision=yes rspec . --tag servertype:unicorn --pattern "spec/acceptance/**/*_spec.rb"
 ```
-See spec/acceptance/nodesets for a list of possible node names; use the filename without .yml.
+
+Same as above, but on a different nodeset (see `spec/acceptance/nodesets` for
+options):
+```bash
+BEAKER_set=sles-11sp1-x64 BEAKER_destroy=onpass BEAKER_provision=yes rspec . --tag servertype:unicorn --pattern "spec/acceptance/**/*_spec.rb"
+```
+
+The presence of an OS/distro in the nodeset list does not imply support. The
+SLES example above is expected to fail most test cases but is included to lower
+the bar for future contributors who want to add support for additional distros.
+
+The rake command includes acceptance testing tasks, but these should not be
+used because they will run all of the acceptance tests on the same VM, which
+is expected to fail.
 
 If a beaker test fails, you can SSH into the environment if you use BEAKER_PROVISION=onpass.
 The path of the vagrantfile will be `.vagrant/beaker_vagrant_files/debian-73-x64.yml`
 if you followed the above instructions, and slightly different if you used a
 different nodeset. `cd` to that directory and `vagrant ssh` to access the VM.
 The tests that ran are in /tmp with randomly generated filenames.
-```
 
 #### rspec-puppet tests
 (note that these are run automatically by travis CI on pull requests)
