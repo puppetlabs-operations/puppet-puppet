@@ -105,4 +105,10 @@ class puppet::agent::config {
     setting => 'usecacheonfailure',
     value   => $puppet::agent::usecacheonfailure,
   }
+
+  ini_setting { 'stringify_facts_agent':
+      setting => 'stringify_facts',
+      section => 'main',
+      value   => $puppet::agent::stringify_facts;
+  }
 }

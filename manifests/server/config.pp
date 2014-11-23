@@ -40,6 +40,11 @@ class puppet::server::config {
     'group':
       setting => 'group',
       value   => 'puppet';
+
+    'stringify_facts_master':
+      setting => 'stringify_facts',
+      section => 'main',
+      value   => $puppet::server::stringify_facts;
   }
 
   ini_setting { 'ca':
