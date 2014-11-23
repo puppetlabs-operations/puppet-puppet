@@ -135,4 +135,6 @@ class puppet::params {
     'OpenBSD' => '_puppet',
     default   => 'puppet',
   }
+
+  $report_dir = '/usr/lib/ruby/vendor_ruby/puppet/reports'
 }
