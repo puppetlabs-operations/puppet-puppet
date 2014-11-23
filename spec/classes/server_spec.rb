@@ -103,7 +103,7 @@ describe 'puppet::server' do
         it_behaves_like "basic puppetmaster config"
 
         # Tests specific to passenger server
-        it { should contain_class('puppet::passenger') }
+        it { should contain_class('puppet::server::passenger') }
         it { should contain_class('apache') }
         it { should contain_class('apache::mod::passenger') }
 
