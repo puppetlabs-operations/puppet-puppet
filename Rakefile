@@ -9,6 +9,8 @@ begin
 rescue LoadError
 end
 
+ENV['STRINGIFY_FACTS'] = 'true'
+
 PuppetLint.configuration.send("disable_80chars")
 PuppetLint.configuration.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
 PuppetLint.configuration.fail_on_warnings = false
