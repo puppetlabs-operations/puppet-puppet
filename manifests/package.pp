@@ -21,6 +21,4 @@ class puppet::package {
     }
   }
 
-  # Fixes a bug. #12813
-  class { '::puppet::package::patches': }
 }
