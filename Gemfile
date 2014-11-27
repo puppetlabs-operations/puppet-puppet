@@ -8,6 +8,7 @@ group :test do
   gem "rspec", '< 3.0.0'
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper"
+  gem "metadata-json-lint"
 end
 
 group :development do
