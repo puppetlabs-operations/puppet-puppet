@@ -13,6 +13,10 @@ env:
   - PUPPET_VERSION="~> 3.3.0"
   - PUPPET_VERSION="~> 3.4.0"
   - PUPPET_VERSION="~> 3.7.3"
+  - PUPPET_VERSION="~> 3.7.3" FUTURE_PARSER=yes
+  - PUPPET_VERSION="~> 3.7.3" STRINGIFY_FACTS=no
+  - PUPPET_VERSION="~> 3.7.3" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 3.7.3" ORDERING=random
 matrix:
   exclude:
   - rvm: 2.0.0
@@ -23,3 +27,5 @@ matrix:
     env: PUPPET_VERSION="~> 3.2.0"
   - rvm: 2.1.3
     env: PUPPET_VERSION="~> 3.3.0"
+  allow_failures:
+    - env: PUPPET_VERSION="~> 3.7.3" STRICT_VARIABLES=yes
