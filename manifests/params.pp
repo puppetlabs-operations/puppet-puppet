@@ -60,22 +60,6 @@ class puppet::params {
       $puppet_rundir      = '/var/run/puppet'
       $default_method     = 'cron'
     }
-    'gentoo': {
-      $puppet_cmd         = '/usr/bin/puppet'
-      $agent_package      = 'app-admin/puppet'
-      $agent_service      = 'puppet'
-      $agent_use          = ['minimal']
-      $master_package     = 'app-admin/puppet'
-      $master_service     = 'puppetmaster'
-      $master_use         = ['-minimal']
-      $puppet_conf        = '/etc/puppet/puppet.conf'
-      $puppet_confdir     = '/etc/puppet'
-      $puppet_logdir      = '/var/log/puppet'
-      $puppet_vardir      = '/var/lib/puppet'
-      $puppet_ssldir      = '/var/lib/puppet/ssl'
-      $puppet_rundir      = '/var/run/puppet'
-      $default_method     = 'cron'
-    }
     'openbsd': {
       $puppet_cmd         = '/usr/local/bin/puppet'
       $agent_package      = 'puppet'
