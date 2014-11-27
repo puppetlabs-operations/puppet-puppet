@@ -6,7 +6,7 @@
 #### Table of Contents
 
 1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
+2. [Module Description - What puppet-puppet does and why it is useful](#module-description)
 3. [Setup - getting started with puppet-puppet](#setup)
     * [What puppet-puppet affects](#what-puppet-puppet-affects)
     * [Setup requirements](#setup-requirements)
@@ -14,7 +14,7 @@
     * [Puppet Master](#puppetmaster-setup)
     * [Puppet Agent](#puppet-agent-configuration)
 5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
+6. [Development - Guide for contributing to puppet-puppet](#development)
 
 ## Overview
 
