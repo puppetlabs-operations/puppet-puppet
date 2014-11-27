@@ -129,7 +129,7 @@ class puppet::server::config {
         value   =>  $puppet::server::dns_alt_names
     }
   }
-  
+
   if $puppet::server::autosign {
     ini_setting { 'autosign':
         setting => 'autosign',
