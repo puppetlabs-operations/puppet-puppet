@@ -59,14 +59,14 @@ class puppet::server::unicorn {
     vhost                 => 'puppetmaster',
     proxy_set_header      => [],
     location_custom_cfg   => {
-      proxy_pass            => "http://puppetmaster_unicorn",
+      proxy_pass            => 'http://puppetmaster_unicorn',
       proxy_redirect        => 'off',
       proxy_connect_timeout => '90',
       proxy_read_timeout    => '300',
     },
     # this priority sets concat order so that the location is created inside
     # the server block. This works around a possible bug in jfryman/nginx.
-    priority => 701,
+    priority              => 701,
   }
   nginx::resource::upstream { 'puppetmaster_unicorn':
     members => [
