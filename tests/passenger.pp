@@ -1,1 +1,5 @@
-include puppet::passenger
+class { 'puppet::server':
+  servertype => 'passenger',
+  ca         => true,
+}
+
