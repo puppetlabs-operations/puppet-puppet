@@ -32,19 +32,16 @@ class puppet::server::config {
   ini_setting {
     'environmentpath':
       ensure  => $env_ensure,
-      section => 'main',
       setting => 'environmentpath',
       value   => $puppet::server::environmentpath;
 
     'basemodulepath':
       ensure  => $basemod_ensure,
-      section => 'main',
       setting => 'basemodulepath',
       value   => $puppet::server::basemodulepath;
 
     'default_manifest':
       ensure  => $default_manifest_ensure,
-      section => 'main',
       setting => 'default_manifest',
       value   => $puppet::server::default_manifest;
 
