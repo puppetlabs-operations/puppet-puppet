@@ -47,8 +47,6 @@ class puppet::agent(
   $configtimeout     = 360,
   $usecacheonfailure = true,
   $method            = $puppet::params::default_method,
-  $gentoo_use        = $puppet::params::agent_use,
-  $gentoo_keywords   = $puppet::params::agent_keywords,
   $manage_package    = true,
 ) inherits puppet::params {
 
