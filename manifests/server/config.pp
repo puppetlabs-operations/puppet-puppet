@@ -9,12 +9,24 @@ class puppet::server::config {
     section => 'master',
   }
 
-  if $puppet::server::environmentpath {
-    $env_ensure = 'present'
-    $mod_ensure = 'absent'
+  if $puppet::server::directoryenvs == true {
+    validate_string($puppet::server::environmentpath)
+    validate_string($puppet::server::basemodulepath)
+    validate_string($puppet::server::default_manifest)
+
+    $env_ensure              = 'present'
+    $basemod_ensure          = 'present'
+    $default_manifest_ensure = 'present'
+
+    # Remove deprecated settings
+    $mod_ensure            = 'absent'
   } else {
-    $env_ensure = 'absent'
-    $mod_ensure = 'present'
+    $env_ensure              = 'absent'
+    $basemod_ensure          = 'absent'
+    $default_manifest_ensure = 'absent'
+
+    # Leave deprecated settings in place
+    $mod_ensure            = 'present'
   }
 
   ini_setting {
@@ -23,6 +35,18 @@ class puppet::server::config {
       section => 'main',
       setting => 'environmentpath',
       value   => $puppet::server::environmentpath;
+
+    'basemodulepath':
+      ensure  => $basemod_ensure,
+      section => 'main',
+      setting => 'basemodulepath',
+      value   => $puppet::server::basemodulepath;
+
+    'default_manifest':
+      ensure  => $default_manifest_ensure,
+      section => 'main',
+      setting => 'default_manifest',
+      value   => $puppet::server::default_manifest;
 
     'modulepath':
       ensure  => $mod_ensure,
