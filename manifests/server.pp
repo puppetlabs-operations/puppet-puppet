@@ -52,6 +52,7 @@ class puppet::server (
   $serverssl_protos   = undef,
   $servertype         = 'unicorn',
   $storeconfigs       = undef,
+  $stringify_facts    = false,
 ) inherits puppet::params {
 
   $master = true
