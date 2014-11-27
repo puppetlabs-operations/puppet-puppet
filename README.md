@@ -47,7 +47,7 @@ before using puppet-puppet. If you don't generate those SSL certs first, the
 resulting master won't work. (but should if you generate the certs; it's not
 strictly order dependent)
 
-This module also doesn't manage [r10k][r10k-github] or [hiera][hiera-docs].
+This module also doesn't manage [r10k][r10k] or [hiera][hiera-docs].
 Look at [zack/r10k][zack-r10k] or [sharpie/r10k][sharpie-r10k] for r10k, and
 the [hunner/hiera][hunner-hiera] module for managing hiera. If this is all
 unfamiliar, read the [Shit Gary Says](http://garylarizza.com/) blog, starting
@@ -195,10 +195,12 @@ instead of hardcoding these values into manifests.
 
 ## Limitations
 
-This module is (basically) only tested on Debian Wheezy. The maintainers care
-about FreeBSD and OpenBSD support. A token gesture of EL support exists in
+This module is (basically) only tested on Debian Wheezy. The maintainers also
+care about FreeBSD and OpenBSD support. A token gesture of EL support exists in
 `params.pp` but that's about it; this probably won't do much on CentOS/RedHat.
-Pull requests welcome if you're interested.
+You'll see remnants of support for Windows, Gentoo, Solaris etc in the codebase
+but there's no testing or ongoing support for those platforms. They probably
+don't work at all. Pull requests welcome if you're interested.
 
 Bootstrapping an all-in-one (master, puppetdb, postgresql) puppetmaster with
 puppet-puppet is relatively straightforward. However, building a usable puppet
@@ -211,7 +213,8 @@ sysadmins, not developers, and testing is very incomplete.
 
 ## Development
 
-Read CONTRIBUTING.md to see instructions on running beaker and rspec tests.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) to see instructions on running beaker 
+and rspec tests.
 
   [puppetlabs-puppetdb]: https://github.com/puppetlabs/puppet-puppetdb
   [puppetlabs-apache]: https://github.com/puppetlabs/puppetlabs-apache
@@ -222,3 +225,4 @@ Read CONTRIBUTING.md to see instructions on running beaker and rspec tests.
   [zack-r10k]: https://forge.puppetlabs.com/zack/r10k
   [sharpie-r10k]: https://github.com/Sharpie/puppet-r10k
   [sgs-1]: http://garylarizza.com/blog/2014/02/17/puppet-workflow-part-1/
+  [hunner-hiera]: https://github.com/hunner/puppet-hiera
