@@ -4,3 +4,4 @@ spec/fixtures
 .rspec_system
 .vagrant
 log
+Gemfile.lock
