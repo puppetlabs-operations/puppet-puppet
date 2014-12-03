@@ -12,14 +12,12 @@ class puppet::reports::xmpp($jid, $password, $dashboard, $target = [], $ignore_h
     'httparty':;
   }
 
-  include puppet::reports
-
   # This is a little bit dirty, as it just throws it straight in the
   # rubylib, but it's better than messing with libdir on the master.
   # See https://projects.puppetlabs.com/issues/4345 for mild
   # discussion.
   file{
-    "${puppet::reports::report_dir}/xmpp.rb":
+    "${puppet::server::report_dir}/xmpp.rb":
       ensure => present,
       owner  => 'root',
       group  => 'root',
