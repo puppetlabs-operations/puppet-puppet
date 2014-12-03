@@ -35,7 +35,7 @@ class puppet::server (
   $enc                = '',
   $enc_exec           = '',
   $ensure             = 'present',
-  $directoryenvs      = false,
+  $directoryenvs      = true,
   $environmentpath    = undef,
   $basemodulepath     = undef,
   $default_manifest   = undef,
