@@ -5,7 +5,7 @@
   "author": "Puppet Labs Operations",
   "license": "Apache 2",
   "summary": "Install and manage Puppet open source",
-  "description": "UNKNOWN",
+  "description": "Install and manage Puppet open source masters and agents",
   "project_page": "https://github.com/puppetlabs-operations/puppet-puppet",
   "dependencies": [
     {
@@ -58,10 +58,6 @@
     }
   ],
   "requirements": [
-    {
-      "name": "pe",
-      "version_requirement": "3.x"
-    },
     {
       "name": "puppet",
       "version_requirement": "3.x"

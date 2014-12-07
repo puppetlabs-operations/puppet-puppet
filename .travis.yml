@@ -1,31 +1,37 @@
----
 language: ruby
-bundler_args: --without development
 before_install: rm Gemfile.lock || true
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.3
-script: bundle exec rake test
+- 1.9.3
+- 2.0.0
+- 2.1.3
+script:
+- bundle exec rake test
 env:
-  - PUPPET_VERSION="~> 3.1.0"
-  - PUPPET_VERSION="~> 3.2.0"
-  - PUPPET_VERSION="~> 3.3.0"
+  matrix:
   - PUPPET_VERSION="~> 3.4.0"
+  - PUPPET_VERSION="~> 3.6.2"
   - PUPPET_VERSION="~> 3.7.3"
   - PUPPET_VERSION="~> 3.7.3" FUTURE_PARSER=yes
   - PUPPET_VERSION="~> 3.7.3" STRINGIFY_FACTS=no
-  - PUPPET_VERSION="~> 3.7.3" STRICT_VARIABLES=yes
   - PUPPET_VERSION="~> 3.7.3" ORDERING=random
-matrix:
-  exclude:
-  - rvm: 2.0.0
-    env: PUPPET_VERSION="~> 3.1.0"
-  - rvm: 2.1.3
-    env: PUPPET_VERSION="~> 3.1.0"
-  - rvm: 2.1.3
-    env: PUPPET_VERSION="~> 3.2.0"
-  - rvm: 2.1.3
-    env: PUPPET_VERSION="~> 3.3.0"
-  allow_failures:
-    - env: PUPPET_VERSION="~> 3.7.3" STRICT_VARIABLES=yes
+  global:
+  - secure: b8ILGtahVLc1ayqqD4FTVzvhYTmgCIzovV4vEgw33K3b6Y4dswzfkFVXFe7rgtCe6mm+7/elhMYA7nLA9pKfwjSTWRYqML0o90XbtnpSXlAWFRFfE+mvk6VGrjLWXRb/ZdfJQhnZb5g9uU18jhsirIqrtj54d223BBU5F6zuSAg=
+  - secure: GS2TnEvz0rKXT5qRmaw9DPD1T14PxTWsCDmQU/ZCY81ZyVkegsqQZgUujM9ZHGEu8zjRhPiNp9nHvMJuqWWKgZLryJl+3zQSR4bbcdBMd2eB4J8D3MmMaRFCY6DDMyuOdMNqCB6oUl0d84lKl1kdDtRibCTX+ihANvL6qEEeUFg=
+after_success:
+- curl -o travis_after_all.py https://raw.githubusercontent.com/dmakhno/travis_after_all/b7172bca92d6dcfcec2a0eacdf14eb5f3a1ad627/travis_after_all.py
+- python travis_after_all.py
+- export $(cat .to_export_back)
+- "./travis/deploy.sh"
+after_failure:
+- python travis_after_all.py
+- export $(cat .to_export_back)
+- |
+  if [ "$BUILD_LEADER" = "YES" ]; then
+    if [ "$BUILD_AGGREGATE_STATUS" = "others_failed" ]; then
+      echo "All Failed"
+    else
+      echo "Some Failed"
+    fi
+  fi
+after_script:
+- echo leader=$BUILD_LEADER status=$BUILD_AGGREGATE_STATUS
