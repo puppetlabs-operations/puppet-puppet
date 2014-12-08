@@ -89,3 +89,34 @@ vagrant up agent
 vagrant ssh agent
 sudo puppet agent --test --waitforcert 10 --server puppet
 ```
+
+How to Deploy to Puppet Forge
+=============================
+
+To perform a release:
+
+1) Update the metadata.json file with the new version, and commit the change
+2) Tag that commit with an annotated commit: `git tag -a 0.13.0 -m 'release 0.13.0'`
+3) Make a pull request so that another contributor can merge the PR
+4) When that commit is merged, travis-ci will run and deploy to Puppet Forge
+5) Check the travis-ci output and forge site to verify that it deployed
+
+Versioning
+----------
+Release versions should follow [semver](http://semver.org/) guidelines:
+
+> Given a version number MAJOR.MINOR.PATCH, increment the:
+>
+> MAJOR version when you make incompatible API changes,
+> MINOR version when you add functionality in a backwards-compatible manner, and
+> PATCH version when you make backwards-compatible bug fixes.
+
+Update Changelog
+----------------
+Notable changes should be added to [CHANGELOG](CHANGELOG).
+
+Run Beaker Tests
+----------------
+Pplease run beaker acceptance test suite before releasing. At the moment,
+those tests only run manually, without any Jenkins/CI-triggered acceptance
+tests. At the very least, the acceptance tests should be run for Debian 7.
