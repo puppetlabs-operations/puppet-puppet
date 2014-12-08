@@ -1,6 +1,5 @@
 class puppet::package {
 
-  include puppet::agent
   include puppet::params
 
   if $puppet::agent::manage_repos {
