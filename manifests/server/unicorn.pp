@@ -41,7 +41,7 @@ class puppet::server::unicorn {
     ssl_protocols        => $::puppet::server::ssl_protocols,
     use_default_location => false,
     vhost_cfg_append     => {
-      ssl_crl                => "${::puppet::ssldir}/ca/ca_crl.pem",
+      ssl_crl                => "${::puppet::ssldir}/crl.pem",
       ssl_client_certificate => "${::puppet::ssldir}/certs/ca.pem",
       ssl_verify_client      => 'optional',
       proxy_set_header       => [ 'Host $host',
