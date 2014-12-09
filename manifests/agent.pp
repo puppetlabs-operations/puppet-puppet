@@ -51,6 +51,7 @@ class puppet::agent(
   $gentoo_keywords   = $puppet::params::agent_keywords,
   $manage_package    = true,
   $stringify_facts   = $puppet::server::stringify_facts,
+  $parser            = undef,
 ) inherits puppet::params {
 
   include puppet
