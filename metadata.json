@@ -45,6 +45,10 @@
     {
       "name": "puppetlabs/puppetdb",
       "version_requirement": ">= 4.1.0"
+    },
+    {
+      "name": "danieldreier/puppet_installer",
+      "version_requirement": ">= 0.1.0"
     }
   ],
   "operatingsystem_support": [
