@@ -29,6 +29,7 @@
 class puppet::server (
   $autosign           = undef,
   $bindaddress        = '0.0.0.0',
+  $agent_installer    = false,
   $ca                 = false,
   $config_version_cmd = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
   $dns_alt_names      = undef,
@@ -48,7 +49,7 @@ class puppet::server (
   $reportfrom         = undef,
   $reports            = ['store', 'https'],
   $reporturl          = "http://${::fqdn}/reports",
-  $servername         = undef,
+  $servername         = $::fqdn,
   $serverssl_ciphers  = undef,
   $serverssl_protos   = undef,
   $servertype         = 'unicorn',
@@ -80,6 +81,7 @@ class puppet::server (
       $ssl_client_verify_header = 'SSL_CLIENT_VERIFY'
       $ssl_protocols            = pick($serverssl_protos, '-ALL +TLSv1.2 +TLSv1.1 +TLSv1 +SSLv3')
       $ssl_ciphers              = pick($serverssl_ciphers, 'ALL:!ADH:!EXP:!LOW:+RC4:+HIGH:+MEDIUM:!SSLv2:+SSLv3:+TLSv1:+eNULL')
+      $webserver                = 'apache'
     }
     'unicorn': {
       include puppet::server::unicorn
@@ -87,6 +89,7 @@ class puppet::server (
       $ssl_client_verify_header = 'HTTP_X_CLIENT_VERIFY'
       $ssl_protocols            = pick($serverssl_protos, 'TLSv1.2 TLSv1.1 TLSv1 SSLv3')
       $ssl_ciphers              = pick($serverssl_ciphers, 'HIGH:!aNULL:!MD5')
+      $webserver                = 'nginx'
     }
     'thin': {
       include puppet::server::thin
@@ -94,9 +97,11 @@ class puppet::server (
       $ssl_client_verify_header = 'HTTP_X_CLIENT_VERIFY'
       $ssl_protocols            = pick($serverssl_protos, 'TLSv1.2 TLSv1.1 TLSv1 SSLv3')
       $ssl_ciphers              = pick($serverssl_ciphers, 'HIGH:!aNULL:!MD5')
+      $webserver                = 'nginx'
     }
     'standalone': {
       include puppet::server::standalone
+      $webserver = 'webrick'
     }
     default: {
       err('Only "passenger", "thin", and "unicorn" are valid options for servertype')
@@ -120,6 +125,10 @@ class puppet::server (
   if $manage_puppetdb == true {
     include puppetdb
     include puppetdb::master::config
+  }
+
+  if $agent_installer == true {
+    include ::puppet::deploy
   }
 
 }
