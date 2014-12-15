@@ -9,7 +9,7 @@ group :test do
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper"
   gem "metadata-json-lint"
-  gem "puppet_spec_facts", '>= 0.2.0'
+  gem "puppet_spec_facts", '>= 0.2.1'
 end
 
 group :development do
