@@ -47,7 +47,7 @@ class puppet::server (
   $report_dir         = $puppet::params::report_dir,
   $reportfrom         = undef,
   $reports            = ['store', 'https'],
-  $reporturl          = "http://${::fqdn}/reports",
+  $reporturl          = "https://${::fqdn}/reports",
   $servername         = undef,
   $serverssl_ciphers  = undef,
   $serverssl_protos   = undef,
