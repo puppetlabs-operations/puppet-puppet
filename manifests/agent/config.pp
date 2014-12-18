@@ -111,4 +111,12 @@ class puppet::agent::config {
       section => 'main',
       value   => $puppet::agent::stringify_facts;
   }
+
+  if puppet::agent::parser {
+    ini_setting { 'agent_parser':
+      section => 'agent',
+      setting => 'parser',
+      value   => $puppet::agent::parser,
+    }
+  }
 }
