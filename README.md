@@ -65,7 +65,7 @@ rake build
 ```
 
 The resulting tarball in the `pkg` folder can be installed using something like
-`puppet module install ploperations-puppet-0.12.0.tar.gz` and it will do
+`puppet module install ploperations-puppet-0.13.0.tar.gz` and it will do
 dependency resolution for you. This notice will be removed when the forge
 version of the module is reasonable to use.
 
