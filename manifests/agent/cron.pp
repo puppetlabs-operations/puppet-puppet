@@ -1,6 +1,7 @@
 class puppet::agent::cron (
   $enable   = true,
   $run_noop = false,
+  $interval = 3,
 ) {
   include puppet::params
 
@@ -19,6 +20,6 @@ class puppet::agent::cron (
   cron { 'puppet agent':
     ensure  => $ensure,
     command => $cmd,
-    minute  => fqdn_rand(60),
+    minute  => interval($interval, 60),
   }
 }
