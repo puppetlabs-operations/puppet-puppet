@@ -1,3 +1,4 @@
 class { 'puppet::agent':
-  method => 'cron',
+  method    => 'cron',
+  frequency => 2,
 }
