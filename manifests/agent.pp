@@ -51,6 +51,7 @@ class puppet::agent(
   $gentoo_keywords   = $puppet::params::agent_keywords,
   $manage_package    = true,
   $stringify_facts   = $puppet::server::stringify_facts,
+  $frequency         = 1,
 ) inherits puppet::params {
 
   include puppet
@@ -76,8 +77,10 @@ class puppet::agent(
 
   case $method {
     cron: {
-      include puppet::agent::cron
       class { 'puppet::agent::service': enable => false }
+      class { 'puppet::agent::cron':
+        frequency => $frequency
+      }
     }
     service: {
       include puppet::agent::service
