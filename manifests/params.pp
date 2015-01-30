@@ -36,9 +36,7 @@ class puppet::params {
     'gentoo': {
       $os_specific = {
         agent_package  => 'app-admin/puppet',
-        agent_use      => ['minimal'],
         master_package => 'app-admin/puppet',
-        master_use     => ['-minimal'],
       }
     }
     'openbsd': {
@@ -109,11 +107,9 @@ class puppet::params {
   $agent_package      = $merged_values[agent_package]
   $agent_service      = $merged_values[agent_service]
   $agent_service_conf = $merged_values[agent_service_conf]
-  $agent_use          = $merged_values[agent_use]
   $default_method     = $merged_values[default_method]
   $master_package     = $merged_values[master_package]
   $master_service     = $merged_values[master_service]
-  $master_use         = $merged_values[master_use]
   $puppet_cmd         = $merged_values[puppet_cmd]
   $puppet_conf        = $merged_values[puppet_conf]
   $puppet_confdir     = $merged_values[puppet_confdir]
