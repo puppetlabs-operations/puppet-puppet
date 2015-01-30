@@ -70,7 +70,7 @@ class puppet::agent(
     $real_ca_server = $server
   }
 
-  if $ensure == 'present' {
+  if $ensure != 'absent' {
     include puppet::agent::config
   }
 
