@@ -50,7 +50,7 @@ class puppet::agent(
   $gentoo_use        = $puppet::params::agent_use,
   $gentoo_keywords   = $puppet::params::agent_keywords,
   $manage_package    = true,
-  $stringify_facts   = $puppet::server::stringify_facts,
+  $stringify_facts   = false,
 ) inherits puppet::params {
 
   include puppet
