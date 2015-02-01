@@ -17,6 +17,7 @@ end
 shared_examples_for "basic puppetmaster environment config" do
   it { should contain_ini_setting('ca').with_value(true) }
   it { should contain_ini_setting('environmentpath').with_value('$confdir/environments') }
+  it { should contain_ini_setting('basemodulepath').with_value('/etc/puppet/modules:/usr/share/puppet/modules') }
   it { should contain_ini_setting('modulepath').with_ensure('absent') }
 end
 
@@ -31,9 +32,9 @@ describe "puppet::server" do
           let(:params) {{
             :servertype   => server_type,
             :storeconfigs => 'puppetdb',
-            :manifest     => '/etc/puppet/manifests/site.pp',
-            :modulepath   => ['/etc/puppet/environments/production/modules'],
             :environmentpath => '$confdir/environments',
+            :basemodulepath => '/etc/puppet/modules:/usr/share/puppet/modules',
+            :default_manifest => 'site.pp',
             :ca           => true,
           }}
 
