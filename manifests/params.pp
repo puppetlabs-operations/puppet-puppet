@@ -20,7 +20,7 @@ class puppet::params {
     }
     'darwin': {
       $os_specific = {
-        puppet_cmd     => '/opt/local/bin/puppet',
+        puppet_cmd     => '/usr/bin/puppet',
         agent_service  => 'com.puppetlabs.puppet',
         master_package => '',
         master_service => '',
