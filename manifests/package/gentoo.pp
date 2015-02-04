@@ -1,16 +1,15 @@
 class puppet::package::gentoo {
 
   include puppet::agent
-  include puppet::params
 
   if $puppet::server::master {
     include puppet::server
     $keywords = $puppet::server::gentoo_keywords
-    $package  = $puppet::params::master_package
+    $package  = $puppet::server::package
     $use      = $puppet::server::gentoo_use
   } else {
     $keywords = $puppet::agent::gentoo_keywords
-    $package  = $puppet::params::agent_package
+    $package  = $puppet::agent::package
     $use      = $puppet::agent::gentoo_use
   }
 
