@@ -29,11 +29,12 @@ class puppet::agent::service (
   case $::kernel {
     darwin: {
       file { 'com.puppetlabs.puppet.plist':
-        owner   => 'root',
-        group   => '0',
-        mode    => '0640',
-        source  => 'puppet:///modules/puppet/com.puppetlabs.puppet.plist',
-        path    => '/Library/LaunchDaemons/com.puppetlabs.puppet.plist',
+        owner  => 'root',
+        group  => '0',
+        mode   => '0644',
+        source => 'puppet:///modules/puppet/com.puppetlabs.puppet.plist',
+        path   => '/Library/LaunchDaemons/com.puppetlabs.puppet.plist',
+        before => Service['puppet_agent'],
       }
     }
     default: {
