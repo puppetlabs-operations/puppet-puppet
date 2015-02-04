@@ -38,12 +38,10 @@ class puppet::storeconfig::mysql (
   # Install the mysql gem
   $package_name = $::operatingsystem ? {
     'Debian' => 'libmysql-ruby',
-    'Darwin' => 'rb-mysql',
     default  => mysql,
   }
   $package_provider = $::operatingsystem ? {
     'Debian' => 'apt',
-    'Darwin' => 'macports',
     default  => 'gem',
   }
 
