@@ -38,6 +38,7 @@ class puppet::server (
   $environmentpath    = undef,
   $gentoo_keywords    = $puppet::params::master_keywords,
   $gentoo_use         = $puppet::params::master_use,
+  $packages           = $puppet::params::master_package,
   $manage_package     = true,
   $manifest           = '$confdir/modules/site/site.pp',
   $modulepath         = ['$confdir/modules/site', '$confdir/env/$environment/dist'],
@@ -62,6 +63,7 @@ class puppet::server (
   include puppet::server::config
   if $manage_package {
     include puppet::package
+    realize(Package[$packages])
   }
 
   # ---
