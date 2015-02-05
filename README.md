@@ -53,22 +53,6 @@ the [hunner/hiera][hunner-hiera] module for managing hiera. If this is all
 unfamiliar, read the [Shit Gary Says](http://garylarizza.com/) blog, starting
 with [Building a Functional Puppet Workflow Part 1: Module Structure][sgs-1].
 
-Don't use the forge release of this module until further notice. It's very
-outdated and has many known problems. Either use r10k to install it, or build
-a puppet module tarball with:
-
-```bash
-git clone https://github.com/puppetlabs-operations/puppet-puppet.git
-cd puppet-puppet
-bundle install
-rake build
-```
-
-The resulting tarball in the `pkg` folder can be installed using something like
-`puppet module install ploperations-puppet-0.13.0.tar.gz` and it will do
-dependency resolution for you. This notice will be removed when the forge
-version of the module is reasonable to use.
-
 ## Usage
 There are two general areas managed with this module: masters and agents.
 
