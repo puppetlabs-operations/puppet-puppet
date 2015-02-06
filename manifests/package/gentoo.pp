@@ -1,35 +1,28 @@
-class puppet::package::gentoo {
-
-  include puppet::agent
-  include puppet::params
-
-  if $puppet::server::master {
-    include puppet::server
-    $keywords = $puppet::server::gentoo_keywords
-    $package  = $puppet::params::master_package
-    $use      = $puppet::server::gentoo_use
-  } else {
-    $keywords = $puppet::agent::gentoo_keywords
-    $package  = $puppet::params::agent_package
-    $use      = $puppet::agent::gentoo_use
-  }
+class puppet::package::gentoo (
+  $keywords,
+  $use,
+) {
 
   package_use { 'sys-apps/net-tools':
     use    => 'old-output',
     target => 'puppet',
-    before => Package[$package],
+    before => Package[$puppet::agent::package],
   }
 
-  package_keywords { $package:
-    keywords => $keywords,
-    target   => 'puppet',
-    before   => Package[$package],
+  if $keywords {
+    package_keywords { $puppet::agent::package:
+      keywords => $keywords,
+      target   => 'puppet',
+      before   => Package[$puppet::agent::package],
+    }
   }
 
-  package_use { $package:
-    use    => $use,
-    target => 'puppet',
-    before => Package[$package],
+  if $use {
+    package_use { $puppet::agent::package:
+      use    => $use,
+      target => 'puppet',
+      before => Package[$puppet::agent::package],
+    }
   }
 
 }

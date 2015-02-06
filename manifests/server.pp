@@ -39,8 +39,6 @@ class puppet::server (
   $environmentpath    = undef,
   $basemodulepath     = undef,
   $default_manifest   = undef,
-  $gentoo_keywords    = $puppet::params::master_keywords,
-  $gentoo_use         = $puppet::params::master_use,
   $manage_package     = true,
   $manifest           = '$confdir/modules/site/site.pp',
   $modulepath         = ['$confdir/modules/site', '$confdir/env/$environment/dist'],
