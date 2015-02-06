@@ -1,17 +1,22 @@
-class puppet::package::gentoo {
+class puppet::package::gentoo (
+  $keywords,
+  $use,
+) {
 
-  include puppet::agent
   include puppet::params
 
   if $puppet::server::master {
-    include puppet::server
-    $keywords = $puppet::server::gentoo_keywords
     $package  = $puppet::params::master_package
-    $use      = $puppet::server::gentoo_use
+    $real_use = $use ? {
+      undef   => '-minimal',
+      default => $use,
+    }
   } else {
-    $keywords = $puppet::agent::gentoo_keywords
     $package  = $puppet::params::agent_package
-    $use      = $puppet::agent::gentoo_use
+    $real_use = $use ? {
+      undef   => 'minimal',
+      default => $use,
+    }
   }
 
   package_use { 'sys-apps/net-tools':
@@ -20,10 +25,12 @@ class puppet::package::gentoo {
     before => Package[$package],
   }
 
-  package_keywords { $package:
-    keywords => $keywords,
-    target   => 'puppet',
-    before   => Package[$package],
+  if $keywords {
+    package_keywords { $package:
+      keywords => $keywords,
+      target   => 'puppet',
+      before   => Package[$package],
+    }
   }
 
   package_use { $package:
