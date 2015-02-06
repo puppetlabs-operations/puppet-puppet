@@ -57,6 +57,7 @@ class puppet::server (
   $servertype         = 'unicorn',
   $storeconfigs       = undef,
   $stringify_facts    = false,
+  $package            = $puppet::params::master_package,
 ) inherits puppet::params {
 
   validate_bool($directoryenvs)
@@ -64,8 +65,8 @@ class puppet::server (
   include puppet
   include puppet::server::config
 
-  if $manage_package and ($puppet::params::agent_package != $puppet::params::master_package) {
-    package { $puppet::params::master_package:
+  if $manage_package and ($puppet::agent::package != $package) {
+    package { $package:
       ensure => $ensure;
     }
   }

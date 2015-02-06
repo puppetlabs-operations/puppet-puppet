@@ -1,7 +1,5 @@
 class puppet::package {
 
-  include puppet::params
-
   if $puppet::agent::manage_repos {
     include puppet::package::repository
   }
@@ -10,7 +8,7 @@ class puppet::package {
     include puppet::package::gentoo
   }
 
-  package { $puppet::params::agent_package:
+  package { $puppet::agent::package:
     ensure => $puppet::agent::ensure;
   }
 
