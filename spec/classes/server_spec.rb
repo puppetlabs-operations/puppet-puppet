@@ -3,7 +3,6 @@ require 'spec_helper'
 shared_examples_for "all puppet master types" do
   it { should compile.with_all_deps }
   it { should contain_class('puppet::server') }
-  it { should contain_class('puppet::package') }
   it { should contain_class('puppet::params') }
   it { should contain_class('puppet::server::config') }
 end

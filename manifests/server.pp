@@ -59,14 +59,15 @@ class puppet::server (
   $stringify_facts    = false,
 ) inherits puppet::params {
 
-  $master = true
-
   validate_bool($directoryenvs)
 
   include puppet
   include puppet::server::config
-  if $manage_package {
-    include puppet::package
+
+  if $manage_package and ($puppet::params::agent_package != $puppet::params::master_package) {
+    package { $puppet::params::master_package:
+      ensure => $ensure;
+    }
   }
 
   # ---
