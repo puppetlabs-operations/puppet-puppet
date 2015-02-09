@@ -86,12 +86,6 @@ class puppet::server::config {
       'reporturl':
         setting => 'reporturl',
         value   => $puppet::server::reporturl;
-      'reporturl_ssl_verify':
-        setting => 'reporturl_ssl_verify',
-        value   => 'true';
-      'reporturl_ssl_cert':
-        setting => 'reporturl_ssl_cert',
-        value   => '/etc/ssl/certs/ca-certificates.crt';
     }
   }
 
