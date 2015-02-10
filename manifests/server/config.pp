@@ -27,7 +27,7 @@ class puppet::server::config {
     'modulepath':
       ensure  => $mod_ensure,
       setting => 'modulepath',
-      value   => join($puppet::server::modulepath, ':');
+      value   => join(flatten([$puppet::server::modulepath]), ':');
 
     'manifest':
       ensure  => $mod_ensure,
@@ -36,10 +36,10 @@ class puppet::server::config {
 
     'user':
       setting => 'user',
-      value   => 'puppet';
+      value   => $puppet::params::puppet_user;
     'group':
       setting => 'group',
-      value   => 'puppet';
+      value   => $puppet::params::puppet_group;
 
     'stringify_facts_master':
       setting => 'stringify_facts',
