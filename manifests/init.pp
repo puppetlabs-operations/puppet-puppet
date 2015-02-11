@@ -15,7 +15,10 @@ class puppet (
   $confdir = $puppet::params::puppet_confdir,
   $user    = $puppet::params::puppet_user,
   $group   = $puppet::params::puppet_group,
+  $conf    = $puppet::params::puppet_conf,
 ) inherits puppet::params {
+
+  include puppet::config
 
   file { $confdir:
     ensure => 'directory',

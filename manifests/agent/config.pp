@@ -1,4 +1,5 @@
 class puppet::agent::config {
+
   include puppet
   include puppet::agent
   include puppet::params
@@ -35,33 +36,9 @@ class puppet::agent::config {
   }
 
   ini_setting { 'pluginsync':
-    section => 'main',
+    section => 'agent',
     setting => 'pluginsync',
     value   => $puppet::agent::pluginsync,
-  }
-
-  ini_setting { 'logdir':
-    section => 'main',
-    setting => 'logdir',
-    value   => $puppet::logdir,
-  }
-
-  ini_setting { 'vardir':
-    section => 'main',
-    setting => 'vardir',
-    value   => $puppet::vardir,
-  }
-
-  ini_setting { 'ssldir':
-    section => 'main',
-    setting => 'ssldir',
-    value   => $puppet::ssldir,
-  }
-
-  ini_setting { 'rundir':
-    section => 'main',
-    setting => 'rundir',
-    value   => $puppet::rundir,
   }
 
   ini_setting { 'certname':
@@ -107,8 +84,8 @@ class puppet::agent::config {
   }
 
   ini_setting { 'stringify_facts_agent':
-      setting => 'stringify_facts',
-      section => 'main',
-      value   => $puppet::agent::stringify_facts;
+    setting => 'stringify_facts',
+    section => 'agent',
+    value   => $puppet::agent::stringify_facts;
   }
 }
