@@ -43,17 +43,18 @@ class puppet::params {
     }
     'openbsd': {
       $os_specific = {
-        puppet_cmd     => '/usr/local/bin/puppet',
-        agent_service  => 'puppetd',
-        master_package => 'puppet',
-        master_service => 'puppetmasterd',
-        puppet_logdir  => '/var/puppet/log',
-        puppet_vardir  => '/var/puppet',
-        puppet_ssldir  => '/etc/puppet/ssl',
-        puppet_rundir  => '/var/puppet/run',
-        default_method => 'service',
-        puppet_user    => '_puppet',
-        puppet_group   => '_puppet',
+        puppet_cmd         => '/usr/local/bin/puppet',
+        agent_service      => 'puppetd',
+        agent_service_conf => undef,
+        master_package     => 'puppet',
+        master_service     => 'puppetmasterd',
+        puppet_logdir      => '/var/puppet/log',
+        puppet_vardir      => '/var/puppet',
+        puppet_ssldir      => '/etc/puppet/ssl',
+        puppet_rundir      => '/var/puppet/run',
+        default_method     => 'service',
+        puppet_user        => '_puppet',
+        puppet_group       => '_puppet',
       }
     }
     # This stops the puppet class breaking. But really, we only have very
