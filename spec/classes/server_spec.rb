@@ -21,7 +21,7 @@ shared_examples_for "basic puppetmaster environment config" do
 end
 
 PuppetSpecFacts.facts_for_platform_by_name(["Debian_wheezy_7.7_amd64_3.7.2_structured", "Ubuntu_precise_12.04_amd64_PE-3.3.2_stringified", "Ubuntu_trusty_14.04_amd64_PE-3.3.2_stringified"]).each do |name, facthash|
-describe "puppet::server" do
+  describe "puppet::server" do
     let(:facts) { facthash }
 
     context "running on #{name}" do
