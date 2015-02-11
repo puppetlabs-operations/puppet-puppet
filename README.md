@@ -106,18 +106,16 @@ server, don't enable that option; use the
 more configuration options that aren't exposed here.
 
 ```puppet
-class { '::puppet::server':
-  modulepath      => [
-    '$confdir/modules',
-    '$confdir/environments/$environment/modules/site',
-    '$confdir/environments/$environment/modules/site/dist',
-  ],
-  manage_puppetdb => true,
-  reporturl       => "https://${::fqdn}/reports",
-  servertype      => 'unicorn',
-  manifest        => '$confdir/environments/$environment/site.pp',
-  ca              => true,
-  reports         => [
+class { 'puppet::server':
+  directoryenvs    => true,
+  basemodulepath   => '$confdir/modules:$confdir/secure',
+  environmentpath  => '$confdir/environments',
+  default_manifest => 'site/site.pp',
+  manage_puppetdb  => true,
+  reporturl        => "https://${::fqdn}/reports",
+  servertype       => 'unicorn',
+  ca               => true,
+  reports          => [
     'https',
     'store',
     'puppetdb',

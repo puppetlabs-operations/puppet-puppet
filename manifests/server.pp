@@ -35,7 +35,10 @@ class puppet::server (
   $enc                = '',
   $enc_exec           = '',
   $ensure             = 'present',
+  $directoryenvs      = true,
   $environmentpath    = undef,
+  $basemodulepath     = undef,
+  $default_manifest   = undef,
   $gentoo_keywords    = $puppet::params::master_keywords,
   $gentoo_use         = $puppet::params::master_use,
   $manage_package     = true,
@@ -57,6 +60,8 @@ class puppet::server (
 ) inherits puppet::params {
 
   $master = true
+
+  validate_bool($directoryenvs)
 
   include puppet
   include puppet::server::config
