@@ -57,7 +57,6 @@ class puppet::storeconfig (
 
       $package_name = $::operatingsystem ? {
         'Debian' => 'libactiverecord-ruby',
-        'Darwin' => 'rb-activerecord',
         default  => 'activerecord',
       }
       $package_provider = $::operatingsystem ? {
