@@ -58,18 +58,6 @@ class puppet::agent (
     include puppet::package
   }
 
-  if $report_server {
-    $real_report_server = $report_server
-  } else {
-    $real_report_server = $server
-  }
-
-  if $ca_server {
-    $real_ca_server = $ca_server
-  } else {
-    $real_ca_server = $server
-  }
-
   if $ensure != 'absent' {
     include puppet::agent::config
   }

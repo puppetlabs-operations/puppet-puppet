@@ -11,16 +11,28 @@ class puppet::agent::config {
     value   => $puppet::agent::server,
   }
 
+  if $puppet::agent::ca_server {
+    $real_ca_server = $puppet::agent::ca_server
+  } else {
+    $real_ca_server = $puppet::agent::server
+  }
+
   ini_setting { 'ca_server':
     section => 'main',
     setting => 'ca_server',
-    value   => $puppet::agent::real_ca_server,
+    value   => $real_ca_server,
+  }
+
+  if $puppet::agent::report_server {
+    $real_report_server = $puppet::agent::report_server
+  } else {
+    $real_report_server = $puppet::agent::server
   }
 
   ini_setting { 'report_server':
     section => 'main',
     setting => 'report_server',
-    value   => $puppet::agent::real_report_server,
+    value   => $real_report_server,
   }
 
   ini_setting { 'pluginsync':
