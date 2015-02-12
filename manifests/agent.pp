@@ -52,6 +52,15 @@ class puppet::agent (
   $stringify_facts   = false,
 ) inherits puppet::params {
 
+  validate_bool($report)
+  validate_bool($manage_repos)
+  validate_bool($pluginsync)
+  validate_bool($showdiff)
+  validate_bool($splay)
+  validate_bool($usecacheonfailure)
+  validate_bool($manage_package)
+  validate_bool($stringify_facts)
+
   include puppet
 
   if $manage_package {

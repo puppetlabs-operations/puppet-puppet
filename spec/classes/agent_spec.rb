@@ -56,7 +56,7 @@ describe "puppet::agent" do
         end
       end
       ['service','cron','only_service'].each do |agent_method|
-        manage_repos = false if facthash['osfamily'] == 'FreeBSD'
+        manage_repos = false
         context "method => #{agent_method}" do
           describe "agent configuration on #{facthash["osfamily"]}" do
             let(:params) {{
