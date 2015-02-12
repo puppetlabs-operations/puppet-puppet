@@ -31,7 +31,7 @@
 #     method        => 'service',
 #  }
 #
-class puppet::agent(
+class puppet::agent (
   $ensure            = 'present',
   $server            = 'puppet',
   $ca_server         = undef,
@@ -54,6 +54,7 @@ class puppet::agent(
 ) inherits puppet::params {
 
   include puppet
+
   if $manage_package {
     include puppet::package
   }
