@@ -27,14 +27,6 @@ class puppet::agent::config {
     value   => $puppet::agent::real_report_server,
   }
 
-  if $puppet::agent::report_format {
-    ini_setting { 'report_format':
-      section => 'main',
-      setting => 'report_format',
-      value   => $puppet::agent::report_format,
-    }
-  }
-
   ini_setting { 'pluginsync':
     section => 'agent',
     setting => 'pluginsync',
