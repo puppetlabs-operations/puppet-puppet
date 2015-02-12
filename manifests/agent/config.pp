@@ -1,11 +1,7 @@
 class puppet::agent::config {
 
-  include puppet
-  include puppet::agent
-  include puppet::params
-
   Ini_setting {
-    path    => $puppet::params::puppet_conf,
+    path    => $puppet::conf,
     ensure  => 'present',
   }
 
