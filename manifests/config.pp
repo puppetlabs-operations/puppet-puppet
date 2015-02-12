@@ -40,27 +40,20 @@ class puppet::config (
     value   => $rundir,
   }
 
-  if $use_srv_records == true {
-    ini_setting { 'use_srv_records':
-      setting => 'use_srv_records',
-      value   => $use_srv_records,
-    }
+  $srv_ensure = $use_srv_records ? {
+    true  => 'present',
+    false => 'absent',
+  }
 
-    ini_setting { 'srv_domain':
-      setting => 'srv_domain',
-      value   => $srv_domain,
-    }
-  } else {
-    ini_setting { 'use_srv_records':
-      ensure  => 'absent',
-      setting => 'use_srv_records',
-      value   => $use_srv_records,
-    }
+  ini_setting { 'use_srv_records':
+    ensure  => $srv_ensure,
+    setting => 'use_srv_records',
+    value   => $use_srv_records,
+  }
 
-    ini_setting { 'srv_domain':
-      ensure  => 'absent',
-      setting => 'srv_domain',
-      value   => $srv_domain,
-    }
+  ini_setting { 'srv_domain':
+    ensure  => $srv_ensure,
+    setting => 'srv_domain',
+    value   => $srv_domain,
   }
 }
