@@ -1,4 +1,10 @@
-class puppet::package {
+class puppet::package (
+  $agent_package  = $puppet::params::agent_package,
+  $master_package = $puppet::params::master_package,
+) inherits puppet::params {
+
+  $packages = union([$agent_package], [$master_package])
+  @package { $packages: }
 
   include puppet::params
 
@@ -9,15 +15,4 @@ class puppet::package {
   if $::operatingsystem == 'gentoo' {
     include puppet::package::gentoo
   }
-
-  package { $puppet::params::agent_package:
-    ensure => $puppet::agent::ensure;
-  }
-
-  if $puppet::server::master and ($puppet::params::master_package != $puppet::params::agent_package) {
-    package { $puppet::params::master_package:
-      ensure => $puppet::server::ensure;
-    }
-  }
-
 }
