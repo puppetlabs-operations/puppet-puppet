@@ -3,7 +3,6 @@ require 'spec_helper'
 shared_examples_for "all puppet master types" do
   it { should compile.with_all_deps }
   it { should contain_class('puppet::server') }
-  it { should contain_class('puppet::package') }
   it { should contain_class('puppet::params') }
   it { should contain_class('puppet::server::config') }
 end
@@ -22,12 +21,11 @@ shared_examples_for "basic puppetmaster environment config" do
 end
 
 PuppetSpecFacts.facts_for_platform_by_name(["Debian_wheezy_7.7_amd64_3.7.2_structured", "Ubuntu_precise_12.04_amd64_PE-3.3.2_stringified", "Ubuntu_trusty_14.04_amd64_PE-3.3.2_stringified"]).each do |name, facthash|
-describe "puppet::server" do
+  describe "puppet::server" do
     let(:facts) { facthash }
 
     context "running on #{name}" do
       ['standalone','passenger','unicorn','thin'].each do |server_type|
-#        manage_repos = false if facthash['osfamily'] == 'FreeBSD'
         context "servertype => #{server_type}" do
           let(:params) {{
             :servertype   => server_type,
@@ -48,7 +46,6 @@ describe "puppet::server" do
           it_behaves_like "all puppet master types"
           it_behaves_like "basic puppetmaster environment config"
 
-          #it_behaves_like "agent examples"
           case server_type
             when 'standalone'
             it {
@@ -80,6 +77,16 @@ describe "puppet::server" do
                 should contain_file('/etc/thin.d/puppetmaster.yml')
               }
           end
+        end
+      end
+
+      context "manage_package => false" do
+        let(:params) {{ :manage_package => false }}
+        case facthash['osfamily']
+          when 'RedHat'
+            it { should_not contain_package('puppet-server') }
+          when 'Debian'
+            it { should_not contain_package('puppetmaster') }
         end
       end
     end

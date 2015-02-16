@@ -39,8 +39,6 @@ class puppet::server (
   $environmentpath    = undef,
   $basemodulepath     = undef,
   $default_manifest   = undef,
-  $gentoo_keywords    = $puppet::params::master_keywords,
-  $gentoo_use         = $puppet::params::master_use,
   $manage_package     = true,
   $manifest           = '$confdir/modules/site/site.pp',
   $modulepath         = ['$confdir/modules/site', '$confdir/env/$environment/dist'],
@@ -57,16 +55,18 @@ class puppet::server (
   $servertype         = 'unicorn',
   $storeconfigs       = undef,
   $stringify_facts    = false,
+  $package            = $puppet::params::master_package,
 ) inherits puppet::params {
-
-  $master = true
 
   validate_bool($directoryenvs)
 
   include puppet
   include puppet::server::config
-  if $manage_package {
-    include puppet::package
+
+  if $manage_package and ($puppet::agent::package != $package) {
+    package { $package:
+      ensure => $ensure;
+    }
   }
 
   # ---

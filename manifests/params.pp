@@ -36,9 +36,7 @@ class puppet::params {
     'gentoo': {
       $os_specific = {
         agent_package  => 'app-admin/puppet',
-        agent_use      => ['minimal'],
         master_package => 'app-admin/puppet',
-        master_use     => ['-minimal'],
       }
     }
     'openbsd': {
