@@ -62,7 +62,7 @@ class puppet::agent::config {
   ini_setting { 'show_diff':
     section => 'agent',
     setting => 'show_diff',
-    value   => $puppet::agent::showdiff,
+    value   => $puppet::agent::show_diff,
   }
 
   ini_setting { 'splay':

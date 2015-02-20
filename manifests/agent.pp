@@ -41,7 +41,7 @@ class puppet::agent (
   $environment       = $::environment,
   $pluginsync        = true,
   $certname          = $::clientcert,
-  $showdiff          = false,
+  $show_diff         = false,
   $splay             = false,
   $configtimeout     = 360,
   $usecacheonfailure = true,
@@ -55,7 +55,7 @@ class puppet::agent (
   validate_bool($report)
   validate_bool($manage_repos)
   validate_bool($pluginsync)
-  validate_bool($showdiff)
+  validate_bool($show_diff)
   validate_bool($splay)
   validate_bool($usecacheonfailure)
   validate_bool($manage_package)
