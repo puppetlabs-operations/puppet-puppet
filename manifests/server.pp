@@ -64,7 +64,11 @@ class puppet::server (
   include puppet::server::config
 
   if $manage_package and ($puppet::agent::package != $package) {
-    package { $package:
+    $package_real = $servertype ? {
+      'server' => $puppet::params::server_package,
+      default  => $package,
+    }
+    package { $package_real:
       ensure => $ensure;
     }
   }
@@ -103,8 +107,11 @@ class puppet::server (
     'standalone': {
       include puppet::server::standalone
     }
+    'server': {
+      include puppet::server::server
+    }
     default: {
-      err('Only "passenger", "thin", and "unicorn" are valid options for servertype')
+      err('Only "passenger", "thin", "serverr", and "unicorn" are valid options for servertype')
       fail('Servertype "$servertype" not implemented')
     }
   }

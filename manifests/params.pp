@@ -89,6 +89,8 @@ class puppet::params {
     agent_service      => 'puppet',
     agent_service_conf => '/etc/default/puppet',
     default_method     => 'cron',
+    server_package     => 'puppetserver',
+    server_service     => 'puppetserver',
     master_package     => 'puppetmaster',
     master_service     => 'puppetmaster',
     puppet_cmd         => '/usr/bin/puppet',
