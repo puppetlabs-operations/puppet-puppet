@@ -1,11 +1,7 @@
 class puppet::agent::config {
 
-  include puppet
-  include puppet::agent
-  include puppet::params
-
   Ini_setting {
-    path    => $puppet::params::puppet_conf,
+    path    => $puppet::conf,
     ensure  => 'present',
   }
 
@@ -15,24 +11,28 @@ class puppet::agent::config {
     value   => $puppet::agent::server,
   }
 
+  if $puppet::agent::ca_server {
+    $real_ca_server = $puppet::agent::ca_server
+  } else {
+    $real_ca_server = $puppet::agent::server
+  }
+
   ini_setting { 'ca_server':
     section => 'main',
     setting => 'ca_server',
-    value   => $puppet::agent::real_ca_server,
+    value   => $real_ca_server,
+  }
+
+  if $puppet::agent::report_server {
+    $real_report_server = $puppet::agent::report_server
+  } else {
+    $real_report_server = $puppet::agent::server
   }
 
   ini_setting { 'report_server':
     section => 'main',
     setting => 'report_server',
-    value   => $puppet::agent::real_report_server,
-  }
-
-  if $puppet::agent::report_format {
-    ini_setting { 'report_format':
-      section => 'main',
-      setting => 'report_format',
-      value   => $puppet::agent::report_format,
-    }
+    value   => $real_report_server,
   }
 
   ini_setting { 'pluginsync':
@@ -62,7 +62,7 @@ class puppet::agent::config {
   ini_setting { 'show_diff':
     section => 'agent',
     setting => 'show_diff',
-    value   => $puppet::agent::showdiff,
+    value   => $puppet::agent::show_diff,
   }
 
   ini_setting { 'splay':

@@ -31,18 +31,17 @@
 #     method        => 'service',
 #  }
 #
-class puppet::agent(
+class puppet::agent (
   $ensure            = 'present',
   $server            = 'puppet',
   $ca_server         = undef,
   $report            = true,
   $report_server     = undef,
-  $report_format     = undef,
   $manage_repos      = true,
   $environment       = $::environment,
   $pluginsync        = true,
   $certname          = $::clientcert,
-  $showdiff          = true,
+  $show_diff         = false,
   $splay             = false,
   $configtimeout     = 360,
   $usecacheonfailure = true,
@@ -52,21 +51,19 @@ class puppet::agent(
   $package           = $puppet::params::agent_package,
 ) inherits puppet::params {
 
+  validate_bool($report)
+  validate_bool($manage_repos)
+  validate_bool($pluginsync)
+  validate_bool($show_diff)
+  validate_bool($splay)
+  validate_bool($usecacheonfailure)
+  validate_bool($manage_package)
+  validate_bool($stringify_facts)
+
   include puppet
+
   if $manage_package {
     include puppet::package
-  }
-
-  if $report_server {
-    $real_report_server = $report_server
-  } else {
-    $real_report_server = $server
-  }
-
-  if $ca_server {
-    $real_ca_server = $ca_server
-  } else {
-    $real_ca_server = $server
   }
 
   if $ensure != 'absent' {
