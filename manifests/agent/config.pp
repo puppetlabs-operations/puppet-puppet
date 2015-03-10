@@ -4,6 +4,7 @@ class puppet::agent::config {
     path    => $puppet::conf,
     section => 'agent',
     ensure  => 'present',
+    notify  => Service['puppet_agent'],
   }
 
   ini_setting { 'server':
