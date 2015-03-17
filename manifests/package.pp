@@ -9,7 +9,8 @@ class puppet::package {
   }
 
   package { $puppet::agent::package:
-    ensure => $puppet::agent::ensure;
+    ensure => $puppet::agent::ensure,
+    notify => Service['puppet_agent'],
   }
 
 }
