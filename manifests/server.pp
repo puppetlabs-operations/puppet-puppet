@@ -104,7 +104,7 @@ class puppet::server (
       include puppet::server::standalone
     }
     default: {
-      err('Only "passenger", "thin", and "unicorn" are valid options for servertype')
+      err('Only "passenger", "thin", "unicorn" and "standalone" are valid options for servertype')
       fail('Servertype "$servertype" not implemented')
     }
   }
