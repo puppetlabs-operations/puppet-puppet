@@ -11,7 +11,6 @@ class puppet::server::config {
 
   if $puppet::server::directoryenvs == true {
     validate_string($puppet::server::environmentpath)
-    validate_string($puppet::server::basemodulepath)
     validate_string($puppet::server::default_manifest)
 
     $env_ensure              = 'present'
@@ -38,7 +37,7 @@ class puppet::server::config {
     'basemodulepath':
       ensure  => $basemod_ensure,
       setting => 'basemodulepath',
-      value   => $puppet::server::basemodulepath;
+      value   => join(flatten([$puppet::server::basemodulepath]), ':');
 
     'default_manifest':
       ensure  => $default_manifest_ensure,
