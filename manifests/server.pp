@@ -43,7 +43,7 @@ class puppet::server (
   $manifest           = '$confdir/modules/site/site.pp',
   $modulepath         = ['$confdir/modules/site', '$confdir/env/$environment/dist'],
   $parser             = undef,
-  $manage_puppetdb    = undef,
+  $manage_puppetdb    = false,
   $report             = true,
   $report_dir         = $puppet::params::report_dir,
   $reportfrom         = undef,
@@ -58,7 +58,12 @@ class puppet::server (
   $package            = $puppet::params::master_package,
 ) inherits puppet::params {
 
+  validate_bool($ca)
   validate_bool($directoryenvs)
+  validate_bool($manage_puppetdb)
+  if $dns_alt_names { validate_array($dns_alt_names) }
+  if $reports { validate_array($reports) }
+  if $parser { validate_re($parser, ['custom', 'future']) }
 
   include puppet
   include puppet::server::config
@@ -122,7 +127,7 @@ class puppet::server (
   # this will also install postgresql
   # for more detailed control over puppetdb settings, use the puppetdb
   # module directly rather than having puppet-puppet include it.
-  if $manage_puppetdb == true {
+  if $manage_puppetdb {
     include puppetdb
     include puppetdb::master::config
   }
