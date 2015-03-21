@@ -100,8 +100,21 @@ class puppet::server::puppetserver (
     subsetting        => '-Xms',
     value             => $jvm_memory,
   }
+
+  # test for java_major_version fact, and assume we'll use defaults if it's not found
+  # this allows us to use puppetlabs-java's fact if available without adding a hard
+  # dependency on it
+  if $::java_major_version {
+    $perm = $::java_major_version ? {
+      8       => '-XX:MaxMetaspaceSize=',
+      default => '-XX:MaxPermSize=',
+    }
+  } else {
+    $perm = '-XX:MaxPermSize='
+  }
+
   ini_subsetting {'puppetserver_maxpermsize':
-    subsetting        => '-XX:MaxPermSize=',
+    subsetting        => $perm,
     value             => '256m',
   }
   # JAVA_ARGS="-Xms2776m -Xmx2776m -XX:MaxPermSize=256m"
