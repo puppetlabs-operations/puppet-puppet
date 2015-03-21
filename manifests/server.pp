@@ -60,12 +60,19 @@ class puppet::server (
 
   validate_bool($directoryenvs)
 
+  $service = $servertype ? {
+    'passenger'    => 'httpd',
+    /unicorn|thin/ => 'nginx',
+    'standalone'   => $puppet::params::master_service,
+  }
+
   include puppet
   include puppet::server::config
 
   if $manage_package and ($puppet::agent::package != $package) {
     package { $package:
-      ensure => $ensure;
+      ensure => $ensure,
+      notify => Service[$service],
     }
   }
 

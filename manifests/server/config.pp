@@ -7,6 +7,7 @@ class puppet::server::config {
     path    => $puppet::params::puppet_conf,
     ensure  => 'present',
     section => 'master',
+    notify  => Service[$puppet::server::service],
   }
 
   if $puppet::server::directoryenvs == true {
