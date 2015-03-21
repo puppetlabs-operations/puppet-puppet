@@ -101,6 +101,11 @@ class puppet::params {
     puppet_user                 => 'puppet',
     puppet_vardir               => '/var/lib/puppet',
     puppetserver_bootstrap_conf => '/etc/puppetserver/bootstrap.cfg',
+    puppetserver_config_dir     => '/etc/puppetserver/conf.d',
+    puppetserver_install_dir    => '/usr/share/puppetserver',
+    puppetserver_logback_conf   => '/etc/puppetserver/logback.xml',
+    puppetserver_java           => '/usr/bin/java',
+    puppetserver_gem_home       => '/var/lib/puppet/jruby-gems',
     report_dir                  => '/usr/lib/ruby/vendor_ruby/puppet/reports',
     server_package              => 'puppetserver',
     server_service              => 'puppetserver',
@@ -130,5 +135,10 @@ class puppet::params {
   $server_package              = $merged_values[server_package]
   $server_service              = $merged_values[server_service]
   $server_service_conf         = $merged_values[server_service_conf]
+  $puppetserver_install_dir    = $merged_values[puppetserver_install_dir]
+  $puppetserver_config_dir     = $merged_values[puppetserver_config_dir]
+  $puppetserver_java           = $merged_values[puppetserver_java]
+  $puppetserver_logback_conf   = $merged_values[puppetserver_logback_conf]
+  $puppetserver_gem_home       = $merged_values[puppetserver_gem_home]
 
 }
