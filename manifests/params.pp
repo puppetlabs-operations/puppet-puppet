@@ -9,13 +9,14 @@ class puppet::params {
     }
     'freebsd': {
       $os_specific = {
-        puppet_cmd     => '/usr/local/bin/puppet',
-        master_package => 'puppet',
-        puppet_conf    => '/usr/local/etc/puppet/puppet.conf',
-        puppet_confdir => '/usr/local/etc/puppet',
-        puppet_logdir  => '/var/log/puppet',
-        puppet_vardir  => '/var/puppet',
-        puppet_ssldir  => '/var/puppet/ssl',
+        puppet_cmd         => '/usr/local/bin/puppet',
+        master_package     => 'puppet',
+        agent_service_conf => undef,
+        puppet_conf        => '/usr/local/etc/puppet/puppet.conf',
+        puppet_confdir     => '/usr/local/etc/puppet',
+        puppet_logdir      => '/var/log/puppet',
+        puppet_vardir      => '/var/puppet',
+        puppet_ssldir      => '/var/puppet/ssl',
       }
     }
     'darwin': {
