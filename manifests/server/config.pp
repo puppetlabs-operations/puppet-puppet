@@ -1,10 +1,9 @@
 class puppet::server::config {
 
   include puppet
-  include puppet::params
 
   Ini_setting {
-    path    => $puppet::params::puppet_conf,
+    path    => $puppet::conf,
     ensure  => 'present',
     section => 'master',
     notify  => Service[$puppet::server::service],
@@ -58,10 +57,10 @@ class puppet::server::config {
 
     'user':
       setting => 'user',
-      value   => $puppet::params::puppet_user;
+      value   => $puppet::user;
     'group':
       setting => 'group',
-      value   => $puppet::params::puppet_group;
+      value   => $puppet::group;
 
     'stringify_facts_master':
       setting => 'stringify_facts',
