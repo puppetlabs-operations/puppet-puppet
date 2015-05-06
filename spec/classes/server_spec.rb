@@ -31,7 +31,7 @@ PuppetSpecFacts.facts_for_platform_by_name(["Debian_wheezy_7.7_amd64_3.7.2_struc
             :servertype   => server_type,
             :storeconfigs => 'puppetdb',
             :environmentpath => '$confdir/environments',
-            :basemodulepath => '/etc/puppet/modules:/usr/share/puppet/modules',
+            :basemodulepath => ['/etc/puppet/modules', '/usr/share/puppet/modules'],
             :default_manifest => 'site.pp',
             :ca           => true,
           }}

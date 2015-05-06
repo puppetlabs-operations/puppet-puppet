@@ -37,7 +37,7 @@ class puppet::server (
   $ensure             = 'present',
   $directoryenvs      = true,
   $environmentpath    = undef,
-  $basemodulepath     = undef,
+  $basemodulepath     = [],
   $default_manifest   = undef,
   $manage_package     = true,
   $manifest           = '$confdir/modules/site/site.pp',
