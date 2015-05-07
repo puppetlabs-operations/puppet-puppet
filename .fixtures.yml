@@ -3,7 +3,9 @@ fixtures:
     stdlib: "puppetlabs/stdlib"
     concat: "puppetlabs/concat"
     ruby: "puppetlabs/ruby"
-    apt: "puppetlabs/apt"
+    apt:
+      repo: "puppetlabs/apt"
+      ref: "1.8.0"
     puppetlabs_yum: "stahnma/puppetlabs_yum"
     puppetlabs_apt: "ploperations/puppetlabs_apt"
     mysql: "puppetlabs/mysql"
