@@ -36,7 +36,7 @@ class puppet::server (
   $enc_exec          = '',
   $ensure            = 'present',
   $directoryenvs     = true,
-  $environmentpath   = undef,
+  $environmentpath   = '$confdir/environments',
   $basemodulepath    = [],
   $default_manifest  = undef,
   $manage_package    = true,
