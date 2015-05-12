@@ -21,10 +21,10 @@ class puppet::server::passenger {
   }
 
   file { '/etc/puppet/rack/config.ru':
-    owner    => 'puppet',
-    group    => 'puppet',
-    mode     => '0644',
-    source   => $source,
+    owner  => 'puppet',
+    group  => 'puppet',
+    mode   => '0644',
+    source => $source,
   }
 
   if $puppet::server::bindaddress == '::' {

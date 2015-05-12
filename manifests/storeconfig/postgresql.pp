@@ -19,7 +19,7 @@ class puppet::storeconfig::postgresql (
       value   => 'postgresql';
     'dbmigrate':
       setting => 'dbmigrate',
-      value   => 'true';
+      value   => true;
     'dbuser':
       setting => 'dbuser',
       value   => $dbuser;
