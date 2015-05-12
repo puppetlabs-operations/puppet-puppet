@@ -13,9 +13,9 @@ class puppet::server::rack {
   $puppet_vardir  = $::puppet::params::puppet_vardir
 
   concat { "${puppet_confdir}/config.ru":
-    owner  => 'puppet',
-    group  => 'puppet',
-    mode   => '0644',
+    owner => 'puppet',
+    group => 'puppet',
+    mode  => '0644',
   }
 
   $run_template = $::puppetversion ? {
