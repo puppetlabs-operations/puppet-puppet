@@ -42,4 +42,9 @@ class puppet::config {
     setting => 'srv_domain',
     value   => $puppet::srv_domain,
   }
+
+  ini_setting { 'stringify_facts':
+    setting => 'stringify_facts',
+    value   => $puppet::stringify_facts,
+  }
 }

@@ -47,7 +47,6 @@ class puppet::agent (
   $usecacheonfailure = true,
   $method            = $puppet::params::default_method,
   $manage_package    = true,
-  $stringify_facts   = false,
   $package           = $puppet::params::agent_package,
 ) inherits puppet::params {
 
@@ -58,7 +57,6 @@ class puppet::agent (
   validate_bool($splay)
   validate_bool($usecacheonfailure)
   validate_bool($manage_package)
-  validate_bool($stringify_facts)
 
   include puppet
 

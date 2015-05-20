@@ -18,9 +18,11 @@ class puppet (
   $conf            = $puppet::params::puppet_conf,
   $use_srv_records = false,
   $srv_domain      = $::domain,
+  $stringify_facts = false
 ) inherits puppet::params {
 
   validate_bool($use_srv_records)
+  validate_bool($stringify_facts)
 
   include puppet::config
 
