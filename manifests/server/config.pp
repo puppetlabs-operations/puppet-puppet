@@ -10,32 +10,62 @@ class puppet::server::config {
   }
 
   if $puppet::server::directoryenvs == true {
-    validate_string($puppet::server::environmentpath)
-    validate_string($puppet::server::default_manifest)
+    if $puppet::server::environmentpath {
+      validate_string($puppet::server::environmentpath)
+      $environmentpath_ensure = 'present'
+    } else {
+      $environmentpath_ensure = 'absent'
+    }
 
-    $env_ensure              = 'present'
-    $basemod_ensure          = 'present'
-    $default_manifest_ensure = 'present'
+    if $puppet::server::basemodulepath {
+      $basemodulepath_ensure = 'present'
+    } else {
+      $basemodulepath_ensure = 'absent'
+    }
 
-    # Remove deprecated settings
-    $mod_ensure            = 'absent'
+    if $puppet::server::default_manifest {
+      validate_string($puppet::server::default_manifest)
+      $default_manifest_ensure = 'present'
+    } else {
+      $default_manifest_ensure = 'absent'
+    }
+    $manifest_ensure       = 'absent'
+    $modulepath_ensure     = 'absent'
+    $config_version_ensure = 'absent'
   } else {
-    $env_ensure              = 'absent'
-    $basemod_ensure          = 'absent'
-    $default_manifest_ensure = 'absent'
+    if $puppet::server::manifest {
+      validate_string($puppet::server::manifest)
+      $manifest_ensure = 'present'
+    } else {
+      $manifest_ensure = 'absent'
+    }
 
-    # Leave deprecated settings in place
-    $mod_ensure            = 'present'
+    if $puppet::server::modulepath {
+      $modulepath_ensure = 'present'
+    } else {
+      $modulepath_ensure = 'absent'
+    }
+
+    if $puppet::server::config_version {
+      validate_string($puppet::server::config_version)
+      $config_version_ensure = 'present'
+    } else {
+      $config_version_ensure = 'absent'
+    }
+
+    $environmentpath_ensure  = 'absent'
+    $basemodulepath_ensure   = 'absent'
+    $default_manifest_ensure = 'absent'
   }
 
   ini_setting {
     'environmentpath':
-      ensure  => $env_ensure,
+      ensure  => $environmentpath_ensure,
       setting => 'environmentpath',
       value   => $puppet::server::environmentpath;
 
     'basemodulepath':
-      ensure  => $basemod_ensure,
+      ensure  => $basemodulepath_ensure,
       setting => 'basemodulepath',
       value   => join(flatten([$puppet::server::basemodulepath]), ':');
 
@@ -45,14 +75,19 @@ class puppet::server::config {
       value   => $puppet::server::default_manifest;
 
     'modulepath':
-      ensure  => $mod_ensure,
+      ensure  => $modulepath_ensure,
       setting => 'modulepath',
       value   => join(flatten([$puppet::server::modulepath]), ':');
 
     'manifest':
-      ensure  => $mod_ensure,
+      ensure  => $manifest_ensure,
       setting => 'manifest',
       value   => $puppet::server::manifest;
+
+    'config_version':
+      ensure  => $config_version_ensure,
+      setting => 'config_version',
+      value   => $puppet::server::config_version;
 
     'user':
       setting => 'user',
@@ -76,14 +111,6 @@ class puppet::server::config {
     ini_setting { 'bindaddress':
       setting => 'bindaddress',
       value   => $puppet::server::bindaddress,
-    }
-  }
-
-  if $puppet::server::config_version_cmd {
-    ini_setting { 'config_version':
-      ensure  => $mod_ensure,
-      setting => 'config_version',
-      value   => $puppet::server::config_version_cmd,
     }
   }
 
