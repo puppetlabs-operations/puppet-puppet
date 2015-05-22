@@ -2,10 +2,53 @@
 #
 # == Description
 #
-# This manifest provides for shared behavior and resources between the agent
-# and master.
+# Sets up the /etc/puppet ownership and various puppet.conf variables under the
+# [main] section
 #
-# This module should not be directly included.
+# This class should not be directly included. Its parameters should be defined
+# in hieradata.
+#
+# == Parameters
+#
+# [*logdir*]
+# The logdir variable in puppet.conf.
+# Default: platform dependent
+#
+# [*vardir*]
+# The vardir variable in puppet.conf.
+# Default: platform dependent
+#
+# [*ssldir*]
+# The ssldir variable in puppet.conf.
+# Default: platform dependent
+#
+# [*rundir*]
+# The rundir variable in puppet.conf.
+# Default: platform dependent
+#
+# [*confdir*]
+# The confdir variable in puppet.conf.
+# Default: platform dependent
+#
+# [*user*]
+# The owner of /etc/puppet directory
+# Default: platform dependent
+#
+# [*group*]
+# The group of /etc/puppet directory
+# Default: platform dependent
+#
+# [*conf*]
+# The path of the puppet.conf file
+# Default: platform dependent
+#
+# [*use_srv_records*]
+# The use_srv_records variable in puppet.conf.
+# Default: false
+#
+# [*srv_domain*]
+# The srv_domain variable in puppet.conf.
+# Default: $::domain
 #
 class puppet (
   $logdir          = $puppet::params::puppet_logdir,

@@ -1,3 +1,16 @@
+# == Class: puppet::package::gentoo
+#
+# Additional configuration needed for Gentoo. This class is private. Its
+# parameters should be set in hieradata
+#
+# == Parameters
+#
+# [*keywords*]
+# ACCEPT_KEYWORDS for the puppet package
+#
+# [*use*]
+# USE flags for the puppet package
+#
 class puppet::package::gentoo (
   $keywords,
   $use,

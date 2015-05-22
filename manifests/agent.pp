@@ -4,24 +4,70 @@
 #
 # == Parameters
 #
+# [*ensure*]
+# The package ensure value.
+# Default: present
+#
 # [*server*]
-#   The puppet server to use for fetching catalogs. Required.
+# The puppet server to use for fetching catalogs.
+# Default: puppet
+#
 # [*ca_server*]
-#   The puppet server to use for certificate requests and similar actions.
-#   Default: puppet::agent::server
+# The puppet server to use for certificate requests and similar actions.
+# Default: puppet::agent::server
+#
+# [*report*]
+# The report variable in puppet.conf, whether to send reports or not
+# Default: true
+#
 # [*report_server*]
-#   The puppet server to send reports.
-#   Default: puppet::agent::server
+# The puppet server to send reports.
+# Default: puppet::agent::server
+#
 # [*manage_repos*]
-#   Whether to manage Puppet Labs APT or YUM package repos.
-#   Default: true
-# [*method*]
-#   The mechanism for performing puppet runs.
-#   Supported methods: [cron, service]
-#   Default: cron
+# Whether to manage Puppet Labs APT or YUM package repos.
+# Default: false
+#
 # [*environment*]
-#   What environment the agent should be part of.
-#   Default: $::environment
+# What environment the agent should be part of.
+# Default: $::environment
+#
+# [*pluginsync*]
+# The pluginsync variable in puppet.conf
+# Default: true
+#
+# [*certname*]
+# The certname variable in puppet.conf
+# Default: $::clientcert
+#
+# [*show_diff*]
+# The show_diff variable in puppet.conf
+# Default: false
+#
+# [*splay*]
+# The splay variable in puppet.conf
+# Default: false
+#
+# [*configtimeout*]
+# The configtimeout variable in puppet.conf
+# Default: 360
+#
+# [*usecacheonfailure*]
+# The usecacheonfailure variable in puppet.conf
+# Default: true
+#
+# [*method*]
+# The mechanism for performing puppet runs.
+# Supported methods: [cron, service, only_service, none]
+# Default: platform dependent
+#
+# [*manage_package*]
+# Whether to manage the puppet agent package or not
+# Default: true
+#
+# [*package*]
+# The puppet agent package name
+# Default: platform dependent
 #
 # == Example:
 #

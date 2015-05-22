@@ -1,3 +1,4 @@
+# Private class
 class puppet::agent::cron (
   $enable   = true,
   $run_noop = false,

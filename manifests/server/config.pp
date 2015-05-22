@@ -1,3 +1,4 @@
+# Private class
 class puppet::server::config {
 
   include puppet
