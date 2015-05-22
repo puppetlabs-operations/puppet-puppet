@@ -11,21 +11,6 @@ class puppet::server::unicorn {
       Unicorn::App['puppetmaster'],
     ],
   }
-  Ini_setting {
-    ensure  => 'present',
-    section => 'master',
-    path    => $puppet::params::puppet_conf,
-  }
-  ini_setting {
-    'ssl_client_header':
-      ensure  => present,
-      setting => 'ssl_client_header',
-      value   => 'HTTP_X_CLIENT_DN';
-    'ssl_client_verify_header':
-      ensure  => present,
-      setting => 'ssl_client_verify_header',
-      value   => 'HTTP_X_CLIENT_VERIFY';
-  }
 
   $servername     = pick($::puppet::server::servername, $::clientcert, $::fqdn)
   $unicorn_socket = "unix:${puppet::params::puppet_rundir}/puppetmaster_unicorn.sock"

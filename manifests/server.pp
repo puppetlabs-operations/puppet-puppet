@@ -148,7 +148,6 @@ class puppet::server (
   $modulepath        = [],
   $parser            = undef,
   $manage_puppetdb   = false,
-  $report            = true,
   $report_dir        = $puppet::params::report_dir,
   $reportfrom        = undef,
   $reports           = ['store', 'https'],
