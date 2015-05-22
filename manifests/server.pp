@@ -135,7 +135,7 @@ class puppet::server (
   $bindaddress       = '0.0.0.0',
   $ca                = false,
   $config_version    = '/usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
-  $dns_alt_names     = undef,
+  $dns_alt_names     = [],
   $enc               = '',
   $enc_exec          = '',
   $ensure            = 'present',

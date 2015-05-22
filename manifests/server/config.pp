@@ -18,7 +18,7 @@ class puppet::server::config {
       $environmentpath_ensure = 'absent'
     }
 
-    if $puppet::server::basemodulepath {
+    if ! empty($puppet::server::basemodulepath) {
       $basemodulepath_ensure = 'present'
     } else {
       $basemodulepath_ensure = 'absent'
@@ -41,7 +41,7 @@ class puppet::server::config {
       $manifest_ensure = 'absent'
     }
 
-    if $puppet::server::modulepath {
+    if ! empty($puppet::server::modulepath) {
       $modulepath_ensure = 'present'
     } else {
       $modulepath_ensure = 'absent'
@@ -146,7 +146,7 @@ class puppet::server::config {
     value   => $puppet::server::ssl_client_verify_header,
   }
 
-  if $puppet::server::reports {
+  if ! empty($puppet::server::reports) {
     $reports_ensure = 'present'
   } else {
     $reports_ensure = 'absent'
@@ -212,7 +212,7 @@ class puppet::server::config {
     value   => $puppet::server::parser,
   }
 
-  if $puppet::server::dns_alt_names {
+  if ! empty($puppet::server::dns_alt_names) {
     $dns_alt_names_ensure = 'present'
   } else {
     $dns_alt_names_ensure = 'absent'
@@ -221,7 +221,7 @@ class puppet::server::config {
   ini_setting { 'dns_alt_names':
     ensure  => $dns_alt_names_ensure,
     setting => 'dns_alt_names',
-    value   =>  $puppet::server::dns_alt_names,
+    value   => join(flatten([ $puppet::server::dns_alt_names ]), ', ')
   }
 
   if $puppet::server::autosign {
