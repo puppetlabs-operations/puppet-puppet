@@ -56,6 +56,7 @@ class puppet::server (
   $storeconfigs      = undef,
   $stringify_facts   = false,
   $package           = $puppet::params::master_package,
+  $tagmail           = {}
 ) inherits puppet::params {
 
   validate_bool($ca)
@@ -64,6 +65,7 @@ class puppet::server (
   if $dns_alt_names { validate_array($dns_alt_names) }
   if $reports { validate_array($reports) }
   if $parser { validate_re($parser, ['custom', 'future']) }
+  if $tagmail { validate_hash($tagmail) }
 
   $service = $servertype ? {
     'passenger'    => 'httpd',
@@ -139,4 +141,13 @@ class puppet::server (
     include puppetdb::master::config
   }
 
+  if ! empty($tagmail) {
+    file { "${puppet::confdir}/tagmail.conf":
+      ensure  => file,
+      owner   => $puppet::user,
+      group   => $puppet::group,
+      mode    => '0644',
+      content => template('profile/tagmail.conf.erb'),
+    }
+  }
 }
