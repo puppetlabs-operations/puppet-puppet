@@ -25,7 +25,7 @@ PuppetSpecFacts.facts_for_platform_by_name(["Debian_wheezy_7.7_amd64_3.7.2_struc
     let(:facts) { facthash }
 
     context "running on #{name}" do
-      ['standalone','passenger','unicorn','thin'].each do |server_type|
+      ['standalone','passenger','unicorn','thin','puppetserver'].each do |server_type|
         context "servertype => #{server_type}" do
           let(:params) {{
             :servertype   => server_type,
@@ -76,12 +76,20 @@ PuppetSpecFacts.facts_for_platform_by_name(["Debian_wheezy_7.7_amd64_3.7.2_struc
                 should contain_service('thin-puppetmaster').with({:ensure => "running"})
                 should contain_file('/etc/thin.d/puppetmaster.yml')
               }
+           when 'puppetserver'
+              it {
+                should contain_class('puppet::server::puppetserver')
+                should contain_service('puppetmaster').with({ :ensure => "stopped" })
+                should contain_service('puppetserver').with({:ensure => "running"})
+                should contain_package('puppetserver')
+              }
           end
         end
       end
 
       context "manage_package => false" do
         let(:params) {{ :manage_package => false }}
+        it { should_not contain_package('puppetserver') }
         case facthash['osfamily']
           when 'RedHat'
             it { should_not contain_package('puppet-server') }
