@@ -33,7 +33,7 @@ master similar to running Apache, Nginx, or MySQL using puppet.
 Depending on how you use this module, it can touch any of:
 * Puppet configuration files
 * Nginx or Apache configurations needed for running a master
-* Unicorn, Passenger, and thin configurations and init scripts
+* Unicorn and Passenger configurations and init scripts
 * PuppetDB and PostgreSQL
 
 As far as possible, this module tries to use other general-purpose modules to
@@ -73,9 +73,8 @@ This should get you a puppetmaster running under `webrick` which might scale to
 about `10` nodes if the wind doesn't blow too hard.
 
 If, however, the moon is in the next phase then you probably want to use
-something that scales a bit more. Your options are nginx/unicorn,
-apache/passenger, or nginx/thin (but thin support in this module is deprecated
-because nobody seems to be using it).
+something that scales a bit more. Your options are nginx/unicorn or
+apache/passenger.
 
 #### Nginx/Unicorn Master
 The most basic setup would look something like:

@@ -25,7 +25,7 @@ PuppetSpecFacts.facts_for_platform_by_name(["Debian_wheezy_7.7_amd64_3.7.2_struc
     let(:facts) { facthash }
 
     context "running on #{name}" do
-      ['standalone','passenger','unicorn','thin'].each do |server_type|
+      ['standalone','passenger','unicorn'].each do |server_type|
         context "servertype => #{server_type}" do
           let(:params) {{
             :servertype   => server_type,
@@ -67,14 +67,6 @@ PuppetSpecFacts.facts_for_platform_by_name(["Debian_wheezy_7.7_amd64_3.7.2_struc
                 should contain_service('puppetmaster').with({:ensure => "stopped"})
                 should contain_service('nginx').with({:ensure => "running"})
                 should contain_service('unicorn_puppetmaster').with({:ensure => "running"})
-              }
-            when 'thin'
-              it {
-                should contain_class('puppet::server::thin')
-                should contain_service('puppetmaster').with({ :ensure => "stopped" })
-                should contain_service('nginx').with({:ensure => "running"})
-                should contain_service('thin-puppetmaster').with({:ensure => "running"})
-                should contain_file('/etc/thin.d/puppetmaster.yml')
               }
           end
         end
