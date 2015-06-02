@@ -16,7 +16,6 @@ fixtures:
     inifile: "puppetlabs/inifile"
     apache: "puppetlabs/apache"
     portage: "gentoo/portage"
-    thin: "danieldreier/thin"
     puppetdb: "puppetlabs/puppetdb"
   symlinks:
     puppet: "#{source_dir}"

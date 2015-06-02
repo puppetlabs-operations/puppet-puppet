@@ -52,7 +52,6 @@ mod 'nginx',          :git => 'git://github.com/jfryman/puppet-nginx.git', :ref 
 mod 'inifile',        :git => 'git://github.com/puppetlabs/puppetlabs-inifile.git'
 mod 'apache',         :git => 'git://github.com/puppetlabs/puppetlabs-apache.git'
 mod 'portage',        :git => 'git://github.com/gentoo/puppet-portage.git'
-mod 'thin',           :git => 'git://github.com/danieldreier/puppet-thin.git'
 
 
   EOS
