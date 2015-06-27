@@ -1,3 +1,4 @@
+# Private class
 class puppet::config {
 
   include puppet::agent

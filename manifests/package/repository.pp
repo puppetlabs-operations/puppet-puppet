@@ -5,12 +5,13 @@
 # == Parameters
 #
 # [*devel*]
-#   Include development repositories for bleeding edge releases.
-#   Default: false
+# Include development repositories for bleeding edge releases.
+# Default: false
 #
 # == Requirements
 #
 # If used on apt based distributions, this requires the puppetlabs/apt module.
+# If used on yum based distributions, this requires the puppetlabs/yum module.
 #
 class puppet::package::repository($devel = false) {
 

@@ -1,7 +1,4 @@
-# Class: puppet::agent::service
-#
-# Manages enabling and disabling the Puppet agent service
-#
+# Private class
 class puppet::agent::service (
   $enable = true
 ) {

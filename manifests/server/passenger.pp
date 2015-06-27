@@ -1,3 +1,4 @@
+# Private class
 class puppet::server::passenger {
   class { 'puppet::server::standalone': enabled => false }
 

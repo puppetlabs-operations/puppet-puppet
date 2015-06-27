@@ -1,3 +1,4 @@
+# Private class
 class puppet::package {
 
   if $puppet::agent::manage_repos {

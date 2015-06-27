@@ -9,9 +9,113 @@
 #
 # ==  Parameters
 #
-# * modulepath
-# * storeconfigs
-# * servertype
+# [*autosign*]
+# The autosign variable in puppet.conf
+# Default: undef
+#
+# [*bindaddress*]
+# The bindaddress variable in puppet.conf
+# Default: 0.0.0.0
+#
+# [*ca*]
+# The ca variable in puppet.conf
+# Default: false
+#
+# [*config_version*]
+# The config_version variable in puppet.conf
+# Default: /usr/bin/git --git-dir $confdir/environments/$environment/.git rev-parse --short HEAD 2>/dev/null || echo
+#
+# [*dns_alt_names*]
+# The dns_alt_names variable in puppet.conf
+# Default: undef
+#
+# [*enc*]
+# ??
+# Default: empty string
+#
+# [*enc_exec*]
+# ??
+# Default: empty string
+#
+# [*ensure*]
+# The ensure value for the puppet master package
+# Default: present
+#
+# [*directoryenvs*]
+# Whether we should be using directory environments
+# Default: true
+#
+# [*environmentpath*]
+# The environmentpath variable in puppet.conf
+# Default: undef
+#
+# [*basemodulepath*]
+# The basemodulepath variable in puppet.conf
+# Default: empty list
+#
+# [*default_manifest*]
+# The default_manifest variable in puppet.conf
+# Default: undef
+#
+# [*manage_package*]
+# Whether to manage the puppet master package
+# Default: true
+#
+# [*manifest*]
+# The manifest variable in puppet.conf
+# Default: $confdir/modules/site/site.pp
+#
+# [*modulepath*]
+# The modulepath variable in puppet.conf
+# Default: empty list
+#
+# [*parser*]
+# ??
+# Default: undef
+#
+# [*manage_puppetdb*]
+# Whether to manage puppetdb through puppetlabs/puppetdb module
+# Default: false
+#
+# [*report_dir*]
+# The report_dir variable in puppet.conf
+# Default: platform dependent
+#
+# [*reportfrom*]
+# The reportfrom variable in puppet.conf
+# Default: undef
+#
+# [*reports*]
+# The reports variable from puppet.conf
+# Default: ['store', 'https']
+#
+# [*reporturl*]
+# The reporturl variable in puppet.conf
+# Default: https://${::fqdn}/reports
+#
+# [*servername*]
+# The Puppet Master's name, used for the web servers that serve puppetmaster
+# Default: $::fqdn
+#
+# [*serverssl_ciphers*]
+# SSL ciphers to enable on the web servers that serve puppetmaster
+# Default: application dependent
+#
+# [*serverssl_protos*]
+# SSL protocols to enable on the web servers that serve puppetmaster
+# Default: application dependent
+#
+# [*servertype*]
+# The web server to choose for serving the puppetmaster
+# Default: unicorn
+#
+# [*storeconfigs*]
+# The storeconfigs backend
+# Default: undef
+#
+# [*package*]
+# The puppetmaster package name
+# Default: platform dependent
 #
 # == Example
 # Sample Usage:
