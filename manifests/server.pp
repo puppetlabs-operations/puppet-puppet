@@ -158,7 +158,6 @@ class puppet::server (
   $serverssl_protos  = undef,
   $servertype        = 'unicorn',
   $storeconfigs      = undef,
-  $stringify_facts   = false,
   $package           = $puppet::params::master_package,
   $tagmail           = {}
 ) inherits puppet::params {
