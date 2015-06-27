@@ -15,16 +15,11 @@ class puppet::server::passenger {
       group  => 'puppet',
   }
 
-  $source   = $::puppetversion ? {
-    /^2.7/ => 'puppet:///modules/puppet/config.ru.passenger.27',
-    /^3./  => 'puppet:///modules/puppet/config.ru.passenger.3',
-  }
-
   file { '/etc/puppet/rack/config.ru':
     owner  => 'puppet',
     group  => 'puppet',
     mode   => '0644',
-    source => $source,
+    source => 'puppet:///modules/puppet/config.ru.passenger.3',
   }
 
   if $puppet::server::bindaddress == '::' {
