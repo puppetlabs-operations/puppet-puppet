@@ -1,9 +1,12 @@
 class puppet::config {
 
+  include puppet::agent
+
   Ini_setting {
     path    => $puppet::conf,
     ensure  => 'present',
     section => 'main',
+    notify  => Service['puppet_agent'],
   }
 
   ini_setting { 'logdir':
