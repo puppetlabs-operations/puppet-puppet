@@ -140,7 +140,7 @@ class puppet::server (
       owner   => $puppet::user,
       group   => $puppet::group,
       mode    => '0644',
-      content => template('profile/tagmail.conf.erb'),
+      content => template('puppet/tagmail.conf.erb'),
     }
   }
 }
