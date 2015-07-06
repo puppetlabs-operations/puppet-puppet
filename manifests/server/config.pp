@@ -18,7 +18,7 @@ class puppet::server::config {
       $environmentpath_ensure = 'absent'
     }
 
-    if $puppet::server::basemodulepath {
+    if ! empty($puppet::server::basemodulepath) {
       $basemodulepath_ensure = 'present'
     } else {
       $basemodulepath_ensure = 'absent'
@@ -41,7 +41,7 @@ class puppet::server::config {
       $manifest_ensure = 'absent'
     }
 
-    if $puppet::server::modulepath {
+    if ! empty($puppet::server::modulepath) {
       $modulepath_ensure = 'present'
     } else {
       $modulepath_ensure = 'absent'
@@ -59,43 +59,56 @@ class puppet::server::config {
     $default_manifest_ensure = 'absent'
   }
 
-  ini_setting {
-    'environmentpath':
-      ensure  => $environmentpath_ensure,
-      setting => 'environmentpath',
-      value   => $puppet::server::environmentpath;
+  ini_setting { 'environmentpath':
+    ensure  => $environmentpath_ensure,
+    setting => 'environmentpath',
+    value   => $puppet::server::environmentpath,
+  }
 
-    'basemodulepath':
-      ensure  => $basemodulepath_ensure,
-      setting => 'basemodulepath',
-      value   => join(flatten([$puppet::server::basemodulepath]), ':');
+  ini_setting { 'basemodulepath':
+    ensure  => $basemodulepath_ensure,
+    setting => 'basemodulepath',
+    value   => join(flatten([$puppet::server::basemodulepath]), ':'),
+  }
 
-    'default_manifest':
-      ensure  => $default_manifest_ensure,
-      setting => 'default_manifest',
-      value   => $puppet::server::default_manifest;
+  ini_setting { 'default_manifest':
+    ensure  => $default_manifest_ensure,
+    setting => 'default_manifest',
+    value   => $puppet::server::default_manifest,
+  }
 
-    'modulepath':
-      ensure  => $modulepath_ensure,
-      setting => 'modulepath',
-      value   => join(flatten([$puppet::server::modulepath]), ':');
+  ini_setting { 'modulepath':
+    ensure  => $modulepath_ensure,
+    setting => 'modulepath',
+    value   => join(flatten([$puppet::server::modulepath]), ':'),
+  }
 
-    'manifest':
-      ensure  => $manifest_ensure,
-      setting => 'manifest',
-      value   => $puppet::server::manifest;
+  ini_setting { 'manifest':
+    ensure  => $manifest_ensure,
+    setting => 'manifest',
+    value   => $puppet::server::manifest,
+  }
 
-    'config_version':
-      ensure  => $config_version_ensure,
-      setting => 'config_version',
-      value   => $puppet::server::config_version;
+  ini_setting { 'config_version':
+    ensure  => $config_version_ensure,
+    setting => 'config_version',
+    value   => $puppet::server::config_version,
+  }
 
-    'user':
-      setting => 'user',
-      value   => $puppet::user;
-    'group':
-      setting => 'group',
-      value   => $puppet::group;
+  ini_setting { 'user':
+    setting => 'user',
+    value   => $puppet::user,
+  }
+
+  ini_setting { 'group':
+    setting => 'group',
+    value   => $puppet::group,
+  }
+
+  ini_setting { 'stringify_facts_master':
+    setting => 'stringify_facts',
+    section => 'main',
+    value   => $puppet::server::stringify_facts,
   }
 
   ini_setting { 'ca':
@@ -103,80 +116,123 @@ class puppet::server::config {
     value   => $puppet::server::ca,
   }
 
-  if $puppet::server::servertype == 'standalone' {
-    ini_setting { 'bindaddress':
-      setting => 'bindaddress',
-      value   => $puppet::server::bindaddress,
-    }
+  if $puppet::server::servertype == 'standalone' and $puppet::server::bindaddress {
+    $bindaddress_ensure = 'present'
+  } else {
+    $bindaddress_ensure = 'absent'
+  }
+
+  ini_setting { 'bindaddress':
+    ensure  => $bindaddress_ensure,
+    setting => 'bindaddress',
+    value   => $puppet::server::bindaddress,
   }
 
   if $puppet::server::ssl_client_header {
-    ini_setting {
-      'ssl_client_header':
-        setting => 'ssl_client_header',
-        value   => $puppet::server::ssl_client_header;
-      'ssl_client_verify_header':
-        setting => 'ssl_client_verify_header',
-        value   => $puppet::server::ssl_client_verify_header;
-    }
+    $ssl_client_ensure = 'present'
+  } else {
+    $ssl_client_ensure = 'absent'
   }
 
-  if $puppet::server::report {
-    ini_setting {
-      'master_report':
-        setting => 'report',
-        value   => $puppet::server::report;
-      'reporturl':
-        setting => 'reporturl',
-        value   => $puppet::server::reporturl;
-    }
+  ini_setting { 'ssl_client_header':
+    ensure  => $ssl_client_ensure,
+    setting => 'ssl_client_header',
+    value   => $puppet::server::ssl_client_header,
+  }
+
+  ini_setting { 'ssl_client_verify_header':
+    ensure  => $ssl_client_ensure,
+    setting => 'ssl_client_verify_header',
+    value   => $puppet::server::ssl_client_verify_header,
+  }
+
+  if ! empty($puppet::server::reports) {
+    $reports_ensure = 'present'
+  } else {
+    $reports_ensure = 'absent'
+  }
+
+  ini_setting { 'reports':
+    ensure  => $reports_ensure,
+    setting => 'reports',
+    value   => join(flatten([ $puppet::server::reports ]), ', '),
+  }
+
+  if $puppet::server::reporturl {
+    $reporturl_ensure = 'present'
+  } else {
+    $reporturl_ensure = 'absent'
+  }
+
+  ini_setting { 'reporturl':
+    ensure  => $reporturl_ensure,
+    setting => 'reporturl',
+    value   => $puppet::server::reporturl,
   }
 
   if $puppet::server::reportfrom {
-    ini_setting {
-      'reportfrom':
-        setting => 'reportfrom',
-        value   => $puppet::server::reportfrom;
-    }
+    $reportfrom_ensure = 'present'
+  } else {
+    $reportfrom_ensure = 'absent'
   }
 
-  unless empty($puppet::server::reports) {
-    ini_setting { 'reports':
-      setting => 'reports',
-      value   => join(flatten([ $puppet::server::reports ]), ', '),
-    }
+  ini_setting { 'reportfrom':
+    ensure  => $reportfrom_ensure,
+    setting => 'reportfrom',
+    value   => $puppet::server::reportfrom,
   }
 
   if $puppet::server::enc == 'exec' {
-    ini_setting {
-      'node_terminus':
-        setting => 'node_terminus',
-        value   => 'exec';
-      'external_nodes':
-        setting => 'external_nodes',
-        value   => $puppet::server::enc_exec;
-    }
+    $enc_ensure = 'present'
+  } else {
+    $enc_ensure = 'absent'
+  }
+
+  ini_setting { 'node_terminus':
+    ensure  => $enc_ensure,
+    setting => 'node_terminus',
+    value   => 'exec',
+  }
+
+  ini_setting { 'external_nodes':
+    ensure  => $enc_ensure,
+    setting => 'external_nodes',
+    value   => $puppet::server::enc_exec,
   }
 
   if $puppet::server::parser {
-    ini_setting { 'parser':
-        setting => 'parser',
-        value   => $puppet::server::parser,
-    }
+    $parser_ensure = 'present'
+  } else {
+    $parser_ensure = 'absent'
   }
 
-  if $puppet::server::dns_alt_names {
-    ini_setting { 'dns_alt_names':
-        setting => 'dns_alt_names',
-        value   =>  $puppet::server::dns_alt_names
-    }
+  ini_setting { 'parser':
+    ensure  => $parser_ensure,
+    setting => 'parser',
+    value   => $puppet::server::parser,
+  }
+
+  if ! empty($puppet::server::dns_alt_names) {
+    $dns_alt_names_ensure = 'present'
+  } else {
+    $dns_alt_names_ensure = 'absent'
+  }
+
+  ini_setting { 'dns_alt_names':
+    ensure  => $dns_alt_names_ensure,
+    setting => 'dns_alt_names',
+    value   => join(flatten([ $puppet::server::dns_alt_names ]), ', ')
   }
 
   if $puppet::server::autosign {
-    ini_setting { 'autosign':
-        setting => 'autosign',
-        value   =>  $puppet::server::autosign
-    }
+    $autosign_ensure = 'present'
+  } else {
+    $autosign_ensure = 'absent'
   }
 
+  ini_setting { 'autosign':
+    ensure  => $autosign_ensure,
+    setting => 'autosign',
+    value   =>  $puppet::server::autosign,
+  }
 }
