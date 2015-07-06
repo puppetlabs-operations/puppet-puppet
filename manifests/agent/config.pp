@@ -77,8 +77,11 @@ class puppet::agent::config {
     value   => $puppet::agent::usecacheonfailure,
   }
 
-  ini_setting { 'runinterval':
-    setting => 'runinterval',
-    value   => $puppet::agent::runinterval,
+  if ! empty( $puppet::agent::runinterval )
+  {
+    ini_setting { 'runinterval':
+      setting => 'runinterval',
+      value   => $puppet::agent::runinterval,
+    }
   }
 }
