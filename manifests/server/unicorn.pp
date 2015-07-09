@@ -74,7 +74,7 @@ class puppet::server::unicorn {
       },
       # this priority sets concat order so that the location is created inside
       # the server block. This works around a possible bug in jfryman/nginx.
-      priority            => 700,
+      priority            => 701,
     }
   }
 

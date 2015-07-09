@@ -158,7 +158,7 @@ class puppet::server (
   $servertype        = 'unicorn',
   $storeconfigs      = undef,
   $package           = $puppet::params::master_package,
-  $tagmail           = {}
+  $tagmail           = {},
   $external_ca       = undef,
 ) inherits puppet::params {
 
