@@ -159,6 +159,7 @@ class puppet::server (
   $storeconfigs      = undef,
   $package           = $puppet::params::master_package,
   $tagmail           = {}
+  $external_ca       = undef,
 ) inherits puppet::params {
 
   validate_bool($ca)
