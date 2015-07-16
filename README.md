@@ -93,6 +93,19 @@ class { 'puppet::server':
 }
 ```
 
+#### Certificate authority proxy configuration
+
+If you want to automatically relay the certificate requests to an other CA you can do the following :
+```puppet
+class { 'puppet::server':
+  servertype  => 'unicorn',
+  ca          => false,
+  external_ca => 'https://my_puppet_ca_server:8140',
+}
+```
+
+NB: This is only implemented for Nginx/Unicorn configuration so far.
+
 #### Master with PuppetDB, PostgreSQL, and reports
 Running a puppet master without PuppetDB loses much of the utility of Puppet,
 so you probably want it. As a convenience, this module will install puppetdb
