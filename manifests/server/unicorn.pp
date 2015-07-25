@@ -59,6 +59,25 @@ class puppet::server::unicorn {
     ],
   }
 
+  if ! empty( $::puppet::server::external_ca )
+  {
+    nginx::resource::location { 'external_certificate_authority_proxy':
+      ensure              => present,
+      location            => '~ ^/.*/certificate.*',
+      vhost               => 'puppetmaster',
+      proxy_set_header    => [],
+      location_custom_cfg => {
+        proxy_pass            => $::puppet::server::external_ca,
+        proxy_redirect        => 'off',
+        proxy_connect_timeout => '90',
+        proxy_read_timeout    => '300',
+      },
+      # this priority sets concat order so that the location is created inside
+      # the server block. This works around a possible bug in jfryman/nginx.
+      priority            => 701,
+    }
+  }
+
   unicorn::app { 'puppetmaster':
     approot     => $::puppet::params::puppet_confdir,
     config_file => "${::puppet::params::puppet_confdir}/unicorn.conf",
