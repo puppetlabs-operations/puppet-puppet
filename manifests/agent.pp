@@ -56,6 +56,10 @@
 # The usecacheonfailure variable in puppet.conf
 # Default: true
 #
+# [*runinterval*]
+# The runinterval variable in puppet.conf
+# Default: 1800
+#
 # [*method*]
 # The mechanism for performing puppet runs.
 # Supported methods: [cron, service, only_service, none]
@@ -91,6 +95,7 @@ class puppet::agent (
   $splay             = false,
   $configtimeout     = 360,
   $usecacheonfailure = true,
+  $runinterval       = undef,
   $method            = $puppet::params::default_method,
   $manage_package    = true,
   $package           = $puppet::params::agent_package,
