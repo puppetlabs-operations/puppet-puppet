@@ -60,6 +60,10 @@
 # The runinterval variable in puppet.conf
 # Default: 1800
 #
+# [*noop*]
+# The noop variable in puppet.conf
+# Default: false
+#
 # [*method*]
 # The mechanism for performing puppet runs.
 # Supported methods: [cron, service, only_service, none]
@@ -96,6 +100,7 @@ class puppet::agent (
   $configtimeout     = 360,
   $usecacheonfailure = true,
   $runinterval       = undef,
+  $noop              = false,
   $method            = $puppet::params::default_method,
   $manage_package    = true,
   $package           = $puppet::params::agent_package,
@@ -108,6 +113,7 @@ class puppet::agent (
   validate_bool($splay)
   validate_bool($usecacheonfailure)
   validate_bool($manage_package)
+  validate_bool($noop)
 
   include puppet
 
