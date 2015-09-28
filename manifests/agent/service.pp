@@ -32,6 +32,7 @@ class puppet::agent::service (
         content => template('puppet/com.puppetlabs.puppet.plist.erb'),
         path    => '/Library/LaunchDaemons/com.puppetlabs.puppet.plist',
         before  => Service['puppet_agent'],
+        replace => false,
       }
     }
     default: {
