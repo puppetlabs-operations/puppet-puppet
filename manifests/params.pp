@@ -82,6 +82,17 @@ class puppet::params {
         default_method => 'only_service',
       }
     }
+    'CumulusLinux': {
+      $os_specific = {
+        puppet_cmd         => '/opt/puppetlabs/bin/puppet',
+        puppet_conf        => '/etc/puppetlabs/puppet/puppet.conf',
+        puppet_confdir     => '/etc/puppetlabs/puppet',
+        puppet_logdir      => '/var/log/puppetlabs/puppet',
+        puppet_rundir      => '/var/run/puppetlabs',
+        puppet_ssldir      => '/opt/puppetlabs/puppet/ssl',
+        puppet_vardir      => '/opt/puppetlabs/puppet/lib',
+      }
+    }
     default: { fail("Sorry, ${::operatingsystem} is not supported") }
   }
 
