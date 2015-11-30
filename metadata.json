@@ -1,6 +1,6 @@
 {
   "name": "ploperations-puppet",
-  "version": "0.13.1",
+  "version": "1.0.0",
   "source": "https://github.com/puppetlabs-operations/puppet-puppet",
   "author": "Puppet Labs Operations",
   "license": "Apache-2.0",
