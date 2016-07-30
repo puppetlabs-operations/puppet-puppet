@@ -172,7 +172,7 @@ class puppet::server (
 
   $service = $servertype ? {
     'passenger'    => 'httpd',
-    'unicorn'      => 'nginx',
+    'unicorn'      => 'unicorn_puppetmaster',
     'standalone'   => $puppet::params::master_service,
   }
 
