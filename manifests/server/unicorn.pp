@@ -1,6 +1,7 @@
+# Private class
 class puppet::server::unicorn {
 
-  include puppet::params
+  include puppet
   include puppet::server::rack
   include nginx
 
@@ -12,22 +13,22 @@ class puppet::server::unicorn {
     ],
   }
 
-  $servername     = pick($::puppet::server::servername, $::clientcert, $::fqdn)
-  $unicorn_socket = "unix:${puppet::params::puppet_rundir}/puppetmaster_unicorn.sock"
+  $unicorn_socket = "unix:${puppet::rundir}/puppetmaster_unicorn.sock"
 
   nginx::resource::vhost { 'puppetmaster':
-    server_name          => [$servername],
+    server_name          => [$puppet::server::servername],
+    listen_ip            => $puppet::server::bindaddress,
     ssl                  => true,
     ssl_port             => '8140',
     listen_port          => '8140', # force ssl_only by matching ssl_port
-    ssl_cert             => "${::puppet::ssldir}/certs/${servername}.pem",
-    ssl_key              => "${::puppet::ssldir}/private_keys/${servername}.pem",
-    ssl_ciphers          => $::puppet::server::ssl_ciphers,
-    ssl_protocols        => $::puppet::server::ssl_protocols,
+    ssl_cert             => "${puppet::ssldir}/certs/${puppet::server::servername}.pem",
+    ssl_key              => "${puppet::ssldir}/private_keys/${puppet::server::servername}.pem",
+    ssl_ciphers          => $puppet::server::ssl_ciphers,
+    ssl_protocols        => $puppet::server::ssl_protocols,
     use_default_location => false,
     vhost_cfg_append     => {
-      ssl_crl                => "${::puppet::ssldir}/crl.pem",
-      ssl_client_certificate => "${::puppet::ssldir}/certs/ca.pem",
+      ssl_crl                => "${puppet::ssldir}/crl.pem",
+      ssl_client_certificate => "${puppet::ssldir}/certs/ca.pem",
       ssl_verify_client      => 'optional',
       proxy_set_header       => [ 'Host $host',
                                   'X-Real-IP $remote_addr',
@@ -67,7 +68,7 @@ class puppet::server::unicorn {
       vhost               => 'puppetmaster',
       proxy_set_header    => [],
       location_custom_cfg => {
-        proxy_pass            => $::puppet::server::external_ca,
+        proxy_pass            => $puppet::server::external_ca,
         proxy_redirect        => 'off',
         proxy_connect_timeout => '90',
         proxy_read_timeout    => '300',
@@ -79,13 +80,13 @@ class puppet::server::unicorn {
   }
 
   unicorn::app { 'puppetmaster':
-    approot     => $::puppet::params::puppet_confdir,
-    config_file => "${::puppet::params::puppet_confdir}/unicorn.conf",
-    pidfile     => "${::puppet::params::puppet_rundir}/puppetmaster_unicorn.pid",
+    approot     => $puppet::confdir,
+    config_file => "${puppet::confdir}/unicorn.conf",
+    pidfile     => "${puppet::rundir}/puppetmaster_unicorn.pid",
     socket      => $unicorn_socket,
-    logdir      => $::puppet::params::puppet_logdir,
-    user        => 'puppet',
-    group       => 'puppet',
+    logdir      => $puppet::logdir,
+    user        => $puppet::user,
+    group       => $puppet::group,
     before      => Service['nginx'],
 #    export_home => $::confdir, # uncomment pending https://github.com/puppetlabs-operations/puppet-unicorn/pull/14
   }

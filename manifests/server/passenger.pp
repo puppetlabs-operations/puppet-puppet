@@ -9,29 +9,11 @@ class puppet::server::passenger {
   include apache
   include apache::mod::ssl
   include apache::mod::passenger
-
-  file { ['/etc/puppet/rack', '/etc/puppet/rack/public/', '/etc/puppet/rack/tmp']:
-      ensure => directory,
-      owner  => 'puppet',
-      group  => 'puppet',
-  }
-
-  file { '/etc/puppet/rack/config.ru':
-    owner  => 'puppet',
-    group  => 'puppet',
-    mode   => '0644',
-    source => 'puppet:///modules/puppet/config.ru.passenger.3',
-  }
-
-  if $puppet::server::bindaddress == '::' {
-    $ip = '*'
-  } else {
-    $ip = $puppet::server::bindaddress
-  }
+  include puppet::server::rack
 
   apache::vhost { 'puppetmaster':
     servername        => $puppet::server::servername,
-    ip                => $ip,
+    ip                => $puppet::server::bindaddress,
     port              => '8140',
     priority          => '10',
     docroot           => '/etc/puppet/rack/public/',
