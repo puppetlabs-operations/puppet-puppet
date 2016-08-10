@@ -141,4 +141,13 @@ class puppet::agent (
       class { 'puppet::agent::service': enable => false }
     }
   }
+
+  anchor { 'puppet::agent::begin': } ->
+  Class['::puppet'] ->
+  Class['::puppet::package'] ->
+  Class['::puppet::agent::config'] ->
+  Class['::puppet::agent::service'] ->
+  Class['::puppet::agent::cron'] ->
+  Class['::puppet::agent::monitor'] ->
+  anchor { 'puppet::agent::end': }
 }
