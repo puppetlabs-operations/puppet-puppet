@@ -3,7 +3,6 @@ language: ruby
 bundler_args: --without development
 before_install: rm Gemfile.lock || true
 rvm:
-  - 1.9.3
   - 2.0.0
   - 2.1.6
 script: bundle exec rake test
@@ -13,10 +12,11 @@ env:
   - PUPPET_VERSION="~> 3.3.0"
   - PUPPET_VERSION="~> 3.4.0"
   - PUPPET_VERSION="~> 3.7.5"
-  - PUPPET_VERSION="~> 3.7.5" FUTURE_PARSER=yes
-  - PUPPET_VERSION="~> 3.7.5" STRINGIFY_FACTS=no
-  - PUPPET_VERSION="~> 3.7.5" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 3.7.5" ORDERING=random
+  - PUPPET_VERSION="~> 3.8.7"
+  - PUPPET_VERSION="~> 3.8.7" FUTURE_PARSER=yes
+  - PUPPET_VERSION="~> 3.8.7" STRINGIFY_FACTS=no
+  - PUPPET_VERSION="~> 3.8.7" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 3.8.7" ORDERING=random
 matrix:
   exclude:
   - rvm: 2.0.0
@@ -28,4 +28,4 @@ matrix:
   - rvm: 2.1.6
     env: PUPPET_VERSION="~> 3.3.0"
   allow_failures:
-    - env: PUPPET_VERSION="~> 3.7.5" STRICT_VARIABLES=yes
+    - env: PUPPET_VERSION="~> 3.8.7" STRICT_VARIABLES=yes
