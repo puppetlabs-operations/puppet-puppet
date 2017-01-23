@@ -212,7 +212,7 @@ and rspec tests.
 
   [puppetlabs-puppetdb]: https://github.com/puppetlabs/puppet-puppetdb
   [puppetlabs-apache]: https://github.com/puppetlabs/puppetlabs-apache
-  [jfryman-nginx]: https://github.com/jfryman/puppet-nginx
+  [puppet-nginx]: https://github.com/voxpupuli/puppet-nginx
   [r10k]: https://github.com/adrienthebo/r10k
   [hiera-lookup]: https://docs.puppetlabs.com/hiera/1/puppet.html#automatic-parameter-lookup
   [hiera-docs]: https://docs.puppetlabs.com/hiera/1/
