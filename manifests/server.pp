@@ -74,7 +74,7 @@
 # Default: undef
 #
 # [*manage_puppetdb*]
-# Whether to manage puppetdb through puppetlabs/puppetdb module
+# Whether to manage puppetdb master config through puppetlabs/puppetdb module
 # Default: false
 #
 # [*report_dir*]
@@ -228,12 +228,7 @@ class puppet::server (
     }
   }
 
-  # enable basic puppetdb using the puppetlabs-puppetdb module
-  # this will also install postgresql
-  # for more detailed control over puppetdb settings, use the puppetdb
-  # module directly rather than having puppet-puppet include it.
   if $manage_puppetdb {
-    include puppetdb
     include puppetdb::master::config
   }
 
