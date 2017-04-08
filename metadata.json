@@ -38,7 +38,7 @@
     },
     {
       "name": "puppetlabs/puppetdb",
-      "version_requirement": ">= 4.1.0 <5.0.0"
+      "version_requirement": ">= 5.0.0 <6.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
