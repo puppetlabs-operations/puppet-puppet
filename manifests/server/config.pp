@@ -158,7 +158,7 @@ class puppet::server::config {
     value   => join(flatten([ $puppet::server::reports ]), ', '),
   }
 
-  if $puppet::server::reporturl {
+  if ! empty($puppet::server::reporturl) {
     $reporturl_ensure = 'present'
   } else {
     $reporturl_ensure = 'absent'
