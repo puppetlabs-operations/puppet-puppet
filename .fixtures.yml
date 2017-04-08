@@ -12,7 +12,7 @@ fixtures:
     unicorn: "ploperations/unicorn"
     rack: "ploperations/rack"
     bundler: "ploperations/bundler"
-    nginx: "jfryman/nginx"
+    nginx: "puppet/nginx"
     inifile: "puppetlabs/inifile"
     apache: "puppetlabs/apache"
     portage: "gentoo/portage"
