@@ -17,6 +17,21 @@ ARGV << "--color" << "false"
 ARGV << "--confdir" << "<%= @puppet_confdir %>"
 ARGV << "--vardir"  << "<%= @puppet_vardir %>"
 
+begin
+  require 'unicorn/worker_killer'
+
+  max_request_min = 500
+  max_request_max = 600
+
+  use Unicorn::WorkerKiller::MaxRequests, max_request_min, max_request_max
+
+  oom_min = (240) * (1024**2)
+  oom_max = (260) * (1024**2)
+
+  use Unicorn::WorkerKiller::Oom, oom_min, oom_max
+rescue LoadError
+end
+
 # NOTE: it's unfortunate that we have to use the "CommandLine" class
 #  here to launch the app, but it contains some initialization logic
 #  (such as triggering the parsing of the config file) that is very
