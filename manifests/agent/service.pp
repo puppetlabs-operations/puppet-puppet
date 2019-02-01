@@ -50,6 +50,7 @@ class puppet::agent::service (
           group   => 'root',
           content => template('puppet/agent_service.erb'),
           path    => $puppet::params::agent_service_conf,
+          notify  => Service['puppet_agent'],
         }
       }
     }
